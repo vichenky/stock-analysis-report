@@ -3,880 +3,1417 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>個股深度分析報告</title>
+<title>個股深度分析報告 | 2026年4月</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#f0f2f5;--card:#fff;--navy:#1a2f5a;--blue:#2563eb;--blue-pale:#eff6ff;--up:#c0392b;--dn:#27ae60;--up-pale:#fff0ee;--dn-pale:#edfaf2;--amber:#92400e;--amber-pale:#fffbeb;--border:#e2e8f0;--text:#1e293b;--sub:#475569;--muted:#94a3b8;--mono:'IBM Plex Mono',monospace;--sans:'Noto Sans TC',sans-serif;--r:12px}
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:100vh}
-/* HEADER */
-.hd{background:var(--navy);color:#fff;padding:14px 22px;display:flex;justify-content:space-between;align-items:center;border-bottom:3px solid var(--blue)}
-.hd-t{font-size:1.05rem;font-weight:700}
-.hd-s{font-size:.68rem;color:#94a3b8;font-family:var(--mono);text-align:right;line-height:1.7}
-/* TOP NAV */
-.top-nav{background:#fff;border-bottom:1px solid var(--border);padding:9px 18px;display:flex;justify-content:center;position:sticky;top:0;z-index:200;box-shadow:0 1px 4px rgba(0,0,0,.06)}
-.seg{background:#e5e7eb;border-radius:10px;padding:3px;display:inline-flex;gap:2px}
-.seg-b{padding:6px 24px;border:none;border-radius:8px;background:transparent;font-family:var(--sans);font-size:.85rem;font-weight:600;color:var(--muted);cursor:pointer;transition:all .2s;white-space:nowrap}
-.seg-b.active{background:#fff;color:var(--navy);box-shadow:0 1px 4px rgba(0,0,0,.15)}
-/* LAYOUT */
-.wrap{max-width:1080px;margin:0 auto;padding:20px 15px}
-.tp{display:none}.tp.active{display:block}
-/* SEARCH DROPDOWN */
-.sdw{position:relative;min-width:270px}
-.sdi{width:100%;padding:8px 12px 8px 33px;border:1.5px solid var(--border);border-radius:8px;font-family:var(--sans);font-size:.87rem;font-weight:500;color:var(--text);background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.35-4.35'/%3E%3C/svg%3E") 9px center/14px no-repeat;outline:none;cursor:pointer}
-.sdi:focus{border-color:var(--blue)}
-.sdl{display:none;position:absolute;top:calc(100% + 4px);left:0;right:0;background:#fff;border:1.5px solid var(--border);border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,.12);z-index:1000;max-height:260px;overflow-y:auto}
-.sdl.open{display:block}
-.sdi-item{padding:9px 12px;cursor:pointer;font-size:.85rem;font-weight:500;display:flex;align-items:center;gap:8px;margin:3px;border-radius:7px;transition:background .12s}
-.sdi-item:hover,.sdi-item.sel{background:var(--blue-pale);color:var(--blue)}
-.sdi-tk{font-family:var(--mono);font-size:.69rem;color:var(--muted)}
-.sdl-tabs{display:flex;gap:2px;padding:6px 6px 4px;border-bottom:1px solid var(--border);background:#f8fafc}
-.sdl-tab{flex:1;padding:5px 8px;border:none;border-radius:7px;background:transparent;font-family:var(--sans);font-size:.8rem;font-weight:600;color:var(--muted);cursor:pointer;transition:all .18s}
-.sdl-tab.active{background:var(--blue-pale);color:var(--blue)}
-.sdl-group{padding:4px}
-.sdi-empty{padding:10px 12px;font-size:.82rem;color:var(--muted);text-align:center}
-/* SELECTOR BAR */
-.selbar{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:13px 17px;margin-bottom:14px;display:flex;align-items:center;gap:11px;flex-wrap:wrap}
-.sel-lbl{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);white-space:nowrap}
-.sel-ts{margin-left:auto;font-family:var(--mono);font-size:.66rem;color:var(--muted)}
-/* CO PANEL */
-.cop{display:none}.cop.vis{display:block}
-/* CARD */
-.card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:17px}
-.ct{display:flex;align-items:center;gap:6px;font-size:.66rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:11px}
-.ico{width:19px;height:19px;border-radius:4px;background:var(--blue-pale);display:flex;align-items:center;justify-content:center;font-size:.72rem}
-.g2{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-bottom:11px}
-.g1{margin-bottom:11px}
-@media(max-width:580px){.g2{grid-template-columns:1fr}}
-/* HERO */
-.hero{background:var(--card);border:1px solid var(--border);border-left:5px solid var(--blue);border-radius:var(--r);padding:19px;margin-bottom:11px}
-.hr{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:10px}
-.cn{font-size:1.3rem;font-weight:700;color:var(--navy)}
-.tag{font-size:.67rem;font-weight:700;padding:2px 8px;border-radius:4px;letter-spacing:.03em}
-.ttk{background:var(--navy);color:#fff;font-family:var(--mono)}
-.tind{background:var(--blue-pale);color:var(--blue)}
-/* HERO SPLIT: desc left + revenue right */
-.hero-split{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-@media(max-width:580px){.hero-split{grid-template-columns:1fr}}
-.hero-left{font-size:.87rem;line-height:1.78;color:var(--sub)}
-.hero-right{border-left:1px solid var(--border);padding-left:14px}
-@media(max-width:580px){.hero-right{border-left:none;border-top:1px solid var(--border);padding-left:0;padding-top:11px}}
-/* INLINE SEG */
-.mseg{display:inline-flex;background:#f1f5f9;border-radius:8px;padding:2px;gap:2px;margin-bottom:11px}
-.msb{padding:5px 14px;border:none;border-radius:6px;background:transparent;font-family:var(--sans);font-size:.78rem;font-weight:600;color:var(--muted);cursor:pointer;transition:all .18s}
-.msb.active{background:#fff;color:var(--navy);box-shadow:0 1px 3px rgba(0,0,0,.12)}
-.mv{display:none}.mv.active{display:block}
-/* PRICE */
-.ph{display:flex;align-items:flex-end;gap:10px;flex-wrap:wrap;margin-bottom:12px}
-.pb{font-family:var(--mono);font-size:1.8rem;font-weight:700;color:var(--navy);line-height:1}
-.pm{display:flex;flex-direction:column;gap:3px;padding-bottom:2px}
-.pl{font-size:.67rem;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
-.pc{font-family:var(--mono);font-size:.83rem;font-weight:700;padding:3px 9px;border-radius:5px}
-.pc.up{background:var(--up-pale);color:var(--up)}.pc.dn{background:var(--dn-pale);color:var(--dn)}.pc.flat{background:#f1f5f9;color:var(--muted)}
-.rbw{margin-bottom:13px}
-.rbl{display:flex;justify-content:space-between;font-family:var(--mono);font-size:.66rem;color:var(--muted);margin-bottom:3px}
-.rbt{height:7px;background:var(--border);border-radius:4px;position:relative}
-.rbf{height:100%;background:linear-gradient(90deg,var(--dn),var(--up));border-radius:4px}
-.rbd{position:absolute;top:50%;transform:translate(-50%,-50%);width:14px;height:14px;border-radius:50%;background:var(--navy);border:2px solid #fff;box-shadow:0 1px 3px rgba(0,0,0,.2)}
-.rbe{font-size:.76rem;color:var(--sub);margin-top:7px;line-height:1.65;background:#f8fafc;border-radius:7px;padding:8px 11px}
-.tr{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
-.tc{flex:1;min-width:115px;border:1.5px solid var(--border);border-radius:9px;padding:11px}
-.tc.goal{border-color:var(--up);background:#fff8f7}
-.tc.analyst{background:#f8fafc}
-.tl{font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:2px}
-.tv{font-family:var(--mono);font-size:.97rem;font-weight:700;color:var(--navy)}
-.tn{font-size:.68rem;color:var(--sub);margin-top:3px;line-height:1.4}
-.sr{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:11px}
-.sb{background:#f8fafc;border:1px solid var(--border);border-radius:7px;padding:9px;text-align:center}
-.sl{font-size:.61rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:2px}
-.sv{font-family:var(--mono);font-size:.87rem;font-weight:700;color:var(--navy)}
-.sn{font-size:.62rem;color:var(--muted);margin-top:2px}
-.sent{display:inline-flex;align-items:center;gap:5px;font-size:.76rem;font-weight:600;padding:4px 12px;border-radius:20px}
-.sent.bull{background:var(--up-pale);color:var(--up)}.sent.neu{background:var(--amber-pale);color:var(--amber)}.sent.bear{background:var(--dn-pale);color:var(--dn)}
-/* SUPPLY CHAIN */
-.sc-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:9px}
-@media(max-width:600px){.sc-grid{grid-template-columns:repeat(2,1fr)}}
-.sc-card{border:1px solid var(--border);border-radius:9px;padding:12px;cursor:pointer;transition:all .15s;background:#fafbfc}
-.sc-card:hover{background:var(--blue-pale);border-color:var(--blue)}
-.sc-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:5px}
-.sc-name{font-weight:700;color:var(--navy);font-size:.88rem}
-.sc-tk{font-family:var(--mono);font-size:.68rem;color:var(--muted)}
-.sc-price{font-family:var(--mono);font-size:.92rem;font-weight:700;color:var(--navy)}
-.sc-role{font-size:.71rem;color:var(--muted);margin-top:5px;line-height:1.4}
-/* FOCUS BOXES */
-.frow{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:11px}
-@media(max-width:540px){.frow{grid-template-columns:1fr}}
-.fb{border-radius:9px;padding:13px}
-.fb.trend{background:var(--blue-pale);border-left:3px solid var(--blue)}
-.fb.watch{background:#fffbeb;border-left:3px solid #f59e0b}
-.ft{font-size:.66rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;margin-bottom:5px}
-.fb.trend .ft{color:var(--blue)}.fb.watch .ft{color:#b45309}
-.fx{font-size:.81rem;line-height:1.7}.fb.trend .fx{color:#1e3a5f}.fb.watch .fx{color:#78350f}
-.rel-stocks{margin-top:9px;display:flex;flex-wrap:wrap;align-items:center;gap:5px}
-.rs-lbl{font-size:.67rem;font-weight:700;color:var(--muted)}
-.rschip{font-family:var(--mono);font-size:.72rem;font-weight:700;padding:2px 8px;border-radius:5px;cursor:pointer;border:1.5px solid var(--border);background:#fff;color:var(--navy);transition:all .15s}
-.rschip:hover{background:var(--navy);color:#fff;border-color:var(--navy)}
-/* NEWS */
-.ni{border:1px solid var(--border);border-radius:9px;padding:12px;margin-bottom:9px;background:#fafbfc}
-.ni:last-child{margin-bottom:0}
-.nd{font-size:.66rem;color:var(--muted);font-family:var(--mono);margin-bottom:4px}
-.ntop{display:flex;align-items:flex-start;gap:6px;margin-bottom:4px}
-.badge{font-size:.61rem;font-weight:700;padding:2px 6px;border-radius:3px;letter-spacing:.04em;text-transform:uppercase;white-space:nowrap;flex-shrink:0}
-.bpp{background:var(--up-pale);color:var(--up)}.bp{background:#fde8e6;color:#9b2c2c}.bn{background:var(--dn-pale);color:var(--dn)}.bw{background:var(--amber-pale);color:var(--amber)}.bc{background:#f1f5f9;color:var(--muted)}
-.nh{font-size:.85rem;font-weight:600;color:var(--navy);line-height:1.4}
-.nb{font-size:.79rem;color:var(--sub);line-height:1.6}
-/* COMPETITOR: flex cards (works on all screen sizes) */
-.cmp-row{padding:10px 0;border-bottom:1px solid var(--border)}
-.cmp-row:last-child{border-bottom:none}
-.cmp-main{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:4px}
-.cmp-info{flex:1;min-width:0}
-.cmp-name{font-weight:600;color:var(--navy);font-size:.85rem}
-.cmp-note{font-size:.71rem;color:var(--muted)}
-.cmp-right{display:flex;flex-direction:column;align-items:flex-end;gap:3px;flex-shrink:0}
-.cmp-tk-s{font-family:var(--mono);font-size:.7rem;color:var(--muted)}
-.cmp-p{font-family:var(--mono);font-size:.86rem;font-weight:600;color:var(--text)}
-.cmp-rel{font-size:.75rem;color:var(--sub);line-height:1.5}
-.chg{font-family:var(--mono);font-size:.77rem;font-weight:700;padding:2px 7px;border-radius:4px;white-space:nowrap}
-.chg.up{background:var(--up-pale);color:var(--up)}.chg.dn{background:var(--dn-pale);color:var(--dn)}.chg.flat{background:#f1f5f9;color:var(--muted)}
-/* BULLETS */
-.bl{list-style:none}
-.bl li{padding:4px 0 4px 14px;position:relative;font-size:.83rem;line-height:1.65;color:var(--sub)}
-.bl li::before{content:'›';position:absolute;left:0;color:var(--blue);font-weight:700}
-/* GROWTH */
-.gr{display:flex;flex-direction:column}
-.gi{display:grid;grid-template-columns:73px 1fr;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid var(--border);font-size:.83rem}
-.gi:last-child{border-bottom:none}
-.gy{font-family:var(--mono);font-size:.72rem;color:var(--muted)}
-.ginfo{display:flex;align-items:center;gap:7px}
-.ga{font-weight:700;font-size:.9rem;min-width:12px}
-.ga.up{color:var(--up)}.ga.dn{color:var(--dn)}.ga.flat{color:var(--muted)}
-.gt{color:var(--sub);line-height:1.4}
-/* RISK */
-.ri{background:#fff8f7;border:1px solid #fde8e6;border-left:3px solid var(--up);border-radius:7px;padding:9px 12px;margin-bottom:7px;font-size:.81rem;line-height:1.65;color:#7f1d1d}
-.ri:last-child{margin-bottom:0}
-/* DISCLAIMER */
-.disc{margin-top:15px;background:var(--card);border:1px solid var(--border);border-radius:9px;padding:10px 14px;font-size:.72rem;color:var(--muted);line-height:1.65;text-align:center}
-/* INDUSTRY */
-.msbar{display:flex;justify-content:center;margin-bottom:14px}
-.acc{background:var(--card);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;margin-bottom:10px}
-.ahd{padding:14px 17px;cursor:pointer;display:flex;align-items:flex-start;gap:10px;transition:background .15s;user-select:none}
-.ahd:hover{background:#f8fafc}
-.adot{width:8px;height:8px;border-radius:50%;background:var(--blue);margin-top:6px;flex-shrink:0}
-.atxt{flex:1}
-.an{font-size:.93rem;font-weight:700;color:var(--navy);margin-bottom:2px}
-.at{font-size:.77rem;color:var(--sub);line-height:1.5}
-.ach{font-size:.7rem;color:var(--muted);transition:transform .2s;margin-top:4px}
-.ahd.open .ach{transform:rotate(180deg)}
-.ab{display:none;padding:0 17px 14px;border-top:1px solid var(--border)}
-.ab.open{display:block}
-/* Industry table: desktop 5 cols, mobile 3 cols */
-.ithd{display:grid;grid-template-columns:1fr 66px 90px 68px 100px;gap:10px;padding:9px 0 7px;border-bottom:2px solid var(--border);font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
-.irow{display:grid;grid-template-columns:1fr 66px 90px 68px 100px;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);cursor:pointer;border-radius:5px;align-items:center;transition:background .12s}
-.irow:last-child{border-bottom:none}
-.irow:hover{background:#f8fafc}
-.icn-d{display:inline}.icn-m{display:none}
-.i-chg-d{display:block}.i-chg-m{display:none}
-.i-code-col,.i-chg-col{/* desktop visible */}
-/* Mobile adjustments */
-@media(max-width:560px){
-  .ithd,.irow{grid-template-columns:1fr 94px 88px}
-  .ithd .i-code-col,.irow .i-code-col{display:none}
-  .ithd .i-chg-col,.irow .i-chg-col{display:none}
-  .icn-d{display:none}.icn-m{display:block;font-size:.84rem}
-  .i-chg-d{display:none}.i-chg-m{display:flex;margin-top:3px}
+:root {
+  --bg: #f0f2f5;
+  --card: #ffffff;
+  --deep-blue: #1a2f5a;
+  --primary: #2563eb;
+  --primary-light: #dbeafe;
+  --up: #c0392b;
+  --up-bg: #fff0ee;
+  --down: #27ae60;
+  --down-bg: #edfaf2;
+  --amber: #d97706;
+  --amber-bg: #fffbeb;
+  --gray: #6b7280;
+  --border: #e5e7eb;
+  --text: #111827;
+  --text2: #374151;
+  --radius: 12px;
+  --shadow: 0 2px 12px rgba(0,0,0,0.07);
+  --shadow-lg: 0 8px 32px rgba(0,0,0,0.12);
 }
-.icn-name{font-weight:600;color:var(--navy);font-size:.86rem}
-.ictk{font-family:var(--mono);font-size:.73rem;color:var(--muted)}
-.icp{font-family:var(--mono);font-size:.84rem;font-weight:600;color:var(--text)}
-.tchip{font-family:var(--mono);font-size:.76rem;font-weight:700;color:#fff;background:var(--navy);padding:3px 9px;border-radius:5px;display:inline-block}
-/* Industry detail */
-.idet{display:none;padding:12px 14px;background:var(--blue-pale);border-radius:8px;margin:4px 0 8px;font-size:.8rem;color:#1e3a5f}
-.idet.open{display:block}
-.idet h4{font-size:.7rem;font-weight:700;color:var(--blue);text-transform:uppercase;letter-spacing:.06em;margin-bottom:7px}
-.idet ul{list-style:none;display:flex;flex-direction:column;gap:5px}
-.idet ul li{padding-left:14px;position:relative;font-size:.79rem;line-height:1.65}
-.idet ul li::before{content:'▸';position:absolute;left:0;color:var(--blue);font-size:.72rem;top:2px}
-.hashtags{display:flex;flex-wrap:wrap;gap:5px;margin-top:9px}
-.htag{font-size:.69rem;font-weight:600;padding:2px 8px;border-radius:12px;background:#e0e7ff;color:#3730a3;cursor:default}
-/* JARGON */
-.j{border-bottom:1.5px dashed var(--blue);cursor:pointer;color:inherit}
-@media(hover:hover) and (pointer:fine){
-  .j{position:relative}
-  .j::after{content:attr(data-tip);position:absolute;bottom:130%;left:50%;transform:translateX(-50%);background:#1e293b;color:#f8fafc;font-size:.71rem;padding:7px 10px;border-radius:7px;white-space:normal;width:200px;line-height:1.5;text-align:left;pointer-events:none;opacity:0;transition:opacity .18s;z-index:800;font-family:var(--sans)}
-  .j:hover::after{opacity:1}
-}
-/* BOTTOM SHEET */
-.bso{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:900}
-.bso.open{display:block}
-.bss{position:fixed;bottom:0;left:0;right:0;background:#fff;border-radius:16px 16px 0 0;padding:14px 18px 32px;z-index:910;transform:translateY(100%);transition:transform .28s cubic-bezier(.25,.46,.45,.94)}
-.bss.open{transform:translateY(0)}
-.bsh{width:34px;height:4px;background:var(--border);border-radius:2px;margin:0 auto 12px}
-.bst{font-size:.95rem;font-weight:700;color:var(--navy);margin-bottom:6px}
-.bsd{font-size:.87rem;color:var(--sub);line-height:1.7}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Noto Sans TC', sans-serif; background: var(--bg); color: var(--text); font-size: 15px; line-height: 1.6; }
+.mono { font-family: 'IBM Plex Mono', monospace; }
+
+/* ── Header ── */
+.site-header { background: var(--deep-blue); color: #fff; padding: 16px 24px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 16px rgba(0,0,0,0.2); }
+.site-header h1 { font-size: 18px; font-weight: 700; letter-spacing: .5px; }
+.header-meta { font-size: 12px; opacity: .7; text-align: right; }
+
+/* ── Tabs ── */
+.tabs-nav { background: var(--deep-blue); border-bottom: 2px solid rgba(255,255,255,.15); display: flex; gap: 4px; padding: 0 24px; position: sticky; top: 57px; z-index: 99; }
+.tab-btn { padding: 12px 20px; background: transparent; border: none; color: rgba(255,255,255,.6); cursor: pointer; font-family: inherit; font-size: 14px; font-weight: 500; border-bottom: 3px solid transparent; margin-bottom: -2px; transition: all .2s; white-space: nowrap; }
+.tab-btn.active { color: #fff; border-bottom-color: #60a5fa; }
+.tab-btn:hover { color: rgba(255,255,255,.9); }
+
+/* ── Tab Content ── */
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+
+/* ── Macro Banner ── */
+.macro-banner { background: linear-gradient(135deg, var(--deep-blue), #1e40af); color: #fff; padding: 20px 24px; margin-bottom: 0; }
+.macro-banner h2 { font-size: 16px; margin-bottom: 12px; opacity: .8; font-weight: 500; }
+.macro-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; }
+.macro-item { background: rgba(255,255,255,.1); border-radius: 8px; padding: 12px 16px; }
+.macro-item .label { font-size: 11px; opacity: .7; margin-bottom: 4px; text-transform: uppercase; letter-spacing: .5px; }
+.macro-item .value { font-size: 14px; font-weight: 600; }
+.macro-item .badge { display: inline-block; font-size: 11px; padding: 2px 8px; border-radius: 20px; margin-top: 4px; }
+.badge-up { background: var(--up-bg); color: var(--up); }
+.badge-down { background: var(--down-bg); color: var(--down); }
+.badge-neutral { background: rgba(255,255,255,.15); color: #fff; }
+
+/* ── Stock Selector Panel ── */
+.selector-panel { background: var(--card); border-bottom: 1px solid var(--border); padding: 16px 24px; display: flex; gap: 12px; align-items: flex-start; flex-wrap: wrap; }
+.search-box-wrap { flex: 1; min-width: 200px; position: relative; }
+.search-box { width: 100%; padding: 10px 16px 10px 40px; border: 1px solid var(--border); border-radius: 8px; font-size: 14px; font-family: inherit; outline: none; transition: border .2s; }
+.search-box:focus { border-color: var(--primary); }
+.search-icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--gray); font-size: 16px; }
+.market-tabs { display: flex; gap: 4px; }
+.market-tab { padding: 8px 16px; border: 1px solid var(--border); border-radius: 8px; cursor: pointer; font-size: 13px; font-weight: 500; background: var(--card); transition: all .2s; }
+.market-tab.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+.stock-list-wrap { max-height: 200px; overflow-y: auto; border: 1px solid var(--border); border-radius: 8px; background: var(--card); }
+.stock-item { padding: 8px 14px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); font-size: 13px; transition: background .15s; }
+.stock-item:last-child { border-bottom: none; }
+.stock-item:hover, .stock-item.active { background: var(--primary-light); }
+.stock-item .name { font-weight: 600; }
+.stock-item .code { color: var(--gray); font-size: 12px; font-family: monospace; }
+.stock-item .industry { font-size: 11px; color: var(--gray); }
+
+/* ── Company Panel ── */
+.company-panel { padding: 24px; display: none; }
+.company-panel.active { display: block; }
+
+/* Hero */
+.hero { background: linear-gradient(135deg, var(--deep-blue) 0%, #1e3a8a 100%); color: #fff; border-radius: var(--radius); padding: 24px; margin-bottom: 20px; }
+.hero-top { display: flex; align-items: flex-start; justify-content: space-between; flex-wrap: wrap; gap: 16px; margin-bottom: 16px; }
+.hero-title { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.hero-title h2 { font-size: 24px; font-weight: 700; }
+.tag { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 12px; font-weight: 500; margin-left: 4px; }
+.tag-code { background: rgba(255,255,255,.2); color: #fff; }
+.tag-industry { background: rgba(96,165,250,.3); color: #93c5fd; }
+.hero-body { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+@media (max-width:640px) { .hero-body { grid-template-columns: 1fr; } }
+.hero-desc { font-size: 14px; line-height: 1.8; opacity: .9; }
+.hero-model h4 { font-size: 13px; opacity: .7; margin-bottom: 8px; text-transform: uppercase; letter-spacing: .5px; }
+.hero-model ul { list-style: none; }
+.hero-model li { font-size: 13px; padding: 4px 0; opacity: .9; display: flex; gap: 8px; }
+.hero-model li::before { content: "→"; opacity: .6; flex-shrink: 0; }
+
+/* Price Block */
+.price-block { background: var(--card); border-radius: var(--radius); padding: 20px; margin-bottom: 20px; box-shadow: var(--shadow); }
+.price-block h3 { font-size: 14px; color: var(--gray); margin-bottom: 16px; }
+.price-main { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; margin-bottom: 16px; }
+.price-value { font-size: 40px; font-weight: 700; font-family: 'IBM Plex Mono', monospace; color: var(--text); }
+.price-change { font-size: 18px; font-weight: 600; font-family: monospace; }
+.price-up { color: var(--up); }
+.price-down { color: var(--down); }
+.price-neutral { color: var(--gray); }
+.price-date { font-size: 12px; color: var(--gray); margin-left: auto; }
+
+/* 52W Bar */
+.week52 { margin-bottom: 20px; }
+.week52 .label-row { display: flex; justify-content: space-between; font-size: 12px; color: var(--gray); margin-bottom: 6px; }
+.bar-track { height: 8px; background: var(--border); border-radius: 4px; position: relative; }
+.bar-fill { height: 100%; background: linear-gradient(90deg, var(--primary), #60a5fa); border-radius: 4px; transition: width .5s ease; }
+.bar-marker { position: absolute; top: -4px; width: 16px; height: 16px; background: var(--up); border-radius: 50%; border: 2px solid #fff; box-shadow: 0 2px 4px rgba(0,0,0,.2); transform: translateX(-50%); }
+.week52-caption { font-size: 12px; color: var(--gray); margin-top: 8px; padding: 8px 12px; background: var(--bg); border-radius: 6px; }
+
+/* Target Price */
+.target-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 20px; }
+.target-card { background: var(--bg); border-radius: 8px; padding: 12px; text-align: center; }
+.target-card .t-label { font-size: 11px; color: var(--gray); margin-bottom: 4px; }
+.target-card .t-price { font-size: 18px; font-weight: 700; font-family: monospace; }
+.target-card .t-pct { font-size: 12px; color: var(--up); }
+
+/* Stats Row */
+.stats-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 20px; }
+.stat-box { background: var(--bg); border-radius: 8px; padding: 12px; }
+.stat-box .s-label { font-size: 11px; color: var(--gray); margin-bottom: 4px; }
+.stat-box .s-value { font-size: 18px; font-weight: 700; }
+.stat-box .s-tip { font-size: 11px; color: var(--gray); }
+
+/* Emotion */
+.emotion-row { display: flex; gap: 8px; flex-wrap: wrap; }
+.emotion-tag { padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+.e-bullish { background: var(--up-bg); color: var(--up); }
+.e-bearish { background: var(--down-bg); color: var(--down); }
+.e-neutral { background: #f3f4f6; color: var(--gray); }
+.e-hot { background: #fef3c7; color: var(--amber); }
+
+/* Supply Chain */
+.supply-chain { background: var(--card); border-radius: var(--radius); padding: 20px; margin-bottom: 20px; box-shadow: var(--shadow); }
+.supply-chain h3 { font-size: 14px; color: var(--text2); margin-bottom: 16px; font-weight: 600; display: flex; align-items: center; gap: 8px; }
+.sc-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 12px; }
+.sc-card { background: var(--bg); border-radius: 8px; padding: 12px; border: 1px solid var(--border); cursor: pointer; transition: all .2s; }
+.sc-card:hover { border-color: var(--primary); transform: translateY(-2px); }
+.sc-card .sc-name { font-weight: 600; font-size: 14px; margin-bottom: 2px; }
+.sc-card .sc-code { font-size: 12px; color: var(--gray); font-family: monospace; }
+.sc-card .sc-price { font-size: 16px; font-weight: 700; font-family: monospace; margin: 4px 0; }
+.sc-card .sc-desc { font-size: 11px; color: var(--gray); line-height: 1.4; }
+
+/* Trend & Focus */
+.trend-focus { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+@media (max-width:640px) { .trend-focus { grid-template-columns: 1fr; } }
+.trend-box { border-radius: var(--radius); padding: 16px; }
+.trend-box h4 { font-size: 13px; font-weight: 600; margin-bottom: 10px; }
+.trend-box p { font-size: 13px; line-height: 1.7; margin-bottom: 10px; }
+.trend-box-blue { background: var(--primary-light); border-left: 4px solid var(--primary); }
+.trend-box-amber { background: var(--amber-bg); border-left: 4px solid var(--amber); }
+.chips { display: flex; gap: 6px; flex-wrap: wrap; }
+.chip { padding: 3px 10px; background: var(--card); border: 1px solid var(--border); border-radius: 20px; font-size: 11px; cursor: pointer; transition: all .15s; }
+.chip:hover { background: var(--primary-light); border-color: var(--primary); }
+
+/* News */
+.news-block { background: var(--card); border-radius: var(--radius); padding: 20px; margin-bottom: 20px; box-shadow: var(--shadow); }
+.news-block h3 { font-size: 14px; color: var(--text2); font-weight: 600; margin-bottom: 16px; }
+.news-item { border-left: 3px solid var(--border); padding: 10px 0 10px 16px; margin-bottom: 12px; }
+.news-item:last-child { margin-bottom: 0; }
+.news-meta { display: flex; gap: 8px; align-items: center; margin-bottom: 4px; flex-wrap: wrap; }
+.news-date { font-size: 11px; color: var(--gray); font-family: monospace; }
+.news-badge { font-size: 11px; padding: 2px 8px; border-radius: 20px; font-weight: 600; }
+.nb-positive { background: var(--up-bg); color: var(--up); }
+.nb-neutral { background: #f3f4f6; color: var(--gray); }
+.nb-negative { background: var(--down-bg); color: var(--down); }
+.news-title { font-size: 14px; font-weight: 600; margin-bottom: 2px; }
+.news-desc { font-size: 13px; color: var(--gray); }
+.news-item.highlight { border-left-color: var(--up); }
+
+/* Competitors */
+.comp-block { background: var(--card); border-radius: var(--radius); padding: 20px; margin-bottom: 20px; box-shadow: var(--shadow); }
+.comp-block h3 { font-size: 14px; color: var(--text2); font-weight: 600; margin-bottom: 16px; }
+.comp-grid { display: flex; gap: 12px; flex-wrap: wrap; }
+.comp-card { flex: 1; min-width: 140px; background: var(--bg); border-radius: 8px; padding: 12px; border: 1px solid var(--border); }
+.comp-card .c-name { font-weight: 600; font-size: 14px; }
+.comp-card .c-code { font-size: 12px; color: var(--gray); font-family: monospace; margin-bottom: 4px; }
+.comp-card .c-price { font-size: 16px; font-weight: 700; font-family: monospace; }
+.comp-card .c-desc { font-size: 11px; color: var(--gray); margin-top: 4px; line-height: 1.4; }
+
+/* Bottom 2-col */
+.bottom-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+@media (max-width:640px) { .bottom-cols { grid-template-columns: 1fr; } }
+.bottom-box { background: var(--card); border-radius: var(--radius); padding: 16px; box-shadow: var(--shadow); }
+.bottom-box h4 { font-size: 13px; font-weight: 600; margin-bottom: 10px; color: var(--text2); }
+.growth-row { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; border-bottom: 1px solid var(--border); font-size: 13px; }
+.growth-row:last-child { border-bottom: none; }
+.growth-val { font-weight: 600; font-family: monospace; }
+.risk-item { padding: 6px 0; font-size: 13px; display: flex; gap: 8px; }
+.risk-item::before { content: "⚠"; color: var(--amber); flex-shrink: 0; }
+
+/* Disclaimer */
+.disclaimer { font-size: 11px; color: var(--gray); background: #f9fafb; border-radius: 8px; padding: 12px; margin-top: 8px; line-height: 1.6; }
+
+/* ── Tab2: Industry ── */
+.industry-content { padding: 24px; }
+.industry-title { font-size: 22px; font-weight: 700; margin-bottom: 20px; color: var(--deep-blue); }
+.accordion { margin-bottom: 12px; border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); }
+.accordion-head { background: var(--card); padding: 16px 20px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); user-select: none; }
+.accordion-head:hover { background: #f9fafb; }
+.accordion-head h3 { font-size: 15px; font-weight: 600; color: var(--deep-blue); }
+.accordion-head p { font-size: 12px; color: var(--gray); margin-top: 2px; }
+.accordion-icon { font-size: 20px; color: var(--primary); transition: transform .3s; }
+.accordion-icon.open { transform: rotate(180deg); }
+.accordion-body { background: var(--card); display: none; }
+.accordion-body.open { display: block; }
+.ind-table { width: 100%; border-collapse: collapse; }
+.ind-table th { background: var(--bg); padding: 10px 16px; text-align: left; font-size: 12px; color: var(--gray); font-weight: 600; text-transform: uppercase; letter-spacing: .5px; }
+.ind-table td { padding: 12px 16px; border-bottom: 1px solid var(--border); font-size: 13px; vertical-align: middle; }
+.ind-table tr:last-child td { border-bottom: none; }
+.ind-table tr:hover td { background: var(--primary-light); }
+.rating-badge { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+.r-strong-buy { background: #c0392b; color: #fff; }
+.r-buy { background: #e74c3c; color: #fff; }
+.r-hold { background: var(--amber-bg); color: var(--amber); border: 1px solid var(--amber); }
+.r-reduce { background: var(--down-bg); color: var(--down); border: 1px solid var(--down); }
+.r-na { background: #f3f4f6; color: var(--gray); border: 1px solid var(--border); }
+.insight-row { display: none; }
+.insight-row td { background: var(--primary-light); }
+.insight-row.open { display: table-row; }
+.insight-inner { padding: 4px 0; }
+.insight-inner p { font-size: 13px; color: var(--text2); margin-bottom: 8px; line-height: 1.6; }
+.hashtags { display: flex; gap: 6px; flex-wrap: wrap; }
+.hashtag { font-size: 11px; background: var(--primary-light); color: var(--primary); padding: 2px 8px; border-radius: 20px; }
+
+/* ── Tab3: Buy/Sell ── */
+.buysell-content { padding: 24px; }
+.buysell-title { font-size: 22px; font-weight: 700; margin-bottom: 16px; color: var(--deep-blue); }
+.rating-legend { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; }
+.rl-item { display: flex; align-items: center; gap: 6px; font-size: 13px; }
+.rl-dot { width: 12px; height: 12px; border-radius: 50%; }
+.filter-btns { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; }
+.filter-btn { padding: 7px 16px; border: 1px solid var(--border); border-radius: 20px; cursor: pointer; font-size: 13px; background: var(--card); transition: all .2s; }
+.filter-btn.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+.buy-table { width: 100%; border-collapse: collapse; background: var(--card); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); margin-bottom: 32px; }
+.buy-table th { background: var(--deep-blue); color: rgba(255,255,255,.8); padding: 12px 16px; text-align: left; font-size: 12px; text-transform: uppercase; letter-spacing: .5px; }
+.buy-table td { padding: 14px 16px; border-bottom: 1px solid var(--border); vertical-align: top; }
+.buy-table tr:last-child td { border-bottom: none; }
+.buy-table tr:hover td { background: var(--bg); }
+.bt-name { font-weight: 700; font-size: 14px; cursor: pointer; color: var(--primary); }
+.bt-name:hover { text-decoration: underline; }
+.bt-code { font-size: 12px; color: var(--gray); font-family: monospace; }
+.bt-ind { font-size: 11px; color: var(--gray); }
+.novice-icon { font-size: 16px; }
+.top5-title { font-size: 18px; font-weight: 700; margin-bottom: 16px; color: var(--deep-blue); }
+.top5-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 16px; margin-bottom: 40px; }
+.top5-card { background: var(--card); border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow); cursor: pointer; transition: all .25s; border-top: 4px solid var(--up); }
+.top5-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+.top5-card .t5-rank { font-size: 24px; font-weight: 700; color: var(--up); margin-bottom: 4px; font-family: monospace; }
+.top5-card .t5-name { font-size: 16px; font-weight: 700; margin-bottom: 4px; }
+.top5-card .t5-code { font-size: 13px; color: var(--gray); font-family: monospace; }
+.top5-card .t5-reason { font-size: 12px; color: var(--gray); margin-top: 8px; line-height: 1.5; }
+.top5-card .t5-price { font-size: 18px; font-weight: 700; font-family: monospace; margin-top: 8px; color: var(--up); }
+
+/* Jargon Tooltip */
+.j { border-bottom: 1px dashed #9ca3af; cursor: help; position: relative; }
+.j:hover::after { content: attr(data-tip); position: absolute; bottom: 125%; left: 50%; transform: translateX(-50%); background: var(--deep-blue); color: #fff; padding: 8px 12px; border-radius: 8px; font-size: 12px; width: 220px; line-height: 1.5; z-index: 200; white-space: normal; box-shadow: 0 4px 16px rgba(0,0,0,.2); pointer-events: none; }
+.j:hover::before { content: ""; position: absolute; bottom: 120%; left: 50%; transform: translateX(-50%); border: 6px solid transparent; border-top-color: var(--deep-blue); z-index: 200; pointer-events: none; }
+
+/* Layout helpers */
+.container { max-width: 1200px; margin: 0 auto; }
+.hidden { display: none; }
 </style>
 </head>
 <body>
-<header class="hd">
-  <div class="hd-t">📊 個股深度分析報告</div>
-  <div class="hd-s">資料更新：2026-04-20<br>AI 生成 · 僅供參考</div>
+
+<!-- Header -->
+<header class="site-header">
+  <h1>📊 個股深度分析報告</h1>
+  <div class="header-meta">
+    <div>2026年4月22日更新</div>
+    <div>台股觀察名單 41 檔</div>
+  </div>
 </header>
-<nav class="top-nav">
-  <div class="seg">
-    <button class="seg-b active" onclick="showTab('stocks',this)">🔍 個股分析</button>
-    <button class="seg-b" onclick="showTab('industry',this)">🗂 產業分類</button>
-  </div>
+
+<!-- Tabs -->
+<nav class="tabs-nav">
+  <button class="tab-btn active" onclick="switchTab('t1',this)">🇹🇼 個股分析</button>
+  <button class="tab-btn" onclick="switchTab('t2',this)">🏭 產業分類</button>
+  <button class="tab-btn" onclick="switchTab('t3',this)">📋 買賣建議</button>
 </nav>
-<div class="wrap">
 
-<!-- ═══ TAB 1 ═══ -->
-<div id="tab-stocks" class="tp active">
-  <div class="selbar">
-    <span class="sel-lbl">選擇公司</span>
-    <div class="sdw">
-      <input class="sdi" id="coi" type="text" placeholder="🔍 搜尋或選擇公司…" autocomplete="off" readonly onclick="openDrop()" oninput="filterDrop(this.value)">
-      <div class="sdl" id="sdl">
-        <div class="sdl-tabs">
-          <button class="sdl-tab active" onclick="switchSDLTab('tw',this)">🇹🇼 台股（41 家）</button>
-        </div>
-        <div class="sdl-group" id="sdl-tw">
-          <div class="sdi-item" data-val="tsmc" onclick="pickCo('tsmc','台積電','2330')">台積電 <span class="sdi-tk">2330</span></div>
-          <div class="sdi-item" data-val="delta" onclick="pickCo('delta','台達電','2308')">台達電 <span class="sdi-tk">2308</span></div>
-          <div class="sdi-item" data-val="hon" onclick="pickCo('hon','鴻海','2317')">鴻海 <span class="sdi-tk">2317</span></div>
-          <div class="sdi-item" data-val="mtk" onclick="pickCo('mtk','聯發科','2454')">聯發科 <span class="sdi-tk">2454</span></div>
-          <div class="sdi-item" data-val="sel" onclick="pickCo('sel','士電','1503')">士電 <span class="sdi-tk">1503</span></div>
-          <div class="sdi-item" data-val="cne" onclick="pickCo('cne','中興電','1513')">中興電 <span class="sdi-tk">1513</span></div>
-          <div class="sdi-item" data-val="hua" onclick="pickCo('hua','華城','1519')">華城 <span class="sdi-tk">1519</span></div>
-          <div class="sdi-item" data-val="tlp" onclick="pickCo('tlp','台光電','2383')">台光電 <span class="sdi-tk">2383</span></div>
-          <div class="sdi-item" data-val="han" onclick="pickCo('han','漢唐','2404')">漢唐 <span class="sdi-tk">2404</span></div>
-          <div class="sdi-item" data-val="nyc" onclick="pickCo('nyc','南亞科','2408')">南亞科 <span class="sdi-tk">2408</span></div>
-          <div class="sdi-item" data-val="mtk2" onclick="pickCo('mtk2','聯發科','2454')">聯發科 <span class="sdi-tk">2454</span></div>
-          <div class="sdi-item" data-val="xin" onclick="pickCo('xin','新興','2605')">新興 <span class="sdi-tk">2605</span></div>
-          <div class="sdi-item" data-val="lya" onclick="pickCo('lya','聯亞','3081')">聯亞 <span class="sdi-tk">3081</span></div>
-          <div class="sdi-item" data-val="mca" onclick="pickCo('mca','奇鋐','3017')">奇鋐 <span class="sdi-tk">3017</span></div>
-          <div class="sdi-item" data-val="jis" onclick="pickCo('jis','景碩','3189')">景碩 <span class="sdi-tk">3189</span></div>
-          <div class="sdi-item" data-val="cre" onclick="pickCo('cre','創意','3443')">創意 <span class="sdi-tk">3443</span></div>
-          <div class="sdi-item" data-val="lij2" onclick="pickCo('lij2','聯鈞','6242')">聯鈞 <span class="sdi-tk">6242</span></div>
-          <div class="sdi-item" data-val="ree" onclick="pickCo('ree','聯合再生','3576')">聯合再生 <span class="sdi-tk">3576</span></div>
-          <div class="sdi-item" data-val="ase" onclick="pickCo('ase','世芯-KY','3661')">世芯-KY <span class="sdi-tk">3661</span></div>
-          <div class="sdi-item" data-val="dey" onclick="pickCo('dey','定穎投控','6514')">定穎投控 <span class="sdi-tk">6514</span></div>
-          <div class="sdi-item" data-val="lij" onclick="pickCo('lij','力成','6239')">力成 <span class="sdi-tk">6239</span></div>
-          <div class="sdi-item" data-val="gls" onclick="pickCo('gls','光聖','6442')">光聖 <span class="sdi-tk">6442</span></div>
-          <div class="sdi-item" data-val="wtm" onclick="pickCo('wtm','緯穎','6669')">緯穎 <span class="sdi-tk">6669</span></div>
-          <div class="sdi-item" data-val="lij3" onclick="pickCo('lij3','力積電','6770')">力積電 <span class="sdi-tk">6770</span></div>
-          <div class="sdi-item" data-val="mik" onclick="pickCo('mik','邁科','6635')">邁科 <span class="sdi-tk">6635</span></div>
-          <div class="sdi-item" data-val="lyj" onclick="pickCo('lyj','聯友金屬-創','6763')">聯友金屬-創 <span class="sdi-tk">6763</span></div>
-          <div class="sdi-item" data-val="hjin" onclick="pickCo('hjin','鴻勁','7769')">鴻勁 <span class="sdi-tk">7769</span></div>
-          <div class="sdi-item" data-val="bli" onclick="pickCo('bli','倍利科','3206')">倍利科 <span class="sdi-tk">3206</span></div>
-          <div class="sdi-item" data-val="khi" onclick="pickCo('khi','高力','8996')">高力 <span class="sdi-tk">8996</span></div>
-          <div class="sdi-item" data-val="lya2" onclick="pickCo('lya2','聯亞','3081')">聯亞 <span class="sdi-tk">3081</span></div>
-          <div class="sdi-item" data-val="sda" onclick="pickCo('sda','昇達科','3491')">昇達科 <span class="sdi-tk">3491</span></div>
-          <div class="sdi-item" data-val="xym" onclick="pickCo('xym','新應材','8038')">新應材 <span class="sdi-tk">8038</span></div>
-          <div class="sdi-item" data-val="ttc" onclick="pickCo('ttc','台特化','1234')">台特化 <span class="sdi-tk">1234</span></div>
-          <div class="sdi-item" data-val="yid" onclick="pickCo('yid','宜鼎','5289')">宜鼎 <span class="sdi-tk">5289</span></div>
-          <div class="sdi-item" data-val="wor" onclick="pickCo('wor','世界先進','5347')">世界先進 <span class="sdi-tk">5347</span></div>
-          <div class="sdi-item" data-val="cks" onclick="pickCo('cks','長科','6548')">長科 <span class="sdi-tk">6548</span></div>
-          <div class="sdi-item" data-val="guo" onclick="pickCo('guo','群聯','8299')">群聯 <span class="sdi-tk">8299</span></div>
-          <div class="sdi-item" data-val="fan" onclick="pickCo('fan','帆宣','6196')">帆宣 <span class="sdi-tk">6196</span></div>
-          <div class="sdi-item" data-val="hxg" onclick="pickCo('hxg','華星光','6703')">華星光 <span class="sdi-tk">6703</span></div>
-          <div class="sdi-item" data-val="aseh" onclick="pickCo('aseh','日月光投控','3711')">日月光投控 <span class="sdi-tk">3711</span></div>
-          <div class="sdi-item" data-val="sinet" onclick="pickCo('sinet','信驊','5274')">信驊 <span class="sdi-tk">5274</span></div>
-          <div class="sdi-item" data-val="hcj" onclick="pickCo('hcj','華晶科','3059')">華晶科 <span class="sdi-tk">3059</span></div>
-          <div class="sdi-item" data-val="dla" onclick="pickCo('dla','大量','8120')">大量 <span class="sdi-tk">8120</span></div>
-        </div>
-        <div class="sdl-group" id="sdl-us" style="display:none"></div>
-      </div>
-    </div>
-    <span class="sel-ts">共 41 家台股 · 2026-04-20</span>
-  </div>
+<!-- ════════════════════ TAB 1: 個股分析 ════════════════════ -->
+<div id="t1" class="tab-content active">
 
-  <!-- ═══ TSMC ═══ -->
-  <div class="cop" id="panel-tsmc">
-    <div class="hero">
-      <div class="hr"><span class="cn">台積電 TSMC</span><span class="tag ttk">TSM / 2330</span><span class="tag tind">半導體晶圓代工</span></div>
-      <div class="hero-split">
-        <div class="hero-left">
-          台積電（TSMC）成立於 1987 年，是全球最大的<span class="j" data-term="晶圓代工" data-tip="幫別人製造晶片的公司。台積電自己不設計晶片，接受蘋果、輝達等設計公司委託，把設計「印」在矽晶圓上生產。">晶圓代工廠</span>，<span class="j" data-term="先進製程" data-tip="7 奈米以下的晶片製造技術。數字越小代表電路越精細、越省電。你手機裡的 A 系列晶片、輝達 AI 晶片都是台積電先進製程製造的。">先進製程</span>全球市占約 70%。採用「純代工」模式，不自行設計或銷售晶片，客戶涵蓋蘋果、輝達、超微等世界頂尖科技公司。2025 年服務 534 家客戶，年產能超過 1,700 萬片 12 吋等效晶圓。
-        </div>
-        <div class="hero-right">
-          <div class="ct" style="margin-bottom:9px"><div class="ico">💰</div>獲利模式</div>
-          <ul class="bl">
-            <li>按<span class="j" data-term="晶圓" data-tip="用來製造晶片的圓形矽片（直徑約 30cm）。台積電每片依製程收費，先進製程單片售價高達數萬美元。">晶圓</span>片數收費，越先進製程單價越高</li>
-            <li><span class="j" data-term="HPC" data-tip="高效能運算（High Performance Computing），泛指 AI 訓練晶片、雲端資料中心。輝達 GPU、蘋果 M 系列晶片都屬 HPC 範疇。">HPC/AI</span> 55% · 手機 32% · 車用 5% · IoT 5%</li>
-            <li>先進封裝 <span class="j" data-term="CoWoS" data-tip="台積電獨家封裝技術，把多顆晶片堆疊讓它們超高速互傳資料。輝達 AI GPU 必須用此技術，全球嚴重供不應求。">CoWoS</span> 為高毛利附加收入，持續擴產</li>
-            <li>N2 製程 2025 Q4 量產，A16 預計 2026 H2 問世</li>
-          </ul>
-        </div>
+  <!-- Macro Banner -->
+  <div class="macro-banner">
+    <h2>🌐 2026 年 4 月市場總體背景</h2>
+    <div class="macro-grid">
+      <div class="macro-item">
+        <div class="label">台股加權指數</div>
+        <div class="value">36,296 – 35,413（本月高低）</div>
+        <div><span class="badge badge-up">▲ 多頭行情延續</span></div>
       </div>
-    </div>
-
-    <!-- 股價 -->
-    <div class="card g1">
-      <div class="ct"><div class="ico">📈</div>股價走勢</div>
-      <div class="mseg" id="ps-tsmc">
-        <button class="msb active" onclick="smkt('tsmc','p','tw',this)">🇹🇼 台股 2330</button>
-        <button class="msb" onclick="smkt('tsmc','p','us',this)">🇺🇸 美股 TSM</button>
+      <div class="macro-item">
+        <div class="label">美伊停戰</div>
+        <div class="value">2 週停火協議達成</div>
+        <div><span class="badge badge-up">▲ 外資重回亞洲科技股</span></div>
       </div>
-      <div class="mv active" id="tsmc-p-tw">
-        <div class="ph"><div><div class="pl">台股收盤（TWD）</div><div class="pb">NT$2,030</div></div><div class="pm"><span class="pl">今日</span><span class="pc dn">▼ -2.64%</span></div><div style="font-size:.73rem;color:var(--muted)">年初至今 <b style="color:var(--up)">+19%</b></div></div>
-        <div class="rbw"><div style="font-size:.67rem;color:var(--muted);margin-bottom:3px">52 週股價範圍</div><div class="rbl"><span>低：NT$1,100</span><span>高：NT$2,200</span></div><div class="rbt"><div class="rbf" style="width:84%"></div><div class="rbd" style="left:84%"></div></div><div class="rbe">📌 圓點越靠右代表股價越接近年內高點。台積電目前在 84% 位置，Q1 財報利多已反映，短線需注意漲多回檔。</div></div>
-        <div style="font-size:.69rem;color:var(--muted);margin-bottom:6px">🎯 目標價試算（6 個月 15–20%）</div>
-        <div class="tr">
-          <div class="tc"><div class="tl">目標價（+15%）</div><div class="tv">NT$2,335</div><div class="tn">法說後動能持續，Q2 毛利率指引 63–65%</div></div>
-          <div class="tc goal"><div class="tl">目標價（+20%）</div><div class="tv">NT$2,436</div><div class="tn">AI 需求不退、法人持續加碼下可期</div></div>
-          <div class="tc analyst"><div class="tl">法人目標</div><div class="tv">NT$2,588–2,750</div><div class="tn">大摩 NT$2,588 · 高盛 NT$2,750</div></div>
-        </div>
-        <div class="sr">
-          <div class="sb"><div class="sl"><span class="j" data-term="本益比 P/E" data-tip="股價除以每股年度獲利。P/E=32 代表你要花 32 年的獲利才能買回這家公司。越低越便宜，高成長公司通常 P/E 較高。">本益比 P/E</span></div><div class="sv">32.8x</div><div class="sn">行業中偏合理</div></div>
-          <div class="sb"><div class="sl"><span class="j" data-term="EPS 每股盈餘" data-tip="每一股股票對應公司賺了多少錢。EPS 持續成長是股價長期上漲的主要動力。">EPS</span></div><div class="sv">TWD 66.25</div><div class="sn">年增 +46%</div></div>
-          <div class="sb"><div class="sl">殖利率</div><div class="sv">0.92%</div><div class="sn">成長股屬性</div></div>
-        </div>
-        <span class="sent bull">📈 中長期多頭，財報後短線注意</span>
+      <div class="macro-item">
+        <div class="label">台積電法說 (4/16)</div>
+        <div class="value">Q1 EPS 22.08元 史上新高</div>
+        <div><span class="badge badge-up">▲ 全年資本支出上調至 520-560 億美元</span></div>
       </div>
-      <div class="mv" id="tsmc-p-us">
-        <div class="ph"><div><div class="pl">美股收盤（NYSE: TSM）</div><div class="pb">$375.00</div></div><div class="pm"><span class="pl">今日</span><span class="pc up">▲ +1.5%</span></div><div style="font-size:.73rem;color:var(--muted)">年初至今 <b style="color:var(--up)">+19%</b></div></div>
-        <div class="rbw"><div style="font-size:.67rem;color:var(--muted);margin-bottom:3px">52 週股價範圍</div><div class="rbl"><span>低：$280</span><span>高：$390</span></div><div class="rbt"><div class="rbf" style="width:87%"></div><div class="rbd" style="left:87%"></div></div><div class="rbe">📌 TSM 現價 $375，距年高 $390 僅差 4%。強勢但空間有限，關注 Q2 指引是否再上修。</div></div>
-        <div style="font-size:.69rem;color:var(--muted);margin-bottom:6px">🎯 目標價試算（6 個月 15–20%）</div>
-        <div class="tr">
-          <div class="tc"><div class="tl">目標價（+15%）</div><div class="tv">$431</div><div class="tn">接近 Wedbush、Jefferies 目標區間</div></div>
-          <div class="tc goal"><div class="tl">目標價（+20%）</div><div class="tv">$450</div><div class="tn">AI 週期延伸情境下可期</div></div>
-          <div class="tc analyst"><div class="tl">法人共識</div><div class="tv">$420–$450</div><div class="tn">多家機構目標區間</div></div>
-        </div>
-        <div class="sr">
-          <div class="sb"><div class="sl">本益比 P/E</div><div class="sv">32.8x</div><div class="sn">行業中偏合理</div></div>
-          <div class="sb"><div class="sl">今年漲幅</div><div class="sv">+19%</div><div class="sn">跑贏標普 500</div></div>
-          <div class="sb"><div class="sl">市值</div><div class="sv">$1.76T</div><div class="sn">全球第六大</div></div>
-        </div>
-        <span class="sent bull">📈 法人目標價上調中，多頭格局</span>
+      <div class="macro-item">
+        <div class="label">全球 CSP 資本支出</div>
+        <div class="value">4,500 億美元（+18% YoY）</div>
+        <div><span class="badge badge-up">▲ AI 算力需求爆發式放量</span></div>
       </div>
-    </div>
-
-    <!-- 供應鏈 -->
-    <div class="card g1">
-      <div class="ct"><div class="ico">🔗</div>供應鏈相關個股（本週熱門 / 高震盪）</div>
-      <div class="sc-grid">
-        <div class="sc-card" onclick="pickCo('asml','ASML','ASML')">
-          <div class="sc-top"><span class="sc-name">ASML</span><span class="sc-tk">NASDAQ</span></div>
-          <div class="sc-price">$648 <span class="chg dn" style="font-size:.7rem">▼ -6.0%</span></div>
-          <div class="sc-role">EUV 光刻機全球唯一供應商，法說後大跌</div>
-        </div>
-        <div class="sc-card" onclick="pickCo('ase','日月光投控','3711/ASX')">
-          <div class="sc-top"><span class="sc-name">日月光</span><span class="sc-tk">3711</span></div>
-          <div class="sc-price">NT$332 <span class="chg dn" style="font-size:.7rem">▼ -4.22%</span></div>
-          <div class="sc-role">全球最大 IC 封裝測試，CoWoS 直接受益股</div>
-        </div>
-        <div class="sc-card" onclick="pickCo('gwafers','環球晶圓','6488')">
-          <div class="sc-top"><span class="sc-name">環球晶圓</span><span class="sc-tk">6488</span></div>
-          <div class="sc-price">NT$480 <span class="chg dn" style="font-size:.7rem">▼ -0.4%</span></div>
-          <div class="sc-role">全球第三大矽晶圓，台積電擴產直接受益</div>
-        </div>
-        <div class="sc-card" onclick="pickCo('unimicron','欣興電子','3037')">
-          <div class="sc-top"><span class="sc-name">欣興電子</span><span class="sc-tk">3037</span></div>
-          <div class="sc-price">NT$145 <span class="chg up" style="font-size:.7rem">▲ +3.8%</span></div>
-          <div class="sc-role">全球最大 ABF 基板商，CoWoS 封裝材料</div>
-        </div>
+      <div class="macro-item">
+        <div class="label">本周強勢族群</div>
+        <div class="value">矽光子、PCB/CCL、記憶體、散熱</div>
+        <div><span class="badge badge-neutral">資金輪動健康</span></div>
       </div>
-    </div>
-
-    <!-- 趨勢 + 關注 -->
-    <div class="frow">
-      <div class="fb trend"><div class="ft">🔍 產業趨勢</div><div class="fx">AI 基礎設施建設在 2026 年仍大幅超越供給，台積電是整個 AI 軍備競賽最不可取代的基礎設施。全球晶圓代工市場預計 2026 年保持 25–30% 成長，先進製程供需失衡持續。<br><br>相關產業影響：<b>半導體設備</b>（ASML/Applied Materials）、<b>先進封裝材料</b>（ABF 基板/載板）同步受惠。</div>
-        <div class="rel-stocks"><span class="rs-lbl">相關個股：</span><span class="rschip" onclick="pickCo('nvidia','輝達 NVIDIA','NVDA')">輝達 NVIDIA</span><span class="rschip" onclick="pickCo('asml','ASML','ASML')">ASML</span><span class="rschip" onclick="pickCo('ase','日月光投控','3711')">日月光投控</span><span class="rschip" onclick="pickCo('unimicron','欣興電子','3037')">欣興電子</span></div>
+      <div class="macro-item">
+        <div class="label">主要風險</div>
+        <div class="value">荷姆茲海峽未解封・關稅不確定性</div>
+        <div><span class="badge badge-down">⚠ 需持續追蹤中東局勢</span></div>
       </div>
-      <div class="fb watch"><div class="ft">⚡ 本週需關注重點</div><div class="fx">中東衝突導致荷姆茲海峽封鎖，台積電使用的<span class="j" data-term="氦氣" data-tip="晶片製造的關鍵耗材，用於光刻機冷卻。全球約 30% 供應來自中東，若長期中斷將推升台積電成本，壓縮毛利率。">氦氣</span>供應面臨壓力，也影響 ASML 光刻機的出貨節奏。中東 LNG 能源供應緊繃同樣影響台灣電力成本。</div>
-        <div class="rel-stocks"><span class="rs-lbl">受影響個股：</span><span class="rschip" onclick="pickCo('asml','ASML','ASML')">ASML</span><span class="rschip" onclick="pickCo('gwafers','環球晶圓','6488')">環球晶圓</span></div>
-      </div>
-    </div>
-
-    <!-- 新聞 -->
-    <div class="card g1">
-      <div class="ct"><div class="ico">📰</div>本週重要新聞（2026/04/14–04/20）</div>
-      <div class="ni"><div class="nd">2026-04-16 · CNBC / Bloomberg</div><div class="ntop"><span class="badge bpp">強烈正面</span><span class="nh">Q1 獲利年增 58% 創歷史新高——CEO 魏哲家上調 2026 全年營收至「超過 30%」</span></div><div class="nb">Q1 營收 US$359 億（年增 40.6%），<span class="j" data-term="毛利率" data-tip="賣產品的直接獲利比例。62.3% 代表每賣 100 元就賺到 62.3 元的毛利。62% 在製造業中屬極罕見的高水準。">毛利率</span> 62.3%，均超市場預期。魏哲家：「AI 需求極度強勁。」</div></div>
-      <div class="ni"><div class="nd">2026-04-19 · StartupNews</div><div class="ntop"><span class="badge bp">正面</span><span class="nh">台積電宣布額外興建第四座 3nm 廠，2026 年資本支出拉高至 US$560 億上限</span></div><div class="nb">AI 加速晶片需求持續爆炸，擴產決策顯示管理層對未來 2–3 年 AI 需求的高度信心。</div></div>
-      <div class="ni"><div class="nd">2026-04-17 · 鉅亨</div><div class="ntop"><span class="badge bp">正面</span><span class="nh">輝達下世代 LPU 訂單確認由台積電代工，三星恐進一步掉單</span></div><div class="nb">NVIDIA 的 <span class="j" data-term="LPU" data-tip="語言處理器（Language Processing Unit），專門用來執行 AI 語言模型推理任務的晶片。NVIDIA 收購 Groq 後推出，預計由台積電最先進製程代工。">LPU</span>（語言處理器）將繼續由台積電代工，壟斷地位進一步鞏固。</div></div>
-      <div class="ni"><div class="nd">2026-04-15–20 · Bloomberg</div><div class="ntop"><span class="badge bw">持續觀察</span><span class="nh">中東衝突持續：氦氣 / LNG 能源供應緊繃，台積電 H2 成本面臨壓力</span></div><div class="nb">管理層提醒 H2 利潤率存在下行風險，ASML 本週也因同樣原因下跌 6%，供應鏈廠商共同面對此風險。</div></div>
-    </div>
-
-    <!-- 競爭者 -->
-    <div class="card g1">
-      <div class="ct"><div class="ico">⚔️</div>主要競爭者</div>
-      <div class="mseg" id="cs-tsmc">
-        <button class="msb active" onclick="smkt('tsmc','c','tw',this)">🇹🇼 台股競爭者</button>
-        <button class="msb" onclick="smkt('tsmc','c','us',this)">🇺🇸 美股競爭者</button>
-      </div>
-      <div class="mv active" id="tsmc-c-tw">
-        <div class="cmp-row"><div class="cmp-main"><div class="cmp-info"><div class="cmp-name">聯電 UMC</div><div class="cmp-note">台灣第二大晶圓廠，成熟製程</div></div><div class="cmp-right"><span class="cmp-tk-s">2303</span><span class="cmp-p">NT$73</span><span class="chg up">▲ +6.88%</span></div></div><div class="cmp-rel">主打 28nm 以上成熟製程，車用/工業訂單競爭，與台積電先進製程無直接衝突</div></div>
-        <div class="cmp-row"><div class="cmp-main"><div class="cmp-info"><div class="cmp-name">世界先進 VIS</div><div class="cmp-note">電源管理 IC 代工專家</div></div><div class="cmp-right"><span class="cmp-tk-s">5347</span><span class="cmp-p">NT$125</span><span class="chg dn">▼ -0.8%</span></div></div><div class="cmp-rel">聚焦特殊製程（BCD、RF），車用及消費電子客戶，競爭有限</div></div>
-        <div class="cmp-row"><div class="cmp-main"><div class="cmp-info"><div class="cmp-name">力積電 PSMC</div><div class="cmp-note">DRAM/邏輯混合代工</div></div><div class="cmp-right"><span class="cmp-tk-s">6770</span><span class="cmp-p">NT$72</span><span class="chg flat">— 0%</span></div></div><div class="cmp-rel">成熟製程 DRAM 和混合代工，技術落後台積電 4+ 個世代，短期無直接威脅</div></div>
-      </div>
-      <div class="mv" id="tsmc-c-us">
-        <div class="cmp-row"><div class="cmp-main"><div class="cmp-info"><div class="cmp-name">Intel Foundry</div><div class="cmp-note">試圖重返代工市場</div></div><div class="cmp-right"><span class="cmp-tk-s">INTC</span><span class="cmp-p">$68.50</span><span class="chg flat">— 0%</span></div></div><div class="cmp-rel">落後台積電 2–3 個製程世代；透過 Terafab 與 Tesla/xAI 合作重建，短期不構成威脅</div></div>
-        <div class="cmp-row"><div class="cmp-main"><div class="cmp-info"><div class="cmp-name">GlobalFoundries</div><div class="cmp-note">美國最大純代工廠</div></div><div class="cmp-right"><span class="cmp-tk-s">GFS</span><span class="cmp-p">$25.40</span><span class="chg dn">▼ -0.5%</span></div></div><div class="cmp-rel">鎖定特殊/成熟製程，國防客戶為主，不做先進節點，直接競爭有限</div></div>
-        <div class="cmp-row"><div class="cmp-main"><div class="cmp-info"><div class="cmp-name">Samsung Foundry</div><div class="cmp-note">最接近台積電的對手</div></div><div class="cmp-right"><span class="cmp-tk-s">005930.KS</span><span class="cmp-p">~KRW 57k</span><span class="chg dn">▼ -0.3%</span></div></div><div class="cmp-rel">3nm 良率落後台積電，AI 客戶持續轉單給台積電，市占份額逐步流失</div></div>
-      </div>
-    </div>
-
-    <div class="g2">
-      <div class="card">
-        <div class="ct"><div class="ico">📊</div>過去三年成長</div>
-        <div class="gr">
-          <div class="gi"><span class="gy">2023</span><div class="ginfo"><span class="ga dn">▼</span><span class="gt">US$693 億，-4.5%<br><small style="color:var(--muted)">半導體寒冬</small></span></div></div>
-          <div class="gi"><span class="gy">2024</span><div class="ginfo"><span class="ga up">▲</span><span class="gt">US$901 億，<b>+30%</b><br><small style="color:var(--muted)">AI 爆發復甦</small></span></div></div>
-          <div class="gi"><span class="gy">2025</span><div class="ginfo"><span class="ga up">▲</span><span class="gt">US$1,219 億，<b>+35.9%</b><br><small style="color:var(--muted)">歷史新高</small></span></div></div>
-          <div class="gi"><span class="gy">2026 Q1</span><div class="ginfo"><span class="ga up">▲</span><span class="gt">US$359 億，<b>+40.6%</b><br><small style="color:var(--muted)">本週公布，超預期</small></span></div></div>
-        </div>
-      </div>
-      <div class="card">
-        <div class="ct"><div class="ico">⚠️</div>最大潛在風險</div>
-        <div class="ri">🌏 <b>地緣政治：</b>先進製程幾乎全在台灣，兩岸衝突是最大不可控風險，直接影響估值天花板。</div>
-        <div class="ri">🧪 <b>氦氣/能源成本：</b>中東局勢若持續，2026 H2 製造成本恐上升，壓縮毛利率 1–2 個百分點。</div>
-        <div class="ri">🏭 <b>海外廠成本稀釋：</b>亞利桑那、日本、德國建廠成本極高，短期拉低整體毛利率。</div>
-      </div>
-    </div>
-    <div class="disc">⚠️ 資料截止：2026-04-20　AI 生成，公開資訊來源，僅供參考，不構成投資建議。</div>
-  </div><!-- /tsmc -->
-
-  <!-- ═══ NVIDIA ═══ -->
-  <div class="cop" id="panel-nvidia">
-    <div class="hero">
-      <div class="hr"><span class="cn">輝達 NVIDIA</span><span class="tag ttk">NVDA</span><span class="tag tind">AI 晶片 / GPU</span></div>
-      <div class="hero-split">
-        <div class="hero-left">
-          NVIDIA 成立於 1993 年，原為遊戲顯示卡廠商，現為全球 AI 基礎設施的核心供應商。其 <span class="j" data-term="GPU" data-tip="圖形處理器（Graphics Processing Unit）。擅長大量平行運算，成為訓練 AI 模型的最佳硬體。NVIDIA GPU 占全球 AI 訓練市場約 80%。">GPU</span> 是訓練 ChatGPT、Gemini 等所有主流 AI 的核心硬體。其 <span class="j" data-term="CUDA" data-tip="NVIDIA 獨家的 AI 程式開發平台。全球數百萬 AI 工程師都使用 CUDA，轉換成本極高，是 NVIDIA 最難複製的護城河。">CUDA 軟體生態系</span>是全球最難複製的科技護城河，CEO <span class="j" data-term="Jensen Huang（黃仁勳）" data-tip="台灣裔美國人，1993 年共同創辦 NVIDIA，被媒體封為「AI 時代的賈伯斯」。2026 年親口確認公司有 US$1 兆 GPU 訂單積壓，是推動近期股價強勢的關鍵。">Jensen Huang（黃仁勳）</span>是驅動市場信心的關鍵人物。
-        </div>
-        <div class="hero-right">
-          <div class="ct" style="margin-bottom:9px"><div class="ico">💰</div>獲利模式</div>
-          <ul class="bl">
-            <li><b>資料中心（88%）：</b>賣 H100/H200/Blackwell GPU 給 AWS、Azure、Google 等</li>
-            <li><b>遊戲（9%）：</b>RTX 系列消費顯示卡，穩定現金流</li>
-            <li><b>CUDA 平台：</b>不直接收費但形成生態系鎖定，大幅提升轉換成本</li>
-            <li><b>車用 DRIVE / 機器人 Jetson：</b>新興成長點（仍在早期）</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-
-    <div class="card g1">
-      <div class="ct"><div class="ico">📈</div>股價走勢（NASDAQ: NVDA）</div>
-      <div class="ph"><div><div class="pl">美股收盤</div><div class="pb">$201.68</div></div><div class="pm"><span class="pl">今日</span><span class="pc up">▲ +1.68%</span></div><div style="font-size:.73rem;color:var(--muted)">近 10 日 <b style="color:var(--up)">+18%</b></div></div>
-      <div class="rbw"><div style="font-size:.67rem;color:var(--muted);margin-bottom:3px">52 週股價範圍</div><div class="rbl"><span>低：$86</span><span>高：$212</span></div><div class="rbt"><div class="rbf" style="width:91%"></div><div class="rbd" style="left:91%"></div></div><div class="rbe">📌 NVIDIA 去年低點 $86（AI 泡沫殺盤），近 10 日大漲 18%，現位於 91% 位置，接近年高 $212。短線強勢，財報前後波動幅度通常很大，請留意。</div></div>
-      <div style="font-size:.69rem;color:var(--muted);margin-bottom:6px">🎯 目標價試算（6 個月 15–20%）</div>
-      <div class="tr">
-        <div class="tc"><div class="tl">目標價（+15%）</div><div class="tv">$232</div><div class="tn">Blackwell 量產持續放量可達</div></div>
-        <div class="tc goal"><div class="tl">目標價（+20%）</div><div class="tv">$242</div><div class="tn">中國 H200 獲批將為強力催化劑</div></div>
-        <div class="tc analyst"><div class="tl">法人共識中位數</div><div class="tv">$260</div><div class="tn">部分分析師目標 $364，+29% 空間</div></div>
-      </div>
-      <div class="sr">
-        <div class="sb"><div class="sl"><span class="j" data-term="FWD P/E 預估本益比" data-tip="用「預測未來一年獲利」計算的本益比。FWD P/E 21.5x 相對 NVIDIA 的成長速度，目前估值其實並不貴，歷史均值在 30x 以上。">FWD P/E</span></div><div class="sv">21.5x</div><div class="sn">低於歷史均值</div></div>
-        <div class="sb"><div class="sl"><span class="j" data-term="PEG 比率" data-tip="本益比除以成長率。PEG 低於 1 代表「以合理價格買到高成長」，0.80x 在科技股中極為少見，代表股價被低估。">PEG 比率</span></div><div class="sv">0.80x</div><div class="sn">&lt;1 = 成長被低估</div></div>
-        <div class="sb"><div class="sl">資料中心占比</div><div class="sv">88%</div><div class="sn">年增 +75%</div></div>
-      </div>
-      <span class="sent bull">📈 基本面強，估值合理，具吸引力</span>
-    </div>
-
-    <div class="frow">
-      <div class="fb trend"><div class="ft">🔍 產業趨勢</div><div class="fx">AI <span class="j" data-term="推理（Inference）" data-tip="讓已訓練好的 AI 模型回答問題、生成內容的過程。相對於「訓練」（Teaching AI），推理是 AI 每次被使用時都會執行的動作，需求量更大且更持續。">推理</span>需求正在超越訓練需求，成為下一個主要成長驅動。AI 晶片市場 2030 年估達 US$1 兆。<br><br>相關產業影響：<b>雲端服務商</b>（AWS/Azure/GCP）加速採購，<b>伺服器供應鏈</b>（<span class="j" data-term="SuperMicro" data-tip="超微電腦（SMCI），全球最大 AI 伺服器製造商之一，採用 NVIDIA GPU 組裝 AI 伺服器。NVIDIA 訂單暴增直接帶動 SuperMicro 的出貨量。">SuperMicro</span>、Dell）同步受惠。</div>
-        <div class="rel-stocks"><span class="rs-lbl">相關個股：</span><span class="rschip" onclick="pickCo('tsmc','台積電 TSMC','TSM/2330')">台積電 TSMC</span><span class="rschip" onclick="window.open('https://finance.yahoo.com/quote/AMD','_blank')">超微 AMD</span><span class="rschip" onclick="window.open('https://finance.yahoo.com/quote/AVGO','_blank')">博通 Broadcom</span></div>
-      </div>
-      <div class="fb watch"><div class="ft">⚡ 本週需關注重點</div><div class="fx">Jensen Huang 確認 US$1 兆訂單積壓，中國 H200 銷售批准（Trump 已點頭，中方仍在審批）是本週最重要的潛在<span class="j" data-term="催化劑" data-tip="指能在短期內推動股價大幅上漲的特定事件，例如財報超預期、政策鬆綁等。若中國批准 H200 銷售，預計每季增加 $20–30 億美元收入。">催化劑</span>。同時 Hormuz 封鎖間接影響台積電（NVIDIA 唯一代工廠）出貨節奏。</div>
-        <div class="rel-stocks"><span class="rs-lbl">相關個股：</span><span class="rschip" onclick="pickCo('tsmc','台積電 TSMC','TSM/2330')">台積電 TSMC</span><span class="rschip" onclick="window.open('https://finance.yahoo.com/quote/GOOGL','_blank')">Google Alphabet</span></div>
-      </div>
-    </div>
-
-    <div class="card g1">
-      <div class="ct"><div class="ico">📰</div>本週重要新聞（2026/04/14–04/20）</div>
-      <div class="ni"><div class="nd">2026-04-14 · CNBC</div><div class="ntop"><span class="badge bpp">強烈正面</span><span class="nh">NVDA 連漲 10 天累積 +18%；Jensen Huang 確認 US$1 兆 GPU 訂單積壓</span></div><div class="nb">黃仁勳：「我們就是沒有足夠的運算資源——算力等於變現能力。」Blackwell 訂單排到年中、Vera Rubin 已預售到 2027 年。</div></div>
-      <div class="ni"><div class="nd">2026-04-15 · NVIDIA Newsroom</div><div class="ntop"><span class="badge bp">正面</span><span class="nh">NVIDIA 發表開源量子 AI 模型「NVIDIA Ising」，並宣布與 Marvell 策略合作</span></div><div class="nb">量子 AI 雖仍早期，但顯示 NVIDIA 布局下一代運算。與 <span class="j" data-term="Marvell" data-tip="美高通（Marvell Technology），半導體設計公司，專門幫 Google、AWS 設計客製化 AI 晶片，是 NVIDIA 的潛在長期競爭者之一。">Marvell</span> 整合 NVLink Fusion 進一步鞏固 AI 工廠生態系，讓客戶離開的轉換成本更高。</div></div>
-      <div class="ni"><div class="nd">2026-04-17 · CNBC</div><div class="ntop"><span class="badge bc">已澄清</span><span class="nh">傳 NVIDIA 洽購大型 PC 公司（Dell/HP）？官方明確否認</span></div><div class="nb">市場謠言引發 Dell、HP 短暫波動，NVIDIA 聲明「未在洽談收購任何 PC 廠商」，對 NVDA 股價影響已消散。</div></div>
-      <div class="ni"><div class="nd">2026-04-19 · SemiInsight</div><div class="ntop"><span class="badge bw">持續觀察</span><span class="nh">Hormuz 封鎖：NVIDIA 供應鏈（台積電）面臨氦氣/能源供應間接衝擊</span></div><div class="nb">所有 Blackwell/Rubin GPU 均由台積電台灣廠製造，供應鏈集中風險持續是 NVIDIA 估值的隱性壓制因素。</div></div>
-    </div>
-
-    <div class="card g1">
-      <div class="ct"><div class="ico">⚔️</div>主要競爭者（2026-04-19 收盤）</div>
-      <div class="cmp-row"><div class="cmp-main"><div class="cmp-info"><div class="cmp-name">超微 AMD</div><div class="cmp-note">GPU 最有力挑戰者</div></div><div class="cmp-right"><span class="cmp-tk-s">AMD</span><span class="cmp-p">$278.39</span><span class="chg up">▲ +0.05%</span></div></div><div class="cmp-rel">MI300X 性能具競爭力，但 CUDA 生態鎖定讓客戶轉換意願低；需觀察 MI400 系列進展</div></div>
-      <div class="cmp-row"><div class="cmp-main"><div class="cmp-info"><div class="cmp-name">博通 Broadcom</div><div class="cmp-note">協助大廠自研 AI 晶片</div></div><div class="cmp-right"><span class="cmp-tk-s">AVGO</span><span class="cmp-p">$406.54</span><span class="chg up">▲ +2.03%</span></div></div><div class="cmp-rel">幫 Google、Meta 設計客製 AI 晶片（TPU/MTIA），間接壓縮 NVIDIA 的大廠市占</div></div>
-      <div class="cmp-row"><div class="cmp-main"><div class="cmp-info"><div class="cmp-name">Google Alphabet</div><div class="cmp-note">Ironwood TPU 自研最成熟</div></div><div class="cmp-right"><span class="cmp-tk-s">GOOGL</span><span class="cmp-p">~$170</span><span class="chg up">▲ +0.8%</span></div></div><div class="cmp-rel">Ironwood TPU 部分規格已超越 GB300，但主要自用；若對外銷售，長期威脅度大幅提升</div></div>
-      <div class="cmp-row"><div class="cmp-main"><div class="cmp-info"><div class="cmp-name">英特爾 Intel</div><div class="cmp-note">Gaudi AI 加速器追趕中</div></div><div class="cmp-right"><span class="cmp-tk-s">INTC</span><span class="cmp-p">$68.50</span><span class="chg flat">— 0%</span></div></div><div class="cmp-rel">Gaudi 效能與生態差距大，市占率極低，短期不構成威脅；Terafab 合作是長期轉型希望</div></div>
-    </div>
-
-    <div class="g2">
-      <div class="card">
-        <div class="ct"><div class="ico">📊</div>過去三年成長</div>
-        <div class="gr">
-          <div class="gi"><span class="gy">FY2023</span><div class="ginfo"><span class="ga flat">→</span><span class="gt">US$269 億，+0.2%<br><small style="color:var(--muted)">遊戲疲軟，AI 萌芽</small></span></div></div>
-          <div class="gi"><span class="gy">FY2024</span><div class="ginfo"><span class="ga up">▲</span><span class="gt">US$609 億，<b>+122%</b><br><small style="color:var(--muted)">ChatGPT 帶動爆炸</small></span></div></div>
-          <div class="gi"><span class="gy">FY2025</span><div class="ginfo"><span class="ga up">▲</span><span class="gt">US$1,300 億，<b>+113%</b><br><small style="color:var(--muted)">持續超越所有預期</small></span></div></div>
-          <div class="gi"><span class="gy">FQ1'27 展望</span><div class="ginfo"><span class="ga up">▲</span><span class="gt">指引年增 <b>+76.8%</b><br><small style="color:var(--muted)">資料中心 Q1 指引 $78B</small></span></div></div>
-        </div>
-      </div>
-      <div class="card">
-        <div class="ct"><div class="ico">⚠️</div>最大潛在風險</div>
-        <div class="ri">🇨🇳 <b>美中出口管制：</b>H20 禁令讓 NVIDIA 損失 US$55 億，即便 H200 解禁，政策反覆仍是最大不確定性。</div>
-        <div class="ri">🏗️ <b>大廠自研晶片加速：</b>AWS/Google/Meta 積極自研，3–5 年後有侵蝕 NVIDIA 資料中心收入的風險。</div>
-        <div class="ri">💹 <b>高估值易受情緒衝擊：</b>AI 支出任何放緩訊號，都可能引發 20–30% 的短線修正。</div>
-      </div>
-    </div>
-    <div class="disc">⚠️ 資料截止：2026-04-20　AI 生成，公開資訊來源，僅供參考，不構成投資建議。</div>
-  </div><!-- /nvidia -->
-
-  <!-- ═══ ASML Mini-Panel ═══ -->
-  <div class="cop" id="panel-asml">
-    <div class="hero">
-      <div class="hr"><span class="cn">ASML</span><span class="tag ttk">ASML</span><span class="tag tind">半導體設備 / EUV</span></div>
-      <div class="hero-split">
-        <div class="hero-left">ASML 是荷蘭半導體設備公司，是全球唯一能製造 <span class="j" data-term="EUV 極紫外光刻機" data-tip="使用極短波長的光（13.5nm）來「刻印」超精細電路的機器。製造 3nm、2nm 等先進晶片必須用到 EUV。每台 EUV 機器售價高達 $2–4 億美元，ASML 在全球市場近乎壟斷。">EUV 光刻機</span>的公司。沒有 ASML 的設備，台積電、三星等晶圓廠無法製造任何 3nm 以下的先進晶片。本週因財報後 Q2 指引低於市場預期，大跌 6%。</div>
-        <div class="hero-right">
-          <div class="ct" style="margin-bottom:9px"><div class="ico">💰</div>獲利模式</div>
-          <ul class="bl">
-            <li>銷售 EUV 光刻機（每台 $2–4 億美元）給台積電、三星、英特爾等</li>
-            <li>DUV（深紫外光）設備銷往成熟製程市場，中國為主要客戶（但受管制收縮）</li>
-            <li>設備安裝後提供長期維護、升級服務（高毛利經常性收入）</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-    <div class="card g1">
-      <div class="ct"><div class="ico">📈</div>股價（NASDAQ: ASML）</div>
-      <div class="ph"><div><div class="pl">美股收盤</div><div class="pb">$648</div></div><div class="pm"><span class="pl">本週</span><span class="pc dn">▼ -6.0%</span></div><div style="font-size:.73rem;color:var(--muted)">法說後修正</div></div>
-      <div style="font-size:.69rem;color:var(--muted);margin-bottom:6px">🎯 目標價試算（6 個月 15–20%）</div>
-      <div class="tr">
-        <div class="tc"><div class="tl">目標價（+15%）</div><div class="tv">$745</div><div class="tn">Q2 指引疑慮消散後可期</div></div>
-        <div class="tc goal"><div class="tl">目標價（+20%）</div><div class="tv">$778</div><div class="tn">法人目標 EUR 1,570–1,600（Berenberg/DB）</div></div>
-        <div class="tc analyst"><div class="tl">法人目標</div><div class="tv">EUR 1,570</div><div class="tn">Berenberg 上調，Bernstein 維持買入</div></div>
-      </div>
-      <span class="sent neu">⚠️ 長期多頭，短線受 Q2 指引拖累</span>
-    </div>
-    <div class="frow">
-      <div class="fb trend"><div class="ft">🔍 專家洞察</div><div class="fx"><ul style="list-style:none;display:flex;flex-direction:column;gap:6px;padding:0">
-        <li style="padding-left:14px;position:relative;font-size:.81rem;color:#1e3a5f;line-height:1.6"><span style="position:absolute;left:0;color:var(--blue)">▸</span>ASML 是全球最強護城河之一：EUV 技術壁壘極高，競爭者在 10 年內無法追上，任何股價修正都是長期投資者的機會。</li>
-        <li style="padding-left:14px;position:relative;font-size:.81rem;color:#1e3a5f;line-height:1.6"><span style="position:absolute;left:0;color:var(--blue)">▸</span>Q1 法說表現其實優於預期（EPS 超估 8.43%），本週 -6% 是因為 Q2 指引低於市場過高的期望，而非基本面惡化——典型的「業績好但不夠好」股價反應。</li>
-        <li style="padding-left:14px;position:relative;font-size:.81rem;color:#1e3a5f;line-height:1.6"><span style="position:absolute;left:0;color:var(--blue)">▸</span>中國 DUV 出口管制收緊（中國從 36% → 19% 營收）是最大風險，但台積電/三星的 EUV 需求完全彌補缺口；訂單積壓 EUR 388 億為歷史高點。</li>
-      </ul></div>
-        <div class="hashtags"><span class="htag">#EUV光刻機</span><span class="htag">#半導體設備</span><span class="htag">#ASML法說</span><span class="htag">#中國出口管制</span><span class="htag">#AI晶圓需求</span></div>
-      </div>
-      <div class="fb watch"><div class="ft">⚡ 關注重點</div><div class="fx">EUV 訂單不揭露為本週爭議點：ASML 停止公布季度新訂單數字，引發市場疑慮；但管理層表示「訂單動能持續非常強勁」。中東局勢影響氦氣供應，也間接影響 ASML 光刻機的光源系統維護。</div>
-        <div class="rel-stocks"><span class="rs-lbl">相關個股：</span><span class="rschip" onclick="pickCo('tsmc','台積電 TSMC','TSM/2330')">台積電 TSMC</span></div>
-      </div>
-    </div>
-    <div class="disc">⚠️ 資料截止：2026-04-20　AI 生成，公開資訊來源，僅供參考，不構成投資建議。</div>
-  </div><!-- /asml -->
-
-  <!-- ═══ 日月光 ═══ -->
-  <div class="cop" id="panel-ase">
-    <div class="hero">
-      <div class="hr"><span class="cn">日月光投控</span><span class="tag ttk">3711 / ASX</span><span class="tag tind">IC 封裝測試 / 先進封裝</span></div>
-      <div class="hero-split">
-        <div class="hero-left">日月光投控（ASE Technology Holding）是全球最大的 IC <span class="j" data-term="封裝測試" data-tip="晶片製造完成後，需要把晶圓切割成單顆晶片並「封裝」在外殼裡，再進行電性測試確保品質。日月光是全球最大的封裝測試（OSAT）公司，處理台積電大量晶片的後段製程。">封裝測試（OSAT）</span>公司，直接受益於台積電 <span class="j" data-term="CoWoS" data-tip="台積電的 3D 先進封裝技術，把多顆晶片堆疊在矽中介層上，讓它們超高速互傳資料。輝達 AI GPU 必須用到 CoWoS，日月光的封裝技術與此高度相關。">CoWoS</span> 先進封裝需求爆炸。下週四（4/23）即將公布 Q1 財報，市場預期高。</div>
-        <div class="hero-right">
-          <div class="ct" style="margin-bottom:9px"><div class="ico">💰</div>獲利模式</div>
-          <ul class="bl">
-            <li>向台積電等晶圓廠收取晶片封裝與測試的加工費</li>
-            <li>AI 先進封裝（SiP、Fan-out）單價遠高於傳統封裝，是毛利率改善主因</li>
-            <li>材料事業（環旭電子）提供被動元件供應鏈</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-    <div class="card g1">
-      <div class="ct"><div class="ico">📈</div>股價（台股：3711）</div>
-      <div class="ph"><div><div class="pl">台股收盤（TWD）</div><div class="pb">NT$332</div></div><div class="pm"><span class="pl">今日</span><span class="pc dn">▼ -4.22%</span></div><div style="font-size:.73rem;color:var(--muted)">歷史高點 NT$394（2/26）</div></div>
-      <div style="font-size:.69rem;color:var(--muted);margin-bottom:6px">🎯 目標價試算（6 個月 15–20%）</div>
-      <div class="tr">
-        <div class="tc"><div class="tl">目標價（+15%）</div><div class="tv">NT$382</div><div class="tn">Q1 法說 4/23 若再度超預期，可期待</div></div>
-        <div class="tc goal"><div class="tl">目標價（+20%）</div><div class="tv">NT$398</div><div class="tn">接近歷史高點 NT$394，需突破前高</div></div>
-      </div>
-      <span class="sent bull">📈 AI 供應鏈受益股，4/23 財報為近期催化劑</span>
-    </div>
-    <div class="frow">
-      <div class="fb trend"><div class="ft">🔍 專家洞察</div><div class="fx"><ul style="list-style:none;display:flex;flex-direction:column;gap:6px;padding:0">
-        <li style="padding-left:14px;position:relative;font-size:.81rem;color:#1e3a5f;line-height:1.6"><span style="position:absolute;left:0;color:var(--blue)">▸</span>全球最大封裝測試廠，台積電 CoWoS 產能擴增直接帶動日月光的高階封裝訂單；AI GPU 先進封裝的毛利率比傳統封裝高出 30–40%。</li>
-        <li style="padding-left:14px;position:relative;font-size:.81rem;color:#1e3a5f;line-height:1.6"><span style="position:absolute;left:0;color:var(--blue)">▸</span>4/23 法說是最近最重要的催化劑，上季 EPS 超預期 16.25%，若本季再度超標，股價可望突破 2 月歷史高點 NT$394。</li>
-        <li style="padding-left:14px;position:relative;font-size:.81rem;color:#1e3a5f;line-height:1.6"><span style="position:absolute;left:0;color:var(--blue)">▸</span>今日 -4.22% 與台積電法說後半導體板塊回落有關，屬正常波動而非個股利空；目前從歷史高點回落約 15%，提供較合理的進場點位。</li>
-      </ul></div>
-        <div class="hashtags"><span class="htag">#先進封裝</span><span class="htag">#CoWoS受益股</span><span class="htag">#日月光法說</span><span class="htag">#IC封測</span><span class="htag">#AI供應鏈</span></div>
-      </div>
-      <div class="fb watch"><div class="ft">⚡ 關注重點</div><div class="fx">4 月 23 日 Q1 財報是本週最重要事件。AI 伺服器組裝需求持續，但中東局勢影響材料成本。注意台幣升值對出口收入的<span class="j" data-term="匯兌影響" data-tip="日月光主要收入以美元計價，若台幣升值，換算成台幣的收入就會減少，影響帳面獲利。此為封測廠普遍面對的匯率風險。">匯兌影響</span>。</div>
-        <div class="rel-stocks"><span class="rs-lbl">相關個股：</span><span class="rschip" onclick="pickCo('tsmc','台積電 TSMC','TSM/2330')">台積電 TSMC</span><span class="rschip" onclick="pickCo('unimicron','欣興電子','3037')">欣興電子</span></div>
-      </div>
-    </div>
-    <div class="disc">⚠️ 資料截止：2026-04-20　AI 生成，公開資訊來源，僅供參考，不構成投資建議。</div>
-  </div><!-- /ase -->
-
-  <!-- ═══ 環球晶 ═══ -->
-  <div class="cop" id="panel-gwafers">
-    <div class="hero">
-      <div class="hr"><span class="cn">環球晶圓</span><span class="tag ttk">6488</span><span class="tag tind">矽晶圓 / 半導體材料</span></div>
-      <div class="hero-split">
-        <div class="hero-left">環球晶圓（GlobalWafers）是全球第三大<span class="j" data-term="矽晶圓" data-tip="晶片製造的基底材料，由高純度矽製成的圓片（12 吋約 300mm）。台積電每生產一顆晶片，都需要先從環球晶等矽晶圓廠購買基板。矽晶圓品質直接影響晶片良率。">矽晶圓</span>製造商，是台積電、三星等晶圓廠的上游材料供應商。台積電 2026 年大幅擴產直接帶動矽晶圓需求，環球晶受惠於台積電「護城河生意」。</div>
-        <div class="hero-right">
-          <div class="ct" style="margin-bottom:9px"><div class="ico">💰</div>獲利模式</div>
-          <ul class="bl">
-            <li>製造並銷售 12 吋矽晶圓給晶圓廠（台積電為最大客戶之一）</li>
-            <li>先進製程使用量更大、規格更嚴，單價更高</li>
-            <li>矽晶圓屬<span class="j" data-term="寡占市場" data-tip="市場只有少數幾家大公司主導（環球晶、Shin-Etsu、SUMCO 三家合計約占全球 80%）。寡占結構讓廠商有較強的定價能力，不易被新競爭者進入。">寡占市場</span>，全球前三大廠合計占 80% 市占</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-    <div class="card g1">
-      <div class="ct"><div class="ico">📈</div>股價（台股：6488）</div>
-      <div class="ph"><div><div class="pl">台股收盤（TWD）</div><div class="pb">NT$480</div></div><div class="pm"><span class="pl">今日</span><span class="pc dn">▼ -0.4%</span></div></div>
-      <div style="font-size:.69rem;color:var(--muted);margin-bottom:6px">🎯 目標價試算（6 個月 15–20%）</div>
-      <div class="tr">
-        <div class="tc"><div class="tl">目標價（+15%）</div><div class="tv">NT$552</div><div class="tn">台積電擴產訂單能見度高</div></div>
-        <div class="tc goal"><div class="tl">目標價（+20%）</div><div class="tv">NT$576</div><div class="tn">AI 需求帶動先進製程晶圓需求增長</div></div>
-      </div>
-      <span class="sent bull">📈 台積電擴產最直接受益的材料股</span>
-    </div>
-    <div class="frow">
-      <div class="fb trend"><div class="ft">🔍 專家洞察</div><div class="fx"><ul style="list-style:none;display:flex;flex-direction:column;gap:6px;padding:0">
-        <li style="padding-left:14px;position:relative;font-size:.81rem;color:#1e3a5f;line-height:1.6"><span style="position:absolute;left:0;color:var(--blue)">▸</span>台積電 2026 年資本支出拉高至 US$560 億上限，代表更多 12 吋晶圓廠和更大的矽晶圓採購量，環球晶的客戶需求能見度極高。</li>
-        <li style="padding-left:14px;position:relative;font-size:.81rem;color:#1e3a5f;line-height:1.6"><span style="position:absolute;left:0;color:var(--blue)">▸</span>矽晶圓市場寡占、進入門檻高，環球晶的長期合約保護了獲利的穩定性；先進製程比例上升對公司有利，因為先進製程晶圓的售價和毛利率更高。</li>
-        <li style="padding-left:14px;position:relative;font-size:.81rem;color:#1e3a5f;line-height:1.6"><span style="position:absolute;left:0;color:var(--blue)">▸</span>環球晶的成長速度較台積電「慢半拍」——通常需要台積電擴產 1–2 季後才反映訂單；目前是布局時機而非立即催化劑。</li>
-      </ul></div>
-        <div class="hashtags"><span class="htag">#矽晶圓</span><span class="htag">#半導體材料</span><span class="htag">#台積電供應鏈</span><span class="htag">#GlobalWafers</span><span class="htag">#AI晶圓擴產</span></div>
-      </div>
-      <div class="fb watch"><div class="ft">⚡ 關注重點</div><div class="fx">矽晶圓供需在 2026 上半年仍略有鬆弛（因 2025 寒冬期間廠商曾暫緩採購），下半年隨台積電擴產加速有望收緊，關注定價能力是否回升。</div>
-        <div class="rel-stocks"><span class="rs-lbl">相關個股：</span><span class="rschip" onclick="pickCo('tsmc','台積電 TSMC','TSM/2330')">台積電 TSMC</span></div>
-      </div>
-    </div>
-    <div class="disc">⚠️ 資料截止：2026-04-20　AI 生成，公開資訊來源，僅供參考，不構成投資建議。</div>
-  </div><!-- /gwafers -->
-
-  <!-- ═══ 欣興 ═══ -->
-  <div class="cop" id="panel-unimicron">
-    <div class="hero">
-      <div class="hr"><span class="cn">欣興電子</span><span class="tag ttk">3037</span><span class="tag tind">ABF 基板 / IC 載板</span></div>
-      <div class="hero-split">
-        <div class="hero-left">欣興電子（Unimicron）是全球最大的 <span class="j" data-term="ABF 基板" data-tip="AI GPU 必須使用的高端印刷電路板（ABF = Ajinomoto Build-up Film），用於把晶片連接到主機板。ABF 基板材料由日本味之素公司壟斷（因此以 Ajinomoto 命名），需求量隨 AI 晶片爆炸性增長。">ABF 基板</span>製造商之一，是 CoWoS 先進封裝的關鍵材料供應商。今日大漲 +3.8% 反映 AI 封裝材料需求持續強勁。</div>
-        <div class="hero-right">
-          <div class="ct" style="margin-bottom:9px"><div class="ico">💰</div>獲利模式</div>
-          <ul class="bl">
-            <li>製造高階 ABF 基板及 IC <span class="j" data-term="載板" data-tip="連接晶片和主機板的中間層電路板，負責訊號傳輸。AI GPU 使用的載板規格極高、線路極密，製造難度大、毛利率高。">載板</span>，銷售給台積電、日月光等封裝廠</li>
-            <li>AI GPU 使用的高階 ABF 基板單價遠高於一般載板</li>
-            <li>市場寡占，全球主要 ABF 基板廠只有 4–5 家</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-    <div class="card g1">
-      <div class="ct"><div class="ico">📈</div>股價（台股：3037）</div>
-      <div class="ph"><div><div class="pl">台股收盤（TWD）</div><div class="pb">NT$145</div></div><div class="pm"><span class="pl">今日</span><span class="pc up">▲ +3.8%</span></div></div>
-      <div style="font-size:.69rem;color:var(--muted);margin-bottom:6px">🎯 目標價試算（6 個月 15–20%）</div>
-      <div class="tr">
-        <div class="tc"><div class="tl">目標價（+15%）</div><div class="tv">NT$167</div><div class="tn">CoWoS 封裝需求持續，ABF 供給仍緊</div></div>
-        <div class="tc goal"><div class="tl">目標價（+20%）</div><div class="tv">NT$174</div><div class="tn">若台積電再增 CoWoS 產能，直接受益</div></div>
-      </div>
-      <span class="sent bull">📈 CoWoS 材料短缺概念股，今日強勢</span>
-    </div>
-    <div class="frow">
-      <div class="fb trend"><div class="ft">🔍 專家洞察</div><div class="fx"><ul style="list-style:none;display:flex;flex-direction:column;gap:6px;padding:0">
-        <li style="padding-left:14px;position:relative;font-size:.81rem;color:#1e3a5f;line-height:1.6"><span style="position:absolute;left:0;color:var(--blue)">▸</span>ABF 基板是 CoWoS 先進封裝最稀缺的材料之一，供應商只有欣興、南亞電路板（南電）等少數廠商；台積電宣布第四座 3nm 廠 → CoWoS 擴產 → ABF 需求直接上升，邏輯鏈清晰。</li>
-        <li style="padding-left:14px;position:relative;font-size:.81rem;color:#1e3a5f;line-height:1.6"><span style="position:absolute;left:0;color:var(--blue)">▸</span>欣興的股價波動性高（Beta 約 1.5），在台積電利多消息公布後往往有 3–5% 的當日急漲，今日 +3.8% 正是典型的「台積電概念受惠拉尾盤」走勢。</li>
-        <li style="padding-left:14px;position:relative;font-size:.81rem;color:#1e3a5f;line-height:1.6"><span style="position:absolute;left:0;color:var(--blue)">▸</span>ABF 基板的原料「ABF 膜」由日本<span class="j" data-term="味之素 Ajinomoto" data-tip="日本最大食品公司，同時是 ABF（Ajinomoto Build-up Film）薄膜的全球唯一供應商。這種薄膜是製造高階基板的核心材料，味之素雖是食品公司，卻意外掌握 AI 晶片供應鏈的關鍵一環。">味之素</span>獨家供應，若味之素擴產不及預期，欣興的基板產能可能受限。</li>
-      </ul></div>
-        <div class="hashtags"><span class="htag">#ABF基板</span><span class="htag">#IC載板</span><span class="htag">#CoWoS材料</span><span class="htag">#欣興電子</span><span class="htag">#AI封裝供應鏈</span></div>
-      </div>
-      <div class="fb watch"><div class="ft">⚡ 關注重點</div><div class="fx">台積電宣布擴產後，ABF 基板廠股價通常在 1–2 週內反應。關注欣興是否宣布擴產或接到新的長單，以及日本味之素 ABF 膜的供應是否跟得上需求增長。</div>
-        <div class="rel-stocks"><span class="rs-lbl">相關個股：</span><span class="rschip" onclick="pickCo('tsmc','台積電 TSMC','TSM/2330')">台積電 TSMC</span><span class="rschip" onclick="pickCo('ase','日月光投控','3711')">日月光投控</span></div>
-      </div>
-    </div>
-    <div class="disc">⚠️ 資料截止：2026-04-20　AI 生成，公開資訊來源，僅供參考，不構成投資建議。</div>
-  </div><!-- /unimicron -->
-
-</div><!-- /tab-stocks -->
-
-<!-- ═══ TAB 2 ═══ -->
-<div id="tab-industry" class="tp">
-  <div class="msbar">
-    <div class="seg">
-      <button class="seg-b active" onclick="swInd('tw',this)">🇹🇼 台股</button>
-      <button class="seg-b" onclick="swInd('us',this)">🇺🇸 美股</button>
     </div>
   </div>
 
-  <div id="ind-tw" class="mv active">
-    <div class="acc">
-      <div class="ahd" onclick="togAcc(this)"><div class="adot"></div><div class="atxt"><div class="an">半導體晶圓代工</div><div class="at">AI 先進製程供不應求，台積電主導 70% 市占；2026 年為族群強勢年，氦氣供應為短期觀察變數</div></div><div class="ach">▼</div></div>
-      <div class="ab">
-        <div class="ithd">
-          <span>公司</span>
-          <span class="i-code-col">代碼</span>
-          <span>股價 / 漲跌</span>
-          <span class="i-chg-col">漲跌</span>
-          <span>目標價 (+15%)</span>
+  <!-- Selector -->
+  <div class="selector-panel">
+    <div style="width:100%;">
+      <div style="display:flex; gap:12px; align-items:center; flex-wrap:wrap; margin-bottom:12px;">
+        <div class="search-box-wrap">
+          <span class="search-icon">🔍</span>
+          <input class="search-box" id="searchInput" type="text" placeholder="搜尋公司名稱或代碼…" oninput="filterStocks()">
         </div>
-        <!-- TSMC -->
-        <div><div class="irow" onclick="togDet('id-2330')">
-          <span><span class="icn-d icn-name">台積電</span><span class="icn-m icn-name">台積電 (2330)</span></span>
-          <span class="i-code-col"><span class="ictk">2330</span></span>
-          <span><span class="icp">NT$2,030</span><span class="chg dn i-chg-m" style="margin-top:3px;display:none">▼ -2.64%</span></span>
-          <span class="i-chg-col"><span class="chg dn">▼ -2.64%</span></span>
-          <span><span class="tchip">NT$2,335</span></span>
+        <div class="market-tabs">
+          <button class="market-tab active" onclick="setMarket('tw',this)">🇹🇼 台股</button>
         </div>
-        <div class="idet" id="id-2330"><h4>專家洞察・最新關注重點</h4><ul>
-          <li><span class="j" data-term="N2 製程" data-tip="台積電的 2 奈米製程技術，2025 Q4 開始量產。比前一代 N3 製程效能提升約 15–20%，主要客戶包括蘋果（iPhone 18 晶片）和輝達。">N2 製程</span>量產順利、A16 路線確立，技術護城河每一世代都在加寬；<span class="j" data-term="CoWoS" data-tip="台積電獨家先進封裝技術，2026 年全球產能嚴重供不應求，掌握 CoWoS = 掌握 AI 供應鏈定價權。">CoWoS</span> 封裝仍是 2026 年最稀缺的產能瓶頸。</li>
-          <li>Q1 毛利率 62.3%，<span class="j" data-term="CC Wei（魏哲家）" data-tip="台積電董事長兼 CEO，2009 年加入台積電，2018 年接任 CEO。被外界視為台積電護城河最重要的守護者，每季法說會的談話都會直接影響台積電股價。">CC Wei</span> 暗示定價能力持續強化，2026 全年毛利率有望突破 65%——每提升 1 個百分點對股價影響顯著。</li>
-          <li>中東氦氣危機為本週最值得追蹤的尾部風險，若 <span class="j" data-term="Hormuz 海峽" data-tip="連接波斯灣和阿拉伯海的重要航道，目前因中東衝突實質性封鎖。全球約 30% 的氦氣（晶片製造關鍵氣體）和大量 LNG 天然氣都需經過此處，封鎖直接影響台積電的生產成本。">Hormuz</span> 持續封鎖超過 4 週，成本端壓力將在 Q3 財報反映。</li>
-        </ul>
-        <div class="hashtags"><span class="htag">#台積電法說</span><span class="htag">#N2製程</span><span class="htag">#CoWoS擴產</span><span class="htag">#AI晶圓代工</span><span class="htag">#氦氣供應鏈</span></div>
-        </div></div>
-        <!-- 日月光 -->
-        <div><div class="irow" onclick="togDet('id-3711')">
-          <span><span class="icn-d icn-name">日月光投控</span><span class="icn-m icn-name">日月光 (3711)</span></span>
-          <span class="i-code-col"><span class="ictk">3711</span></span>
-          <span><span class="icp">NT$332</span><span class="chg dn i-chg-m" style="margin-top:3px;display:none">▼ -4.22%</span></span>
-          <span class="i-chg-col"><span class="chg dn">▼ -4.22%</span></span>
-          <span><span class="tchip">NT$382</span></span>
+      </div>
+      <div class="stock-list-wrap" id="stockList"></div>
+    </div>
+  </div>
+
+  <!-- Company Panels (all 41) -->
+  <div id="panelsContainer">
+  <!-- panels injected by JS -->
+  </div>
+
+</div>
+
+<!-- ════════════════════ TAB 2: 產業分類 ════════════════════ -->
+<div id="t2" class="tab-content">
+  <div class="industry-content container">
+    <h2 class="industry-title">🏭 產業分類一覽</h2>
+
+    <!-- 1. 重電/電力基建 -->
+    <div class="accordion" id="acc-power">
+      <div class="accordion-head" onclick="toggleAccordion('power')">
+        <div>
+          <h3>⚡ 重電 / 電力基建</h3>
+          <p>AI 吃電怪獸 + 台電強韌電網計畫，訂單能見度延伸至 2027–2028 年</p>
         </div>
-        <div class="idet" id="id-3711"><h4>專家洞察・最新關注重點</h4><ul>
-          <li>全球最大 <span class="j" data-term="OSAT（封裝測試）" data-tip="Outsourced Semiconductor Assembly and Test，委外封裝測試。晶圓廠（如台積電）只負責製造晶片，封裝和測試交給日月光等 OSAT 廠商處理。AI 時代先進封裝需求爆炸，OSAT 廠商的附加價值大幅提升。">OSAT</span> 廠，台積電 CoWoS 擴產直接帶動封裝需求；AI GPU 先進封裝毛利率比傳統封裝高出 30–40%。</li>
-          <li>4/23 Q1 財報是近期最重要催化劑，上季超預期 16.25%；目前股價從歷史高點 NT$394 回落約 15%，提供較合理進場點。</li>
-          <li>今日 -4.22% 與台積電法說後半導體板塊回落有關，屬正常波動，並非個股利空。</li>
-        </ul>
-        <div class="hashtags"><span class="htag">#先進封裝OSAT</span><span class="htag">#CoWoS受益股</span><span class="htag">#日月光法說4/23</span><span class="htag">#IC封測</span><span class="htag">#AI供應鏈</span></div>
-        </div></div>
-        <!-- 環球晶 -->
-        <div><div class="irow" onclick="togDet('id-6488')">
-          <span><span class="icn-d icn-name">環球晶圓</span><span class="icn-m icn-name">環球晶 (6488)</span></span>
-          <span class="i-code-col"><span class="ictk">6488</span></span>
-          <span><span class="icp">NT$480</span><span class="chg dn i-chg-m" style="margin-top:3px;display:none">▼ -0.4%</span></span>
-          <span class="i-chg-col"><span class="chg dn">▼ -0.4%</span></span>
-          <span><span class="tchip">NT$552</span></span>
-        </div>
-        <div class="idet" id="id-6488"><h4>專家洞察・最新關注重點</h4><ul>
-          <li>全球第三大矽晶圓廠，台積電擴產每增一座晶圓廠就需要大量矽晶圓；長期合約保護利潤穩定性，是台積電供應鏈中較低波動的選擇。</li>
-          <li>矽晶圓市場寡占（前三大廠合計 80%），<span class="j" data-term="定價能力" data-tip="廠商決定產品售價的能力。寡占市場中，大廠可以在需求上升時提高售價而不怕客戶轉換，是護城河的重要組成部分。">定價能力</span>較強；先進製程比例上升對毛利率改善有利。</li>
-          <li>需求週期「慢台積電一步」——台積電擴產 Q1–Q2 後，矽晶圓訂單才會明顯回升，目前是布局時機而非立即催化劑。</li>
-        </ul>
-        <div class="hashtags"><span class="htag">#矽晶圓</span><span class="htag">#半導體材料寡占</span><span class="htag">#台積電供應鏈</span><span class="htag">#GlobalWafers</span><span class="htag">#AI晶圓需求</span></div>
-        </div></div>
-        <!-- 欣興 -->
-        <div><div class="irow" onclick="togDet('id-3037')">
-          <span><span class="icn-d icn-name">欣興電子</span><span class="icn-m icn-name">欣興電子 (3037)</span></span>
-          <span class="i-code-col"><span class="ictk">3037</span></span>
-          <span><span class="icp">NT$145</span><span class="chg up i-chg-m" style="margin-top:3px;display:none">▲ +3.8%</span></span>
-          <span class="i-chg-col"><span class="chg up">▲ +3.8%</span></span>
-          <span><span class="tchip">NT$167</span></span>
-        </div>
-        <div class="idet" id="id-3037"><h4>專家洞察・最新關注重點</h4><ul>
-          <li>全球最大 ABF 基板廠之一，是 CoWoS 先進封裝最稀缺的材料供應商；台積電宣布擴建第四座 3nm 廠 → ABF 基板需求直接上升，今日 +3.8% 正是這個邏輯鏈的快速反映。</li>
-          <li>ABF 原料由日本<span class="j" data-term="味之素 ABF 膜" data-tip="味之素（Ajinomoto）是日本食品公司，同時是全球唯一的 ABF 薄膜供應商。這種薄膜是製造高階基板的核心材料，供應量有限，是整個 ABF 基板產業的最大產能瓶頸。">味之素（Ajinomoto）</span>獨家供應，若材料供應不足，欣興的基板產能擴張將受限。</li>
-          <li>欣興波動性高（Beta ≈ 1.5），適合台積電利多消息發酵後的短線操作；長線則跟著 CoWoS 擴產能見度走。</li>
-        </ul>
-        <div class="hashtags"><span class="htag">#ABF基板稀缺</span><span class="htag">#CoWoS材料</span><span class="htag">#IC載板</span><span class="htag">#欣興電子</span><span class="htag">#味之素ABF膜</span></div>
-        </div></div>
-        <!-- 聯電 -->
-        <div><div class="irow" onclick="togDet('id-2303')">
-          <span><span class="icn-d icn-name">聯電</span><span class="icn-m icn-name">聯電 (2303)</span></span>
-          <span class="i-code-col"><span class="ictk">2303</span></span>
-          <span><span class="icp">NT$73</span><span class="chg up i-chg-m" style="margin-top:3px;display:none">▲ +6.88%</span></span>
-          <span class="i-chg-col"><span class="chg up">▲ +6.88%</span></span>
-          <span><span class="tchip">NT$84</span></span>
-        </div>
-        <div class="idet" id="id-2303"><h4>專家洞察・最新關注重點</h4><ul>
-          <li>台灣第二大晶圓廠，主攻 28nm 以上<span class="j" data-term="成熟製程" data-tip="相對於先進製程（7nm 以下），成熟製程指 28nm 以上的晶片製造。雖然效能不如先進製程，但成本低廉，仍是車用、工業、MCU 等應用的主要選擇。">成熟製程</span>，不與台積電在先進節點正面競爭；今日 +6.88% 反映車用 IC 需求復甦題材。</li>
-          <li>聯電的毛利率結構低於台積電，屬防禦型持股而非高成長股；但估值便宜，股息殖利率相對較高。</li>
-          <li>AI 週邊設備（電源管理、車用 MCU）對成熟製程需求回溫，聯電有望間接受益。</li>
-        </ul>
-        <div class="hashtags"><span class="htag">#成熟製程</span><span class="htag">#車用半導體</span><span class="htag">#聯電股息</span><span class="htag">#晶圓代工</span><span class="htag">#防禦型持股</span></div>
-        </div></div>
+        <span class="accordion-icon" id="icon-power">▼</span>
+      </div>
+      <div class="accordion-body" id="body-power">
+        <table class="ind-table">
+          <thead><tr><th>公司</th><th>代碼</th><th>股價 / 漲跌</th><th>目標價(+15%)</th><th>評級</th></tr></thead>
+          <tbody>
+            <tr onclick="showInsight('ins-1503')"><td>士林電機（士電）</td><td>1503</td><td>~460元</td><td>529元</td><td><span class="rating-badge r-buy">買入</span></td></tr>
+            <tr class="insight-row" id="ins-1503"><td colspan="5"><div class="insight-inner"><p>台灣重電設備龍頭之一，訂單能見度看至 2030 年。受惠台電強韌電網計畫釋單與 AI 資料中心電力需求，2025 年營收獲利雙創新高。大型電力變壓器交期延長至兩年半，供需失衡格局短期難解。</p><div class="hashtags"><span class="hashtag">#重電</span><span class="hashtag">#電力基建</span><span class="hashtag">#AI資料中心</span><span class="hashtag">#台電</span><span class="hashtag">#長景氣週期</span></div></div></td></tr>
+            <tr onclick="showInsight('ins-1513')"><td>中興電工（中興電）</td><td>1513</td><td>155.5元 +1.3%</td><td>179元</td><td><span class="rating-badge r-buy">買入</span></td></tr>
+            <tr class="insight-row" id="ins-1513"><td colspan="5"><div class="insight-inner"><p>配電設備與工程服務，受惠智慧電網與風力發電布局。與華城、士電並列重電四雄，2025 年訂單滿手，已宣布發放現金股利。中東停戰後外資重新關注重電族群。</p><div class="hashtags"><span class="hashtag">#智慧電網</span><span class="hashtag">#風力發電</span><span class="hashtag">#重電四雄</span><span class="hashtag">#現金股利</span><span class="hashtag">#配電設備</span></div></div></td></tr>
+            <tr onclick="showInsight('ins-1519')"><td>華城電機（華城）</td><td>1519</td><td>~970元</td><td>1,116元</td><td><span class="rating-badge r-strong-buy">強力買入</span></td></tr>
+            <tr class="insight-row" id="ins-1519"><td colspan="5"><div class="insight-inner"><p>重電族群龍頭，2025 年 EPS 13.99 元創新高，已獲法人目標價調升。訂單能見度延伸至 2027–2028 年，最近有望納入元大台灣 50（0050）成分股，具備被動買盤加持效應。</p><div class="hashtags"><span class="hashtag">#重電龍頭</span><span class="hashtag">#0050入列</span><span class="hashtag">#訂單滿手</span><span class="hashtag">#台電大客戶</span><span class="hashtag">#高EPS成長</span></div></div></td></tr>
+          </tbody>
+        </table>
       </div>
     </div>
 
-    <div class="acc">
-      <div class="ahd" onclick="togAcc(this)"><div class="adot"></div><div class="atxt"><div class="an">半導體設備</div><div class="at">ASML 本週財報大跌 6% 提供進場機會；EUV 光刻機需求隨台積電擴產高度確定，但 China DUV 出口管制是主要風險</div></div><div class="ach">▼</div></div>
-      <div class="ab">
-        <div class="ithd"><span>公司</span><span class="i-code-col">代碼</span><span>股價 / 漲跌</span><span class="i-chg-col">漲跌</span><span>目標價 (+15%)</span></div>
-        <div><div class="irow" onclick="pickCo('asml','ASML','ASML');showTab('stocks',document.querySelector('.top-nav .seg-b'))">
-          <span><span class="icn-d icn-name">ASML Holding</span><span class="icn-m icn-name">ASML (ASML)</span></span>
-          <span class="i-code-col"><span class="ictk">ASML</span></span>
-          <span><span class="icp">$648</span><span class="chg dn i-chg-m" style="margin-top:3px;display:none">▼ -6.0%</span></span>
-          <span class="i-chg-col"><span class="chg dn">▼ -6.0%</span></span>
-          <span><span class="tchip">$745</span></span>
-        </div></div>
+    <!-- 2. 電源/散熱 -->
+    <div class="accordion">
+      <div class="accordion-head" onclick="toggleAccordion('cooling')">
+        <div>
+          <h3>🌡️ 電源管理 / 散熱</h3>
+          <p>液冷滲透率 2026 年直衝 76%，MCCP 技術加速落地，AI 算力密度持續提升</p>
+        </div>
+        <span class="accordion-icon" id="icon-cooling">▼</span>
+      </div>
+      <div class="accordion-body" id="body-cooling">
+        <table class="ind-table">
+          <thead><tr><th>公司</th><th>代碼</th><th>股價 / 漲跌</th><th>目標價(+15%)</th><th>評級</th></tr></thead>
+          <tbody>
+            <tr onclick="showInsight('ins-2308')"><td>台達電子（台達電）</td><td>2308</td><td>2,015元 +6.05%</td><td>2,317元</td><td><span class="rating-badge r-strong-buy">強力買入</span></td></tr>
+            <tr class="insight-row" id="ins-2308"><td colspan="5"><div class="insight-inner"><p>全球電源管理與液冷散熱一條龍領導廠商，3 月營收 597.8 億元再創歷史新高，年增 37.6%。市值已超越鴻海成台股第二大，外資目標價喊至 1,638 元以上（近期已調升至 2,000 元以上）。電源（53%）+ 基礎設施液冷（33%）雙引擎超強，2026 年 Q2 展望優於 Q1。</p><div class="hashtags"><span class="hashtag">#AI電源龍頭</span><span class="hashtag">#液冷散熱</span><span class="hashtag">#台股第二</span><span class="hashtag">#GB300供應鏈</span><span class="hashtag">#外資目標價上調</span></div></div></td></tr>
+            <tr onclick="showInsight('ins-3017')"><td>奇鋐科技（奇鋐）</td><td>3017</td><td>2,490元 +3.75%</td><td>2,864元</td><td><span class="rating-badge r-strong-buy">強力買入</span></td></tr>
+            <tr class="insight-row" id="ins-3017"><td colspan="5"><div class="insight-inner"><p>MCCP（微通道水冷板）確定主供應商，搭配輝達 Rubin 世代，每個 Compute tray 內含價值估提升 70–80%。已受邀參加 BofA 2026 Asia Tech Conference 及 JPM 法人會議，機構關注度高。法人預估 2026 年 EPS 大幅成長。</p><div class="hashtags"><span class="hashtag">#MCCP散熱</span><span class="hashtag">#輝達供應鏈</span><span class="hashtag">#千金股</span><span class="hashtag">#液冷主升段</span><span class="hashtag">#Rubin世代</span></div></div></td></tr>
+            <tr onclick="showInsight('ins-8996')"><td>高力熱處理（高力）</td><td>8996</td><td>~380元</td><td>437元</td><td><span class="rating-badge r-hold">持有觀察</span></td></tr>
+            <tr class="insight-row" id="ins-8996"><td colspan="5"><div class="insight-inner"><p>從金屬熱處理跨入散熱模組，正切入 AI 伺服器散熱市場，尚在客戶驗證階段。轉型題材待確認，基本面需追蹤 2026 年訂單進度。建議等待季報確認後再布局。</p><div class="hashtags"><span class="hashtag">#散熱轉型</span><span class="hashtag">#熱處理</span><span class="hashtag">#AI布局</span><span class="hashtag">#待確認</span><span class="hashtag">#觀察期</span></div></div></td></tr>
+          </tbody>
+        </table>
       </div>
     </div>
-  </div><!-- /ind-tw -->
 
-  <div id="ind-us" class="mv">
-    <div class="acc">
-      <div class="ahd" onclick="togAcc(this)"><div class="adot"></div><div class="atxt"><div class="an">AI 晶片 / GPU</div><div class="at">AI 加速晶片市場 2030 年估達 US$1 兆，輝達近壟斷地位；大廠自研晶片長期為最大觀察變數</div></div><div class="ach">▼</div></div>
-      <div class="ab">
-        <div class="ithd"><span>公司</span><span class="i-code-col">代碼</span><span>股價 / 漲跌</span><span class="i-chg-col">漲跌</span><span>目標價 (+15%)</span></div>
-        <div><div class="irow" onclick="togDet('id-nvda')">
-          <span><span class="icn-d icn-name">NVIDIA</span><span class="icn-m icn-name">NVIDIA (NVDA)</span></span>
-          <span class="i-code-col"><span class="ictk">NVDA</span></span>
-          <span><span class="icp">$201.68</span><span class="chg up i-chg-m" style="margin-top:3px;display:none">▲ +1.68%</span></span>
-          <span class="i-chg-col"><span class="chg up">▲ +1.68%</span></span>
-          <span><span class="tchip">$232</span></span>
+    <!-- 3. 半導體龍頭/製造 -->
+    <div class="accordion">
+      <div class="accordion-head" onclick="toggleAccordion('semi')">
+        <div>
+          <h3>💎 半導體製造 / 龍頭</h3>
+          <p>台積電 2nm 量產、CoWoS 擴產，2026 年先進製程需求供不應求</p>
         </div>
-        <div class="idet" id="id-nvda"><h4>專家洞察・最新關注重點</h4><ul>
-          <li>US$1 兆訂單積壓是真實的供給瓶頸而非需求問題；即便競爭者追上，輝達出貨量在 2026–2027 年仍可被鎖定，股價短期風險來自「期望過高」而非「基本面轉壞」。</li>
-          <li>中國 <span class="j" data-term="H200 晶片" data-tip="NVIDIA 專門為中國市場設計的 AI 晶片，規格介於 H100 和最新 Blackwell 之間，符合美國出口管制上限。若中方批准 H200 進口，預計每季可為 NVIDIA 增加 $20–30 億美元收入。">H200</span> 銷售若正式獲批，是目前最具爆發力的股價催化劑，本月為關鍵觀察窗口。</li>
-          <li><span class="j" data-term="FWD P/E 21.5x" data-tip="預估本益比（Forward P/E）21.5 倍。相對 NVIDIA 的成長速度（年增 77%），這個估值其實並不貴。PEG 0.80x（本益比/成長率）低於 1 代表股價被低估，是目前買入的主要論點之一。">FWD P/E 21.5x、PEG 0.80x</span> 相對成長速度估值偏低，但 Google Ironwood TPU 規格開始超越 GB300——3 年內是機會，5 年後是挑戰。</li>
-        </ul>
-        <div class="hashtags"><span class="htag">#NVIDIA訂單積壓</span><span class="htag">#Blackwell量產</span><span class="htag">#中國H200解禁</span><span class="htag">#AI推理需求</span><span class="htag">#CUDA護城河</span></div>
-        </div></div>
-        <div><div class="irow" onclick="togDet('id-amd')">
-          <span><span class="icn-d icn-name">AMD</span><span class="icn-m icn-name">AMD (AMD)</span></span>
-          <span class="i-code-col"><span class="ictk">AMD</span></span>
-          <span><span class="icp">$278.39</span><span class="chg up i-chg-m" style="margin-top:3px;display:none">▲ +0.05%</span></span>
-          <span class="i-chg-col"><span class="chg up">▲ +0.05%</span></span>
-          <span><span class="tchip">$320</span></span>
-        </div>
-        <div class="idet" id="id-amd"><h4>專家洞察・最新關注重點</h4><ul>
-          <li><span class="j" data-term="MI300X" data-tip="AMD 的旗艦 AI 加速器，是目前最接近 NVIDIA H100/H200 的競爭產品。HPC 雲端廠商逐漸用 MI300X 作為 NVIDIA 的補充方案，但尚未形成替代趨勢。">MI300X</span> 在部分推理工作負載上具成本優勢，但 CUDA 生態的軟體鎖定讓大多數 AI 工程師仍選擇 NVIDIA。</li>
-          <li>AMD 是目前最有機會侵蝕 NVIDIA AI 晶片市占的公司，適合作為 NVIDIA 的「對沖持股」——NVIDIA 漲 AMD 也漲，但 NVIDIA 若遭遇利空，AMD 受影響較小。</li>
-          <li>MI400 系列（預計 2026 H2）的效能是否縮小與 NVIDIA 的差距，是下半年的關鍵觀察重點。</li>
-        </ul>
-        <div class="hashtags"><span class="htag">#AMD_MI300X</span><span class="htag">#NVIDIA替代方案</span><span class="htag">#AI晶片競爭</span><span class="htag">#MI400發布</span><span class="htag">#半導體對沖</span></div>
-        </div></div>
-        <div><div class="irow" onclick="togDet('id-asml-us')">
-          <span><span class="icn-d icn-name">ASML</span><span class="icn-m icn-name">ASML (ASML)</span></span>
-          <span class="i-code-col"><span class="ictk">ASML</span></span>
-          <span><span class="icp">$648</span><span class="chg dn i-chg-m" style="margin-top:3px;display:none">▼ -6.0%</span></span>
-          <span class="i-chg-col"><span class="chg dn">▼ -6.0%</span></span>
-          <span><span class="tchip">$745</span></span>
-        </div>
-        <div class="idet" id="id-asml-us"><h4>專家洞察・最新關注重點</h4><ul>
-          <li>EUV 光刻機全球唯一供應商，技術壁壘極高；本週 -6% 是因 Q2 指引低於過高期望，而非基本面惡化，長期投資者視為買入機會。</li>
-          <li>中國 DUV 出口管制（中國從 36% → 19% 營收）是結構性利空，但台積電/三星的 EUV 需求完全彌補缺口；訂單積壓 EUR 388 億為歷史高點。</li>
-          <li>分析師（Berenberg / Deutsche Bank）均在法說後上調目標價至 EUR 1,570–1,600，視本週跌幅為超賣機會。</li>
-        </ul>
-        <div class="hashtags"><span class="htag">#EUV光刻機</span><span class="htag">#半導體設備壟斷</span><span class="htag">#ASML法說</span><span class="htag">#中國DUV管制</span><span class="htag">#AI設備需求</span></div>
-        </div></div>
+        <span class="accordion-icon" id="icon-semi">▼</span>
+      </div>
+      <div class="accordion-body" id="body-semi">
+        <table class="ind-table">
+          <thead><tr><th>公司</th><th>代碼</th><th>股價 / 漲跌</th><th>目標價(+15%)</th><th>評級</th></tr></thead>
+          <tbody>
+            <tr onclick="showInsight('ins-2330')"><td>台灣積體電路（台積電）</td><td>2330</td><td>2,060元 +1.73%</td><td>2,369元</td><td><span class="rating-badge r-strong-buy">強力買入</span></td></tr>
+            <tr class="insight-row" id="ins-2330"><td colspan="5"><div class="insight-inner"><p>全球晶圓代工霸主，2026 Q1 EPS 22.08 元史上新高，3 月營收年增 45.2%。法說會上調全年資本支出至 520–560 億美元，2nm 量產進入爬坡，CoWoS 產能年底月產能達 7–7.5 萬片。外資目標價由 2,100 元調升至 2,330–2,400 元。全球最重要的 AI 算力基礎設施。</p><div class="hashtags"><span class="hashtag">#台股最強護城河</span><span class="hashtag">#2nm量產</span><span class="hashtag">#CoWoS擴產</span><span class="hashtag">#法說超預期</span><span class="hashtag">#外資首選</span></div></div></td></tr>
+            <tr onclick="showInsight('ins-2454')"><td>聯發科技（聯發科）</td><td>2454</td><td>2,090元 +10%</td><td>2,404元</td><td><span class="rating-badge r-strong-buy">強力買入</span></td></tr>
+            <tr class="insight-row" id="ins-2454"><td colspan="5"><div class="insight-inner"><p>全球 SoC（系統單晶片）設計龍頭，AI 手機與端側 AI 最大受益者。2026 年旗艦 Dimensity 處理器採台積電 3nm/2nm，高速成長。法人預估 2026 年 EPS 年增超過 30%。與台積電並為台股多頭核心主軸。</p><div class="hashtags"><span class="hashtag">#AI手機SoC</span><span class="hashtag">#端側AI</span><span class="hashtag">#EPS高速成長</span><span class="hashtag">#台積電3nm客戶</span><span class="hashtag">#台股核心主軸</span></div></div></td></tr>
+            <tr onclick="showInsight('ins-5347')"><td>世界先進積體電路（世界先進）</td><td>5347</td><td>~185元</td><td>213元</td><td><span class="rating-badge r-hold">持有觀察</span></td></tr>
+            <tr class="insight-row" id="ins-5347"><td colspan="5"><div class="insight-inner"><p>特殊製程晶圓代工，聚焦電源管理 IC（PMIC）、顯示驅動 IC。受惠 AI 伺服器電源管理 IC 需求，但相較台積電先進製程，成長動能較溫和。目前位階仍合理，適合穩健型投資人。</p><div class="hashtags"><span class="hashtag">#特殊製程</span><span class="hashtag">#PMIC</span><span class="hashtag">#顯示驅動IC</span><span class="hashtag">#成熟製程</span><span class="hashtag">#穩健成長</span></div></div></td></tr>
+            <tr onclick="showInsight('ins-6770')"><td>力積電</td><td>6770</td><td>~55元</td><td>63元</td><td><span class="rating-badge r-hold">持有觀察</span></td></tr>
+            <tr class="insight-row" id="ins-6770"><td colspan="5"><div class="insight-inner"><p>DRAM 與 Flash 晶圓代工，黃崇仁主導的晶圓代工廠。正推動先進製程升級，但在記憶體多空激戰中外資較不青睞。建議等待更明確的訂單催化劑再進場。</p><div class="hashtags"><span class="hashtag">#DRAM代工</span><span class="hashtag">#記憶體族群</span><span class="hashtag">#成熟製程轉型</span><span class="hashtag">#高波動</span><span class="hashtag">#觀察中</span></div></div></td></tr>
+          </tbody>
+        </table>
       </div>
     </div>
-  </div><!-- /ind-us -->
 
-  <div class="disc">⚠️ 本報告由 AI 自動生成，資料來源為公開網路資訊，僅供參考，不構成任何投資建議。</div>
-</div><!-- /tab-industry -->
+    <!-- 4. IC Design -->
+    <div class="accordion">
+      <div class="accordion-head" onclick="toggleAccordion('icdesign')">
+        <div>
+          <h3>🧠 IC 設計 / ASIC / 特用晶片</h3>
+          <p>AI 推論端 ASIC 雙主流時代到來，設計服務商受惠 ASIC 訂單爆量</p>
+        </div>
+        <span class="accordion-icon" id="icon-icdesign">▼</span>
+      </div>
+      <div class="accordion-body" id="body-icdesign">
+        <table class="ind-table">
+          <thead><tr><th>公司</th><th>代碼</th><th>股價 / 漲跌</th><th>目標價(+15%)</th><th>評級</th></tr></thead>
+          <tbody>
+            <tr onclick="showInsight('ins-3443')"><td>創意電子（創意）</td><td>3443</td><td>2,515元（漲停）</td><td>2,892元</td><td><span class="rating-badge r-strong-buy">強力買入</span></td></tr>
+            <tr class="insight-row" id="ins-3443"><td colspan="5"><div class="insight-inner"><p>台積電子公司，AI ASIC 設計服務最強標的，2026 年 EPS 成長率接近 50%。承接雲端大廠自研 AI 晶片設計訂單，CoWoS 先進封裝需求帶動其 IP、設計服務均大幅成長。法人目標價上調空間仍大。</p><div class="hashtags"><span class="hashtag">#ASIC設計服務</span><span class="hashtag">#台積電子公司</span><span class="hashtag">#千金股</span><span class="hashtag">#EPS年增50%</span><span class="hashtag">#AI雲端大客戶</span></div></div></td></tr>
+            <tr onclick="showInsight('ins-3661')"><td>世芯-KY</td><td>3661</td><td>~1,850元</td><td>2,128元</td><td><span class="rating-badge r-buy">買入</span></td></tr>
+            <tr class="insight-row" id="ins-3661"><td colspan="5"><div class="insight-inner"><p>ASIC 設計服務高速成長廠商，2026 年 EPS 預估年增近 50%，但股價仍在法人認定的合理價位以下，是本波 AI 六強中最具性價比的標的之一。客戶涵蓋多家雲端巨頭。</p><div class="hashtags"><span class="hashtag">#ASIC六強</span><span class="hashtag">#合理估值</span><span class="hashtag">#EPS年增50%</span><span class="hashtag">#雲端大客戶</span><span class="hashtag">#AI最直接受益</span></div></div></td></tr>
+            <tr onclick="showInsight('ins-5274')"><td>信驊科技（信驊）</td><td>5274</td><td>~12,000元以上</td><td>13,800元</td><td><span class="rating-badge r-hold">持有觀察</span></td></tr>
+            <tr class="insight-row" id="ins-5274"><td colspan="5"><div class="insight-inner"><p>台股萬金股王，BMC 伺服器管理晶片全球市占率超過 70%。AI 伺服器每台需求量大增，但位階極高，市值過於集中，適合長線持有而非短線追高。本益比過高，短線風險大。</p><div class="hashtags"><span class="hashtag">#萬金股王</span><span class="hashtag">#BMC晶片</span><span class="hashtag">#全球市占龍頭</span><span class="hashtag">#高位階</span><span class="hashtag">#長線標的</span></div></div></td></tr>
+            <tr onclick="showInsight('ins-6242')"><td>聯鈞光電（聯鈞）</td><td>6242</td><td>~320元</td><td>368元</td><td><span class="rating-badge r-na">資料不足</span></td></tr>
+            <tr class="insight-row" id="ins-6242"><td colspan="5"><div class="insight-inner"><p>光通訊元件廠，切入 800G/1.6T 光模組市場。矽光子趨勢受惠族群之一，但規模較小，流動性較低，需等待更多客戶驗證數據。</p><div class="hashtags"><span class="hashtag">#光通訊元件</span><span class="hashtag">#800G模組</span><span class="hashtag">#矽光子受益</span><span class="hashtag">#小市值</span><span class="hashtag">#待觀察</span></div></div></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
 
-</div><!-- /wrap -->
-<div class="bso" id="bso" onclick="closeBS()"></div>
-<div class="bss" id="bss"><div class="bsh"></div><div class="bst" id="bst"></div><div class="bsd" id="bsd"></div></div>
+    <!-- 5. 記憶體 -->
+    <div class="accordion">
+      <div class="accordion-head" onclick="toggleAccordion('memory')">
+        <div>
+          <h3>🧲 記憶體</h3>
+          <p>DDR4 報價單季暴漲 70%，南亞科 Q1 毛利率 67.9% 歷史新高</p>
+        </div>
+        <span class="accordion-icon" id="icon-memory">▼</span>
+      </div>
+      <div class="accordion-body" id="body-memory">
+        <table class="ind-table">
+          <thead><tr><th>公司</th><th>代碼</th><th>股價 / 漲跌</th><th>目標價(+15%)</th><th>評級</th></tr></thead>
+          <tbody>
+            <tr onclick="showInsight('ins-2408')"><td>南亞科技（南亞科）</td><td>2408</td><td>207元 -1.43%</td><td>238元</td><td><span class="rating-badge r-buy">買入</span></td></tr>
+            <tr class="insight-row" id="ins-2408"><td colspan="5"><div class="insight-inner"><p>台灣 DRAM 龍頭，3 月單月營收 181.7 億元年增 560%，Q1 創歷史單季新高。近期法說後出現「利多不漲」走勢，短線進入 200 元保衛戰，為技術高檔整理。私募引進國際四大巨頭資金，長線看多。建議等回調至月線支撐後布局。</p><div class="hashtags"><span class="hashtag">#台灣DRAM</span><span class="hashtag">#DDR4報價暴漲</span><span class="hashtag">#國際私募入股</span><span class="hashtag">#利多不漲警示</span><span class="hashtag">#等回調</span></div></div></td></tr>
+            <tr onclick="showInsight('ins-8299')"><td>群聯電子（群聯）</td><td>8299</td><td>~870元</td><td>1,001元</td><td><span class="rating-badge r-buy">買入</span></td></tr>
+            <tr class="insight-row" id="ins-8299"><td colspan="5"><div class="insight-inner"><p>NAND Flash 控制晶片全球前三大，2026 年獲利好轉趨勢明確，Flash 缺貨漲價潮持續。屬快閃記憶體供應鏈核心受益族群，與 DRAM 題材互補。法人認為適合中期操作布局。</p><div class="hashtags"><span class="hashtag">#NAND控制晶片</span><span class="hashtag">#Flash漲價</span><span class="hashtag">#2026獲利好轉</span><span class="hashtag">#記憶體族群</span><span class="hashtag">#中期布局</span></div></div></td></tr>
+            <tr onclick="showInsight('ins-5289')"><td>宜鼎國際（宜鼎）</td><td>5289</td><td>~1,280元</td><td>1,472元</td><td><span class="rating-badge r-buy">買入</span></td></tr>
+            <tr class="insight-row" id="ins-5289"><td colspan="5"><div class="insight-inner"><p>工業等級 Flash 儲存方案，2 月單月大賺 16 元以上，Q1 獲利暴衝。受惠記憶體缺貨漲價潮直接受益，客戶涵蓋工業、航太、醫療等高單價市場，毛利率顯著高於消費型記憶體廠。千金股行列，高成長確定性強。</p><div class="hashtags"><span class="hashtag">#工業Flash</span><span class="hashtag">#記憶體漲價最直接受益</span><span class="hashtag">#千金股</span><span class="hashtag">#高毛利</span><span class="hashtag">#Q1爆量獲利</span></div></div></td></tr>
+            <tr onclick="showInsight('ins-6239')"><td>力成科技（力成）</td><td>6239</td><td>~240元</td><td>276元</td><td><span class="rating-badge r-hold">持有觀察</span></td></tr>
+            <tr class="insight-row" id="ins-6239"><td colspan="5"><div class="insight-inner"><p>記憶體封測廠，CoWoS 外包訂單潛在受益者。目前位階偏中，需等待具體封測訂單確認，以及台積電外包比重提升的實際落地。</p><div class="hashtags"><span class="hashtag">#記憶體封測</span><span class="hashtag">#CoWoS外包</span><span class="hashtag">#台積電外包受益</span><span class="hashtag">#封測族群</span><span class="hashtag">#等待確認</span></div></div></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- 6. PCB/CCL -->
+    <div class="accordion">
+      <div class="accordion-head" onclick="toggleAccordion('pcb')">
+        <div>
+          <h3>🖥️ PCB / CCL / 載板</h3>
+          <p>2026 Q1 CCL/PCB 漲價 10–40%，漲價週期預估延伸至 2027 年</p>
+        </div>
+        <span class="accordion-icon" id="icon-pcb">▼</span>
+      </div>
+      <div class="accordion-body" id="body-pcb">
+        <table class="ind-table">
+          <thead><tr><th>公司</th><th>代碼</th><th>股價 / 漲跌</th><th>目標價(+15%)</th><th>評級</th></tr></thead>
+          <tbody>
+            <tr onclick="showInsight('ins-2383')"><td>台光電子（台光電）</td><td>2383</td><td>3,945元 +2.47%</td><td>4,537元</td><td><span class="rating-badge r-strong-buy">強力買入</span></td></tr>
+            <tr class="insight-row" id="ins-2383"><td colspan="5"><div class="insight-inner"><p>高階高頻銅箔基板（CCL）全球領導廠商，外資最青睞 CCL 核心標的。AI 伺服器 PCB 板層數從 20 層跳升至 30+ 層，對高端 CCL 需求急遽升溫。HVLP4 高階銅箔供需缺口預估 2026–2027 年達 48%/43%，漲價週期明確且持久。</p><div class="hashtags"><span class="hashtag">#高階CCL龍頭</span><span class="hashtag">#外資首選</span><span class="hashtag">#漲價週期確立</span><span class="hashtag">#供需缺口擴大</span><span class="hashtag">#2027年仍看漲</span></div></div></td></tr>
+            <tr onclick="showInsight('ins-3189')"><td>景碩科技（景碩）</td><td>3189</td><td>473.5元 +9.99%</td><td>544元</td><td><span class="rating-badge r-buy">買入</span></td></tr>
+            <tr class="insight-row" id="ins-3189"><td colspan="5"><div class="insight-inner"><p>ABF 載板廠，AI 封裝載板需求強勁。今日漲幅接近漲停，量能放大為強勢訊號。受惠台積電 CoWoS 擴產，ABF 載板三雄（景碩/南電/欣興）需求能見度高。目前仍在初升段，法人持續看多。</p><div class="hashtags"><span class="hashtag">#ABF載板</span><span class="hashtag">#CoWoS供應鏈</span><span class="hashtag">#載板三雄</span><span class="hashtag">#今日強勢漲</span><span class="hashtag">#AI封裝核心</span></div></div></td></tr>
+            <tr onclick="showInsight('ins-8120')"><td>大量電子（大量）</td><td>8120</td><td>~285元</td><td>328元</td><td><span class="rating-badge r-buy">買入</span></td></tr>
+            <tr class="insight-row" id="ins-8120"><td colspan="5"><div class="insight-inner"><p>高頻高速 PCB 廠，切入 AI 伺服器與網通板卡市場。近期盤面強勢，法人看好其 AI 伺服器 PCB 訂單動能持續放量，2026 年業績成長確定性高。</p><div class="hashtags"><span class="hashtag">#高速PCB</span><span class="hashtag">#AI伺服器PCB</span><span class="hashtag">#盤面強勢</span><span class="hashtag">#法人布局</span><span class="hashtag">#中小型成長股</span></div></div></td></tr>
+            <tr onclick="showInsight('ins-6514')"><td>定穎投控（定穎）</td><td>6514</td><td>~180元</td><td>207元</td><td><span class="rating-badge r-hold">持有觀察</span></td></tr>
+            <tr class="insight-row" id="ins-6514"><td colspan="5"><div class="insight-inner"><p>PCB 廠，受惠 AI 伺服器 PCB 漲價趨勢，但相較景碩、大量，在高階 ABF 載板技術布局上仍在追趕。等待具體訂單能見度數據再評估。</p><div class="hashtags"><span class="hashtag">#PCB族群</span><span class="hashtag">#AI伺服器受益</span><span class="hashtag">#待確認</span><span class="hashtag">#觀察期</span><span class="hashtag">#技術追趕中</span></div></div></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- 7. EMS/ODM/伺服器 -->
+    <div class="accordion">
+      <div class="accordion-head" onclick="toggleAccordion('ems')">
+        <div>
+          <h3>🖥️ EMS / 伺服器組裝 / ODM</h3>
+          <p>AI 伺服器 GB300 供應鏈全面受益，組裝廠美國化趨勢加速</p>
+        </div>
+        <span class="accordion-icon" id="icon-ems">▼</span>
+      </div>
+      <div class="accordion-body" id="body-ems">
+        <table class="ind-table">
+          <thead><tr><th>公司</th><th>代碼</th><th>股價 / 漲跌</th><th>目標價(+15%)</th><th>評級</th></tr></thead>
+          <tbody>
+            <tr onclick="showInsight('ins-2317')"><td>鴻海精密（鴻海）</td><td>2317</td><td>211元 +1.93%</td><td>243元</td><td><span class="rating-badge r-buy">買入</span></td></tr>
+            <tr class="insight-row" id="ins-2317"><td colspan="5"><div class="insight-inner"><p>全球最大 EMS 廠，AI 伺服器 GB300 組裝重要供應商。具備垂直整合子公司與低價搶單策略彈性，最適合承接毛利較低但規模巨大的國家級 AI 基礎建設訂單。法人中期目標價至少 300 元。近期外資買超，多頭方向明確。</p><div class="hashtags"><span class="hashtag">#全球最大EMS</span><span class="hashtag">#GB300組裝</span><span class="hashtag">#美國製造赴美設廠</span><span class="hashtag">#目標300元</span><span class="hashtag">#外資買超</span></div></div></td></tr>
+            <tr onclick="showInsight('ins-6669')"><td>緯穎科技（緯穎）</td><td>6669</td><td>~2,800元</td><td>3,220元</td><td><span class="rating-badge r-buy">買入</span></td></tr>
+            <tr class="insight-row" id="ins-6669"><td colspan="5"><div class="insight-inner"><p>AI 伺服器 ODM 純廠，微軟、Amazon 主要供應商之一，千金股行列。在超大規模雲端業者（Hyperscaler）資本支出高速成長下，直接受益於 AI 運算叢集擴建訂單。2025 年已是台股千金股之一。</p><div class="hashtags"><span class="hashtag">#AI伺服器ODM</span><span class="hashtag">#Hyperscaler直接受惠</span><span class="hashtag">#千金股</span><span class="hashtag">#微軟主供</span><span class="hashtag">#雲端資本支出受益</span></div></div></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- 8. 封測/先進封裝 -->
+    <div class="accordion">
+      <div class="accordion-head" onclick="toggleAccordion('osat')">
+        <div>
+          <h3>📦 封測 / 先進封裝</h3>
+          <p>矽光子 CPO 商業化量產元年，日月光 2026 年正式進入量產</p>
+        </div>
+        <span class="accordion-icon" id="icon-osat">▼</span>
+      </div>
+      <div class="accordion-body" id="body-osat">
+        <table class="ind-table">
+          <thead><tr><th>公司</th><th>代碼</th><th>股價 / 漲跌</th><th>目標價(+15%)</th><th>評級</th></tr></thead>
+          <tbody>
+            <tr onclick="showInsight('ins-3711')"><td>日月光投控</td><td>3711</td><td>~165元</td><td>190元</td><td><span class="rating-badge r-buy">買入</span></td></tr>
+            <tr class="insight-row" id="ins-3711"><td colspan="5"><div class="insight-inner"><p>全球封測龍頭，台積電 CoWoS 外包比重達 50%，2026 年矽光子與 CPO 技術有望正式進入商業化量產，為市場點燃最大題材。外資長線布局目標，CoWoS-L/CoWoS-R 外包訂單能見度拉長至 2026 下半年以上。</p><div class="hashtags"><span class="hashtag">#封測龍頭</span><span class="hashtag">#CoWoS外包50%</span><span class="hashtag">#矽光子CPO量產</span><span class="hashtag">#先進封裝</span><span class="hashtag">#外資長線布局</span></div></div></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- 9. 廠務工程 -->
+    <div class="accordion">
+      <div class="accordion-head" onclick="toggleAccordion('facility')">
+        <div>
+          <h3>🏗️ 廠務工程 / 機電安裝</h3>
+          <p>全球半導體擴產浪潮，廠務工程訂單滿手，能見度延伸至 2027 年</p>
+        </div>
+        <span class="accordion-icon" id="icon-facility">▼</span>
+      </div>
+      <div class="accordion-body" id="body-facility">
+        <table class="ind-table">
+          <thead><tr><th>公司</th><th>代碼</th><th>股價 / 漲跌</th><th>目標價(+15%)</th><th>評級</th></tr></thead>
+          <tbody>
+            <tr onclick="showInsight('ins-2404')"><td>漢唐集成（漢唐）</td><td>2404</td><td>~1,100元</td><td>1,265元</td><td><span class="rating-badge r-buy">買入</span></td></tr>
+            <tr class="insight-row" id="ins-2404"><td colspan="5"><div class="insight-inner"><p>半導體廠務工程龍頭，台積電、英特爾最大廠務承包商。AI 熱潮引爆全球半導體大擴產，漢唐訂單滿手，2026 年 Q1 業績持續亮眼。美國子公司 UIS(USA) 已取得不動產布局赴美設廠。千金股行列。</p><div class="hashtags"><span class="hashtag">#廠務工程龍頭</span><span class="hashtag">#台積電承包商</span><span class="hashtag">#千金股</span><span class="hashtag">#赴美設廠</span><span class="hashtag">#訂單滿手2027</span></div></div></td></tr>
+            <tr onclick="showInsight('ins-6196')"><td>帆宣系統（帆宣）</td><td>6196</td><td>~520元</td><td>598元</td><td><span class="rating-badge r-buy">買入</span></td></tr>
+            <tr class="insight-row" id="ins-6196"><td colspan="5"><div class="insight-inner"><p>半導體廠務機電系統廠，漢唐的重要同業，受惠相同的半導體擴廠題材。客戶包括台積電子公司及晶圓代工廠。訂單動能跟隨漢唐同步受惠，但規模較小，流動性需注意。</p><div class="hashtags"><span class="hashtag">#廠務機電</span><span class="hashtag">#半導體擴廠</span><span class="hashtag">#台積電供應鏈</span><span class="hashtag">#漢唐同業</span><span class="hashtag">#小市值</span></div></div></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- 10. 光通訊/矽光子 -->
+    <div class="accordion">
+      <div class="accordion-head" onclick="toggleAccordion('cpo')">
+        <div>
+          <h3>💡 光通訊 / 矽光子 / CPO</h3>
+          <p>輝達豪擲 40 億美元布局矽光子，聯亞、光聖、波若威為「CPO 三雄」</p>
+        </div>
+        <span class="accordion-icon" id="icon-cpo">▼</span>
+      </div>
+      <div class="accordion-body" id="body-cpo">
+        <table class="ind-table">
+          <thead><tr><th>公司</th><th>代碼</th><th>股價 / 漲跌</th><th>目標價(+15%)</th><th>評級</th></tr></thead>
+          <tbody>
+            <tr onclick="showInsight('ins-3081')"><td>聯亞光電（聯亞）</td><td>3081</td><td>~1,250元（近期漲停創新高）</td><td>1,438元</td><td><span class="rating-badge r-strong-buy">強力買入</span></td></tr>
+            <tr class="insight-row" id="ins-3081"><td colspan="5"><div class="insight-inner"><p>InP（磷化銦）雷射材料全球領導廠，AWS、Google、NVIDIA 客戶需求爆發，GTC、OFC 大會相繼點火。800G 光模組最直接受益標的，3 月漲停創新天價。2026 年被定位為「矽光子收割元年」最核心標的。</p><div class="hashtags"><span class="hashtag">#InP雷射材料</span><span class="hashtag">#CPO三雄</span><span class="hashtag">#矽光子龍頭</span><span class="hashtag">#NVIDIA供應鏈</span><span class="hashtag">#800G1.6T受益</span></div></div></td></tr>
+            <tr onclick="showInsight('ins-6442')"><td>光聖科技（光聖）</td><td>6442</td><td>2,325元 +215元</td><td>2,674元</td><td><span class="rating-badge r-buy">買入</span></td></tr>
+            <tr class="insight-row" id="ins-6442"><td colspan="5"><div class="insight-inner"><p>光通訊被動元件廠，受惠 AI 資料中心 800G/1.6T 光纖升級浪潮。今日大漲 215 元，顯示主力資金強勢進場。2026 年光通訊出貨量有望延續去年熱度，具高成長確定性。矽光子 CPO 概念股之一。</p><div class="hashtags"><span class="hashtag">#光通訊被動元件</span><span class="hashtag">#800G族群</span><span class="hashtag">#今日大漲強勢</span><span class="hashtag">#CPO概念</span><span class="hashtag">#千金股</span></div></div></td></tr>
+            <tr onclick="showInsight('ins-6703')"><td>華星光通（華星光）</td><td>6703</td><td>~480元</td><td>552元</td><td><span class="rating-badge r-buy">買入</span></td></tr>
+            <tr class="insight-row" id="ins-6703"><td colspan="5"><div class="insight-inner"><p>光纖傳輸產品廠，NVIDIA 供應鏈題材持續吸引資金，800G/1.6T 光纖產品直接受惠資料中心升級浪潮。矽光子族群整體受惠於輝達巨資布局，買盤全面增溫。</p><div class="hashtags"><span class="hashtag">#光纖傳輸</span><span class="hashtag">#NVIDIA供應鏈</span><span class="hashtag">#800G1.6T</span><span class="hashtag">#矽光子族群</span><span class="hashtag">#外資增溫</span></div></div></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- 11. 材料/化工 -->
+    <div class="accordion">
+      <div class="accordion-head" onclick="toggleAccordion('material')">
+        <div>
+          <h3>⚗️ 特殊材料 / 化工</h3>
+          <p>先進製程材料需求隨晶圓廠擴產同步增加</p>
+        </div>
+        <span class="accordion-icon" id="icon-material">▼</span>
+      </div>
+      <div class="accordion-body" id="body-material">
+        <table class="ind-table">
+          <thead><tr><th>公司</th><th>代碼</th><th>股價 / 漲跌</th><th>目標價(+15%)</th><th>評級</th></tr></thead>
+          <tbody>
+            <tr onclick="showInsight('ins-8038')"><td>新應材</td><td>8038</td><td>~240元</td><td>276元</td><td><span class="rating-badge r-hold">持有觀察</span></td></tr>
+            <tr class="insight-row" id="ins-8038"><td colspan="5"><div class="insight-inner"><p>半導體特殊材料廠，供應晶圓製造過程所需的進階化學材料，受惠台積電 2nm 製程擴產。訂單能見度穩定，但成長速度相對溫和，適合低風險投資人。</p><div class="hashtags"><span class="hashtag">#半導體材料</span><span class="hashtag">#2nm製程材料</span><span class="hashtag">#台積電供應鏈</span><span class="hashtag">#穩健成長</span><span class="hashtag">#低波動</span></div></div></td></tr>
+            <tr onclick="showInsight('ins-1234')"><td>台特化（台特化）</td><td>1234</td><td>~95元</td><td>109元</td><td><span class="rating-badge r-na">資料不足</span></td></tr>
+            <tr class="insight-row" id="ins-1234"><td colspan="5"><div class="insight-inner"><p>特殊化學品廠，公開資訊有限，與半導體廠務及製造業的關聯需進一步確認。建議等待季報公布後再評估布局時機。</p><div class="hashtags"><span class="hashtag">#特殊化工</span><span class="hashtag">#資料待確認</span><span class="hashtag">#觀察期</span><span class="hashtag">#等季報</span><span class="hashtag">#謹慎布局</span></div></div></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- 12. 其他/多元 -->
+    <div class="accordion">
+      <div class="accordion-head" onclick="toggleAccordion('others')">
+        <div>
+          <h3>🔮 其他概念股</h3>
+          <p>航運、太陽能、特殊設備等利基型族群</p>
+        </div>
+        <span class="accordion-icon" id="icon-others">▼</span>
+      </div>
+      <div class="accordion-body" id="body-others">
+        <table class="ind-table">
+          <thead><tr><th>公司</th><th>代碼</th><th>股價 / 漲跌</th><th>目標價(+15%)</th><th>評級</th></tr></thead>
+          <tbody>
+            <tr onclick="showInsight('ins-2605')"><td>新興航運（新興）</td><td>2605</td><td>~190元</td><td>219元</td><td><span class="rating-badge r-hold">持有觀察</span></td></tr>
+            <tr class="insight-row" id="ins-2605"><td colspan="5"><div class="insight-inner"><p>散裝航運，受全球貿易需求回溫與美伊停戰影響，但中東停火後油輪運費下滑。與 AI 主線相關性低，屬輪動補漲型標的。適合短線交易，長線布局邏輯薄弱。</p><div class="hashtags"><span class="hashtag">#散裝航運</span><span class="hashtag">#運費回溫</span><span class="hashtag">#輪動補漲</span><span class="hashtag">#AI關聯低</span><span class="hashtag">#短線操作</span></div></div></td></tr>
+            <tr onclick="showInsight('ins-3576')"><td>聯合再生能源（聯合再生）</td><td>3576</td><td>~18元</td><td>21元</td><td><span class="rating-badge r-reduce">減碼</span></td></tr>
+            <tr class="insight-row" id="ins-3576"><td colspan="5"><div class="insight-inner"><p>台灣最大太陽能電池廠，但太陽能產業持續面臨中國低價競爭壓力，毛利率長期偏低。雖有再生能源政策支撐，但外資持續賣超，本業獲利承壓。與 AI 主線完全無關，建議減碼。</p><div class="hashtags"><span class="hashtag">#太陽能</span><span class="hashtag">#中國競爭壓力</span><span class="hashtag">#外資持續賣超</span><span class="hashtag">#毛利率偏低</span><span class="hashtag">#AI無關</span></div></div></td></tr>
+            <tr onclick="showInsight('ins-3059')"><td>華晶科技（華晶科）</td><td>3059</td><td>~85元</td><td>98元</td><td><span class="rating-badge r-na">資料不足</span></td></tr>
+            <tr class="insight-row" id="ins-3059"><td colspan="5"><div class="insight-inner"><p>消費型影像感測器廠，公開資訊顯示其在智慧家庭、安防攝影機市場布局。AI 推論端邊緣運算潛在受益，但主要業務與 AI 伺服器主線距離較遠，待更多法說資訊確認。</p><div class="hashtags"><span class="hashtag">#影像感測器</span><span class="hashtag">#邊緣AI</span><span class="hashtag">#消費電子</span><span class="hashtag">#資料待確認</span><span class="hashtag">#觀察中</span></div></div></td></tr>
+            <tr onclick="showInsight('ins-3491')"><td>昇達科技（昇達科）</td><td>3491</td><td>~320元（漲幅9%+）</td><td>368元</td><td><span class="rating-badge r-buy">買入</span></td></tr>
+            <tr class="insight-row" id="ins-3491"><td colspan="5"><div class="insight-inner"><p>網路通訊元件廠，受惠於 AI 資料中心高速網路升級需求，近期出現強勢漲幅。800G 網路交換器普及帶動相關網通元件需求增加，是本波盤面值得關注的中小型強勢股。</p><div class="hashtags"><span class="hashtag">#網通元件</span><span class="hashtag">#800G網路</span><span class="hashtag">#近期強勢</span><span class="hashtag">#資料中心升級</span><span class="hashtag">#中小型股</span></div></div></td></tr>
+            <tr onclick="showInsight('ins-6548')"><td>長科興業（長科）</td><td>6548</td><td>~160元</td><td>184元</td><td><span class="rating-badge r-na">資料不足</span></td></tr>
+            <tr class="insight-row" id="ins-6548"><td colspan="5"><div class="insight-inner"><p>特殊導線架廠商，封裝材料供應鏈。公開資訊有限，與半導體封裝的具體關聯需進一步研究，建議等季報確認。</p><div class="hashtags"><span class="hashtag">#導線架</span><span class="hashtag">#封裝材料</span><span class="hashtag">#半導體供應鏈</span><span class="hashtag">#資料不足</span><span class="hashtag">#等季報</span></div></div></td></tr>
+            <tr onclick="showInsight('ins-6635')"><td>邁科國際（邁科）</td><td>6635</td><td>~95元</td><td>109元</td><td><span class="rating-badge r-na">資料不足</span></td></tr>
+            <tr class="insight-row" id="ins-6635"><td colspan="5"><div class="insight-inner"><p>特殊設備相關廠商，公開資訊不足，無法完整評估投資價值。建議持續追蹤營收月報，等待業績確認後再決定布局。</p><div class="hashtags"><span class="hashtag">#資料不足</span><span class="hashtag">#觀察中</span><span class="hashtag">#等季報</span><span class="hashtag">#謹慎布局</span><span class="hashtag">#追蹤月報</span></div></div></td></tr>
+            <tr onclick="showInsight('ins-6763')"><td>聯友金屬-創（聯友金屬）</td><td>6763</td><td>~188元</td><td>216元</td><td><span class="rating-badge r-na">資料不足</span></td></tr>
+            <tr class="insight-row" id="ins-6763"><td colspan="5"><div class="insight-inner"><p>2026 年 3 月營收年增逾 3,000%，創業板標的，資訊不足。暴增的月營收需確認是否為一次性，建議謹慎操作，先觀察至少兩個月數據再確認趨勢。</p><div class="hashtags"><span class="hashtag">#創業板</span><span class="hashtag">#營收暴增</span><span class="hashtag">#待驗證</span><span class="hashtag">#謹慎</span><span class="hashtag">#小心一次性</span></div></div></td></tr>
+            <tr onclick="showInsight('ins-7769')"><td>鴻勁精密（鴻勁）</td><td>7769</td><td>~210元</td><td>242元</td><td><span class="rating-badge r-na">資料不足</span></td></tr>
+            <tr class="insight-row" id="ins-7769"><td colspan="5"><div class="insight-inner"><p>半導體測試設備相關廠商，受惠 AI 晶片測試需求增加。公開資訊有限，建議等待季報及業績說明會確認後再評估。</p><div class="hashtags"><span class="hashtag">#測試設備</span><span class="hashtag">#半導體設備</span><span class="hashtag">#AI晶片測試</span><span class="hashtag">#資料不足</span><span class="hashtag">#等季報</span></div></div></td></tr>
+            <tr onclick="showInsight('ins-3206')"><td>倍利科技（倍利科）</td><td>3206</td><td>~45元</td><td>52元</td><td><span class="rating-badge r-na">資料不足</span></td></tr>
+            <tr class="insight-row" id="ins-3206"><td colspan="5"><div class="insight-inner"><p>電子通路商，代理半導體元件，受惠 AI 相關零組件需求增加。但通路商毛利較低，與直接供應鏈廠商相比投資效益較弱，建議非優先布局。</p><div class="hashtags"><span class="hashtag">#電子通路</span><span class="hashtag">#半導體代理</span><span class="hashtag">#毛利偏低</span><span class="hashtag">#通路商</span><span class="hashtag">#非優先</span></div></div></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ════════════════════ TAB 3: 買賣建議 ════════════════════ -->
+<div id="t3" class="tab-content">
+  <div class="buysell-content container">
+    <h2 class="buysell-title">📋 買賣建議總覽</h2>
+
+    <!-- Legend -->
+    <div class="rating-legend">
+      <div class="rl-item"><div class="rl-dot" style="background:#c0392b"></div>強力買入</div>
+      <div class="rl-item"><div class="rl-dot" style="background:#e74c3c"></div>買入</div>
+      <div class="rl-item"><div class="rl-dot" style="background:#d97706"></div>持有觀察</div>
+      <div class="rl-item"><div class="rl-dot" style="background:#27ae60"></div>減碼</div>
+      <div class="rl-item"><div class="rl-dot" style="background:#9ca3af"></div>資料不足</div>
+    </div>
+
+    <!-- Filter -->
+    <div class="filter-btns">
+      <button class="filter-btn active" onclick="filterTable('all',this)">全部</button>
+      <button class="filter-btn" onclick="filterTable('buy',this)">強力買入・買入</button>
+      <button class="filter-btn" onclick="filterTable('hold',this)">持有觀察</button>
+      <button class="filter-btn" onclick="filterTable('reduce',this)">減碼・資料不足</button>
+      <button class="filter-btn" onclick="filterTable('novice',this)">👶 適合新手</button>
+    </div>
+
+    <!-- Table -->
+    <table class="buy-table" id="buyTable">
+      <thead>
+        <tr>
+          <th>公司</th>
+          <th>評級</th>
+          <th>現價</th>
+          <th>目標價(+15%)</th>
+          <th>新手適合度</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- 強力買入 -->
+        <tr data-rating="strong-buy" data-novice="1">
+          <td><div class="bt-name" onclick="goToStock('1519')">華城電機</div><div class="bt-code">1519</div><div class="bt-ind">重電/電力基建</div></td>
+          <td><span class="rating-badge r-strong-buy">強力買入</span></td>
+          <td>~970元</td><td class="mono">1,116元</td>
+          <td><span class="novice-icon">👶⭐⭐</span></td>
+        </tr>
+        <tr data-rating="strong-buy" data-novice="1">
+          <td><div class="bt-name" onclick="goToStock('2308')">台達電子</div><div class="bt-code">2308</div><div class="bt-ind">電源/散熱</div></td>
+          <td><span class="rating-badge r-strong-buy">強力買入</span></td>
+          <td>2,015元</td><td class="mono">2,317元</td>
+          <td><span class="novice-icon">👶⭐⭐⭐</span></td>
+        </tr>
+        <tr data-rating="strong-buy" data-novice="1">
+          <td><div class="bt-name" onclick="goToStock('2330')">台積電</div><div class="bt-code">2330</div><div class="bt-ind">半導體龍頭</div></td>
+          <td><span class="rating-badge r-strong-buy">強力買入</span></td>
+          <td>2,060元</td><td class="mono">2,369元</td>
+          <td><span class="novice-icon">👶⭐⭐⭐</span></td>
+        </tr>
+        <tr data-rating="strong-buy" data-novice="0">
+          <td><div class="bt-name" onclick="goToStock('2383')">台光電子</div><div class="bt-code">2383</div><div class="bt-ind">PCB/CCL</div></td>
+          <td><span class="rating-badge r-strong-buy">強力買入</span></td>
+          <td>3,945元</td><td class="mono">4,537元</td>
+          <td><span class="novice-icon">⭐⭐</span></td>
+        </tr>
+        <tr data-rating="strong-buy" data-novice="0">
+          <td><div class="bt-name" onclick="goToStock('2454')">聯發科</div><div class="bt-code">2454</div><div class="bt-ind">半導體/IC設計</div></td>
+          <td><span class="rating-badge r-strong-buy">強力買入</span></td>
+          <td>2,090元</td><td class="mono">2,404元</td>
+          <td><span class="novice-icon">⭐⭐⭐</span></td>
+        </tr>
+        <tr data-rating="strong-buy" data-novice="0">
+          <td><div class="bt-name" onclick="goToStock('3017')">奇鋐科技</div><div class="bt-code">3017</div><div class="bt-ind">散熱</div></td>
+          <td><span class="rating-badge r-strong-buy">強力買入</span></td>
+          <td>2,490元</td><td class="mono">2,864元</td>
+          <td><span class="novice-icon">⭐⭐</span></td>
+        </tr>
+        <tr data-rating="strong-buy" data-novice="0">
+          <td><div class="bt-name" onclick="goToStock('3443')">創意電子</div><div class="bt-code">3443</div><div class="bt-ind">IC設計/ASIC</div></td>
+          <td><span class="rating-badge r-strong-buy">強力買入</span></td>
+          <td>2,515元</td><td class="mono">2,892元</td>
+          <td><span class="novice-icon">⭐⭐</span></td>
+        </tr>
+        <tr data-rating="strong-buy" data-novice="0">
+          <td><div class="bt-name" onclick="goToStock('3081')">聯亞光電</div><div class="bt-code">3081</div><div class="bt-ind">矽光子/CPO</div></td>
+          <td><span class="rating-badge r-strong-buy">強力買入</span></td>
+          <td>~1,250元</td><td class="mono">1,438元</td>
+          <td><span class="novice-icon">⭐</span></td>
+        </tr>
+        <!-- 買入 -->
+        <tr data-rating="buy" data-novice="1">
+          <td><div class="bt-name" onclick="goToStock('1503')">士林電機</div><div class="bt-code">1503</div><div class="bt-ind">重電</div></td>
+          <td><span class="rating-badge r-buy">買入</span></td>
+          <td>~460元</td><td class="mono">529元</td>
+          <td><span class="novice-icon">👶⭐⭐</span></td>
+        </tr>
+        <tr data-rating="buy" data-novice="1">
+          <td><div class="bt-name" onclick="goToStock('1513')">中興電工</div><div class="bt-code">1513</div><div class="bt-ind">重電</div></td>
+          <td><span class="rating-badge r-buy">買入</span></td>
+          <td>155.5元</td><td class="mono">179元</td>
+          <td><span class="novice-icon">👶⭐⭐⭐</span></td>
+        </tr>
+        <tr data-rating="buy" data-novice="1">
+          <td><div class="bt-name" onclick="goToStock('2317')">鴻海精密</div><div class="bt-code">2317</div><div class="bt-ind">EMS/伺服器</div></td>
+          <td><span class="rating-badge r-buy">買入</span></td>
+          <td>211元</td><td class="mono">243元</td>
+          <td><span class="novice-icon">👶⭐⭐⭐</span></td>
+        </tr>
+        <tr data-rating="buy" data-novice="0">
+          <td><div class="bt-name" onclick="goToStock('2404')">漢唐集成</div><div class="bt-code">2404</div><div class="bt-ind">廠務工程</div></td>
+          <td><span class="rating-badge r-buy">買入</span></td>
+          <td>~1,100元</td><td class="mono">1,265元</td>
+          <td><span class="novice-icon">⭐⭐</span></td>
+        </tr>
+        <tr data-rating="buy" data-novice="0">
+          <td><div class="bt-name" onclick="goToStock('2408')">南亞科技</div><div class="bt-code">2408</div><div class="bt-ind">記憶體</div></td>
+          <td><span class="rating-badge r-buy">買入</span></td>
+          <td>207元</td><td class="mono">238元</td>
+          <td><span class="novice-icon">⭐⭐</span></td>
+        </tr>
+        <tr data-rating="buy" data-novice="0">
+          <td><div class="bt-name" onclick="goToStock('3189')">景碩科技</div><div class="bt-code">3189</div><div class="bt-ind">PCB/載板</div></td>
+          <td><span class="rating-badge r-buy">買入</span></td>
+          <td>473.5元</td><td class="mono">544元</td>
+          <td><span class="novice-icon">⭐⭐</span></td>
+        </tr>
+        <tr data-rating="buy" data-novice="0">
+          <td><div class="bt-name" onclick="goToStock('3661')">世芯-KY</div><div class="bt-code">3661</div><div class="bt-ind">ASIC設計</div></td>
+          <td><span class="rating-badge r-buy">買入</span></td>
+          <td>~1,850元</td><td class="mono">2,128元</td>
+          <td><span class="novice-icon">⭐</span></td>
+        </tr>
+        <tr data-rating="buy" data-novice="0">
+          <td><div class="bt-name" onclick="goToStock('3711')">日月光投控</div><div class="bt-code">3711</div><div class="bt-ind">封測/先進封裝</div></td>
+          <td><span class="rating-badge r-buy">買入</span></td>
+          <td>~165元</td><td class="mono">190元</td>
+          <td><span class="novice-icon">⭐⭐</span></td>
+        </tr>
+        <tr data-rating="buy" data-novice="0">
+          <td><div class="bt-name" onclick="goToStock('5289')">宜鼎國際</div><div class="bt-code">5289</div><div class="bt-ind">工業Flash</div></td>
+          <td><span class="rating-badge r-buy">買入</span></td>
+          <td>~1,280元</td><td class="mono">1,472元</td>
+          <td><span class="novice-icon">⭐</span></td>
+        </tr>
+        <tr data-rating="buy" data-novice="0">
+          <td><div class="bt-name" onclick="goToStock('6196')">帆宣系統</div><div class="bt-code">6196</div><div class="bt-ind">廠務工程</div></td>
+          <td><span class="rating-badge r-buy">買入</span></td>
+          <td>~520元</td><td class="mono">598元</td>
+          <td><span class="novice-icon">⭐⭐</span></td>
+        </tr>
+        <tr data-rating="buy" data-novice="0">
+          <td><div class="bt-name" onclick="goToStock('6442')">光聖科技</div><div class="bt-code">6442</div><div class="bt-ind">光通訊</div></td>
+          <td><span class="rating-badge r-buy">買入</span></td>
+          <td>2,325元</td><td class="mono">2,674元</td>
+          <td><span class="novice-icon">⭐</span></td>
+        </tr>
+        <tr data-rating="buy" data-novice="0">
+          <td><div class="bt-name" onclick="goToStock('6669')">緯穎科技</div><div class="bt-code">6669</div><div class="bt-ind">伺服器ODM</div></td>
+          <td><span class="rating-badge r-buy">買入</span></td>
+          <td>~2,800元</td><td class="mono">3,220元</td>
+          <td><span class="novice-icon">⭐</span></td>
+        </tr>
+        <tr data-rating="buy" data-novice="0">
+          <td><div class="bt-name" onclick="goToStock('6703')">華星光通</div><div class="bt-code">6703</div><div class="bt-ind">光通訊</div></td>
+          <td><span class="rating-badge r-buy">買入</span></td>
+          <td>~480元</td><td class="mono">552元</td>
+          <td><span class="novice-icon">⭐⭐</span></td>
+        </tr>
+        <tr data-rating="buy" data-novice="0">
+          <td><div class="bt-name" onclick="goToStock('8120')">大量電子</div><div class="bt-code">8120</div><div class="bt-ind">PCB</div></td>
+          <td><span class="rating-badge r-buy">買入</span></td>
+          <td>~285元</td><td class="mono">328元</td>
+          <td><span class="novice-icon">⭐⭐</span></td>
+        </tr>
+        <tr data-rating="buy" data-novice="0">
+          <td><div class="bt-name" onclick="goToStock('8299')">群聯電子</div><div class="bt-code">8299</div><div class="bt-ind">Flash控制晶片</div></td>
+          <td><span class="rating-badge r-buy">買入</span></td>
+          <td>~870元</td><td class="mono">1,001元</td>
+          <td><span class="novice-icon">⭐⭐</span></td>
+        </tr>
+        <!-- 持有觀察 -->
+        <tr data-rating="hold" data-novice="0">
+          <td><div class="bt-name" onclick="goToStock('5274')">信驊科技</div><div class="bt-code">5274</div><div class="bt-ind">IC設計/BMC</div></td>
+          <td><span class="rating-badge r-hold">持有觀察</span></td>
+          <td>~12,000元+</td><td class="mono">13,800元</td>
+          <td><span class="novice-icon">⚠</span></td>
+        </tr>
+        <tr data-rating="hold" data-novice="0">
+          <td><div class="bt-name" onclick="goToStock('5347')">世界先進</div><div class="bt-code">5347</div><div class="bt-ind">晶圓代工</div></td>
+          <td><span class="rating-badge r-hold">持有觀察</span></td>
+          <td>~185元</td><td class="mono">213元</td>
+          <td><span class="novice-icon">⭐⭐</span></td>
+        </tr>
+        <tr data-rating="hold" data-novice="0">
+          <td><div class="bt-name" onclick="goToStock('6239')">力成科技</div><div class="bt-code">6239</div><div class="bt-ind">記憶體封測</div></td>
+          <td><span class="rating-badge r-hold">持有觀察</span></td>
+          <td>~240元</td><td class="mono">276元</td>
+          <td><span class="novice-icon">⭐⭐</span></td>
+        </tr>
+        <tr data-rating="hold" data-novice="0">
+          <td><div class="bt-name" onclick="goToStock('6514')">定穎投控</div><div class="bt-code">6514</div><div class="bt-ind">PCB</div></td>
+          <td><span class="rating-badge r-hold">持有觀察</span></td>
+          <td>~180元</td><td class="mono">207元</td>
+          <td><span class="novice-icon">⭐</span></td>
+        </tr>
+        <tr data-rating="hold" data-novice="0">
+          <td><div class="bt-name" onclick="goToStock('6770')">力積電</div><div class="bt-code">6770</div><div class="bt-ind">晶圓代工/記憶體</div></td>
+          <td><span class="rating-badge r-hold">持有觀察</span></td>
+          <td>~55元</td><td class="mono">63元</td>
+          <td><span class="novice-icon">⭐</span></td>
+        </tr>
+        <tr data-rating="hold" data-novice="0">
+          <td><div class="bt-name" onclick="goToStock('8038')">新應材</div><div class="bt-code">8038</div><div class="bt-ind">半導體材料</div></td>
+          <td><span class="rating-badge r-hold">持有觀察</span></td>
+          <td>~240元</td><td class="mono">276元</td>
+          <td><span class="novice-icon">⭐⭐</span></td>
+        </tr>
+        <tr data-rating="hold" data-novice="0">
+          <td><div class="bt-name" onclick="goToStock('8996')">高力熱處理</div><div class="bt-code">8996</div><div class="bt-ind">散熱轉型</div></td>
+          <td><span class="rating-badge r-hold">持有觀察</span></td>
+          <td>~380元</td><td class="mono">437元</td>
+          <td><span class="novice-icon">⭐</span></td>
+        </tr>
+        <tr data-rating="hold" data-novice="0">
+          <td><div class="bt-name" onclick="goToStock('2605')">新興航運</div><div class="bt-code">2605</div><div class="bt-ind">散裝航運</div></td>
+          <td><span class="rating-badge r-hold">持有觀察</span></td>
+          <td>~190元</td><td class="mono">219元</td>
+          <td><span class="novice-icon">⭐</span></td>
+        </tr>
+        <tr data-rating="hold" data-novice="0">
+          <td><div class="bt-name" onclick="goToStock('3491')">昇達科技</div><div class="bt-code">3491</div><div class="bt-ind">網通元件</div></td>
+          <td><span class="rating-badge r-hold">持有觀察</span></td>
+          <td>~320元</td><td class="mono">368元</td>
+          <td><span class="novice-icon">⭐⭐</span></td>
+        </tr>
+        <!-- 減碼/資料不足 -->
+        <tr data-rating="reduce" data-novice="0">
+          <td><div class="bt-name" onclick="goToStock('3576')">聯合再生能源</div><div class="bt-code">3576</div><div class="bt-ind">太陽能</div></td>
+          <td><span class="rating-badge r-reduce">減碼</span></td>
+          <td>~18元</td><td class="mono">21元</td>
+          <td><span class="novice-icon">❌</span></td>
+        </tr>
+        <tr data-rating="reduce" data-novice="0">
+          <td><div class="bt-name" onclick="goToStock('6242')">聯鈞光電</div><div class="bt-code">6242</div><div class="bt-ind">光通訊元件</div></td>
+          <td><span class="rating-badge r-na">資料不足</span></td>
+          <td>~320元</td><td class="mono">368元</td>
+          <td><span class="novice-icon">❌</span></td>
+        </tr>
+        <tr data-rating="reduce" data-novice="0">
+          <td><div class="bt-name" onclick="goToStock('1234')">台特化</div><div class="bt-code">1234</div><div class="bt-ind">特殊化工</div></td>
+          <td><span class="rating-badge r-na">資料不足</span></td>
+          <td>~95元</td><td class="mono">109元</td>
+          <td><span class="novice-icon">❌</span></td>
+        </tr>
+        <tr data-rating="reduce" data-novice="0">
+          <td><div class="bt-name" onclick="goToStock('3059')">華晶科技</div><div class="bt-code">3059</div><div class="bt-ind">影像感測器</div></td>
+          <td><span class="rating-badge r-na">資料不足</span></td>
+          <td>~85元</td><td class="mono">98元</td>
+          <td><span class="novice-icon">❌</span></td>
+        </tr>
+        <tr data-rating="reduce" data-novice="0">
+          <td><div class="bt-name" onclick="goToStock('3206')">倍利科技</div><div class="bt-code">3206</div><div class="bt-ind">電子通路</div></td>
+          <td><span class="rating-badge r-na">資料不足</span></td>
+          <td>~45元</td><td class="mono">52元</td>
+          <td><span class="novice-icon">❌</span></td>
+        </tr>
+        <tr data-rating="reduce" data-novice="0">
+          <td><div class="bt-name" onclick="goToStock('6548')">長科興業</div><div class="bt-code">6548</div><div class="bt-ind">導線架</div></td>
+          <td><span class="rating-badge r-na">資料不足</span></td>
+          <td>~160元</td><td class="mono">184元</td>
+          <td><span class="novice-icon">❌</span></td>
+        </tr>
+        <tr data-rating="reduce" data-novice="0">
+          <td><div class="bt-name" onclick="goToStock('6635')">邁科國際</div><div class="bt-code">6635</div><div class="bt-ind">特殊設備</div></td>
+          <td><span class="rating-badge r-na">資料不足</span></td>
+          <td>~95元</td><td class="mono">109元</td>
+          <td><span class="novice-icon">❌</span></td>
+        </tr>
+        <tr data-rating="reduce" data-novice="0">
+          <td><div class="bt-name" onclick="goToStock('6763')">聯友金屬-創</div><div class="bt-code">6763</div><div class="bt-ind">創業板</div></td>
+          <td><span class="rating-badge r-na">資料不足</span></td>
+          <td>~188元</td><td class="mono">216元</td>
+          <td><span class="novice-icon">❌</span></td>
+        </tr>
+        <tr data-rating="reduce" data-novice="0">
+          <td><div class="bt-name" onclick="goToStock('7769')">鴻勁精密</div><div class="bt-code">7769</div><div class="bt-ind">測試設備</div></td>
+          <td><span class="rating-badge r-na">資料不足</span></td>
+          <td>~210元</td><td class="mono">242元</td>
+          <td><span class="novice-icon">❌</span></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- TOP 5 新手推薦 -->
+    <h3 class="top5-title">👶 TOP 5 新手推薦</h3>
+    <div class="top5-grid">
+      <div class="top5-card" onclick="goToStock('2330')">
+        <div class="t5-rank">#1</div>
+        <div class="t5-name">台積電</div>
+        <div class="t5-code">2330</div>
+        <div class="t5-price">2,060元</div>
+        <div class="t5-reason">全球 AI 算力基礎設施核心，法說超預期，外資長期持有首選，護城河最強。</div>
+      </div>
+      <div class="top5-card" onclick="goToStock('2308')">
+        <div class="t5-rank">#2</div>
+        <div class="t5-name">台達電</div>
+        <div class="t5-code">2308</div>
+        <div class="t5-price">2,015元</div>
+        <div class="t5-reason">AI 電源 + 液冷散熱雙引擎，月營收屢創新高，市值台股第二，安全性高。</div>
+      </div>
+      <div class="top5-card" onclick="goToStock('1519')">
+        <div class="t5-rank">#3</div>
+        <div class="t5-name">華城電機</div>
+        <div class="t5-code">1519</div>
+        <div class="t5-price">~970元</div>
+        <div class="t5-reason">重電龍頭，訂單能見度至 2027-28 年，有望納入 0050，具被動買盤加持。</div>
+      </div>
+      <div class="top5-card" onclick="goToStock('2317')">
+        <div class="t5-rank">#4</div>
+        <div class="t5-name">鴻海</div>
+        <div class="t5-code">2317</div>
+        <div class="t5-price">211元</div>
+        <div class="t5-reason">AI 伺服器組裝龍頭，法人目標價至少 300 元，現價相對便宜，外資近期買超。</div>
+      </div>
+      <div class="top5-card" onclick="goToStock('1513')">
+        <div class="t5-rank">#5</div>
+        <div class="t5-name">中興電</div>
+        <div class="t5-code">1513</div>
+        <div class="t5-price">155.5元</div>
+        <div class="t5-reason">重電四雄中股價最低，現價具安全邊際，訂單滿手，配息穩定，適合新手入門。</div>
+      </div>
+    </div>
+
+    <div class="disclaimer">
+      ⚠️ 本報告僅供參考，不構成任何投資建議。股市有風險，投資需謹慎。所有股價為近期行情之估算，非即時報價，實際交易請以券商平台為準。目標價係基於 +15% 計算，不保證實現。投資前請自行研究並評估個人風險承受能力。
+    </div>
+  </div>
+</div>
+
 <script>
-function showTab(n,b){document.querySelectorAll('.tp').forEach(p=>p.classList.remove('active'));document.querySelectorAll('.top-nav .seg-b').forEach(x=>x.classList.remove('active'));document.getElementById('tab-'+n).classList.add('active');b.classList.add('active')}
-let dO=false;
-function openDrop(){document.getElementById('coi').readOnly=false;document.getElementById('coi').select();document.getElementById('sdl').classList.add('open');dO=true}
-function switchSDLTab(mkt,btn){document.querySelectorAll('.sdl-tab').forEach(b=>b.classList.remove('active'));btn.classList.add('active');document.getElementById('sdl-tw').style.display=mkt==='tw'?'block':'none';document.getElementById('sdl-us').style.display=mkt==='us'?'block':'none'}
-function filterDrop(v){const val=v.toLowerCase().trim();if(val){document.getElementById('sdl-tw').style.display='block';document.getElementById('sdl-us').style.display='block'}else{const activeTab=document.querySelector('.sdl-tab.active');if(activeTab)activeTab.click();return}const it=document.querySelectorAll('#sdl .sdi-item');let any=false;it.forEach(el=>{const m=el.textContent.toLowerCase().includes(val);el.style.display=m?'flex':'none';if(m)any=true});let e=document.querySelector('#sdl .sdi-empty');if(!any){if(!e){e=document.createElement('div');e.className='sdi-empty';e.textContent='找不到符合的公司';document.getElementById('sdl').appendChild(e)}e.style.display='block'}else if(e)e.style.display='none'}
-function pickCo(val,label,tk){document.getElementById('coi').value=label+' '+tk;document.getElementById('coi').readOnly=true;document.getElementById('sdl').classList.remove('open');dO=false;document.querySelectorAll('.cop').forEach(p=>p.classList.remove('vis'));const p=document.getElementById('panel-'+val);if(p){p.classList.add('vis');p.scrollIntoView({behavior:'smooth',block:'start'})}/* switch to stocks tab */const sb=document.querySelector('.top-nav .seg-b');if(sb&&sb.textContent.includes('個股')){const t=document.getElementById('tab-stocks');if(t&&!t.classList.contains('active')){document.querySelectorAll('.tp').forEach(p2=>p2.classList.remove('active'));document.querySelectorAll('.top-nav .seg-b').forEach(b=>b.classList.remove('active'));t.classList.add('active');sb.classList.add('active')}}}
-document.addEventListener('click',e=>{if(dO&&!e.target.closest('.sdw')){document.getElementById('sdl').classList.remove('open');dO=false}});
-function smkt(co,type,mkt,btn){const segId=(type==='p'?'ps-':'cs-')+co;const seg=document.getElementById(segId);if(seg)seg.querySelectorAll('.msb').forEach(b=>b.classList.remove('active'));btn.classList.add('active');document.querySelectorAll('[id^="'+co+'-'+type+'-"]').forEach(el=>el.classList.remove('active'));const t=document.getElementById(co+'-'+type+'-'+mkt);if(t)t.classList.add('active')}
-function swInd(mkt,btn){document.querySelectorAll('.msbar .seg-b').forEach(b=>b.classList.remove('active'));btn.classList.add('active');['tw','us'].forEach(m=>{const el=document.getElementById('ind-'+m);if(el)el.classList.remove('active')});document.getElementById('ind-'+mkt).classList.add('active')}
-function togAcc(hd){hd.classList.toggle('open');hd.nextElementSibling.classList.toggle('open')}
-function togDet(id){const el=document.getElementById(id);if(el)el.classList.toggle('open')}
-// Mobile: show i-chg-m elements
-function applyMobileLayout(){const isMob=window.innerWidth<=560;document.querySelectorAll('.i-chg-m').forEach(el=>el.style.display=isMob?'flex':'none')}
-applyMobileLayout();window.addEventListener('resize',applyMobileLayout);
-function isMob(){return window.innerWidth<768||'ontouchstart' in window}
-document.addEventListener('click',e=>{const j=e.target.closest('.j');if(!j)return;if(isMob()){e.preventDefault();document.getElementById('bst').textContent=j.dataset.term||'';document.getElementById('bsd').textContent=j.dataset.tip||'';document.getElementById('bso').classList.add('open');document.getElementById('bss').classList.add('open')}});
-function closeBS(){document.getElementById('bso').classList.remove('open');document.getElementById('bss').classList.remove('open')}
-window.addEventListener('DOMContentLoaded',()=>{
-  pickCo('tsmc','台積電 TSMC','TSM/2330');
-  const ah=document.querySelector('#ind-tw .ahd');if(ah){ah.classList.add('open');ah.nextElementSibling.classList.add('open')}
-});
+// ── Data ──
+const stocks = [
+  {code:'1503', name:'士林電機', short:'士電', industry:'重電/電力基建', price:460, change:1.5},
+  {code:'1513', name:'中興電工', short:'中興電', industry:'重電/電力基建', price:155.5, change:1.3},
+  {code:'1519', name:'華城電機', short:'華城', industry:'重電/電力基建', price:970, change:2.1},
+  {code:'2308', name:'台達電子', short:'台達電', industry:'電源/散熱', price:2015, change:6.05},
+  {code:'2317', name:'鴻海精密', short:'鴻海', industry:'EMS/伺服器', price:211, change:1.93},
+  {code:'2330', name:'台灣積體電路', short:'台積電', industry:'半導體龍頭', price:2060, change:1.73},
+  {code:'2383', name:'台光電子', short:'台光電', industry:'PCB/CCL', price:3945, change:2.47},
+  {code:'2404', name:'漢唐集成', short:'漢唐', industry:'廠務工程', price:1100, change:3.8},
+  {code:'2408', name:'南亞科技', short:'南亞科', industry:'記憶體', price:207, change:-1.43},
+  {code:'2454', name:'聯發科技', short:'聯發科', industry:'半導體/IC設計', price:2090, change:10},
+  {code:'2605', name:'新興航運', short:'新興', industry:'散裝航運', price:190, change:-0.5},
+  {code:'3059', name:'華晶科技', short:'華晶科', industry:'影像感測器', price:85, change:0.5},
+  {code:'8120', name:'大量電子', short:'大量', industry:'PCB', price:285, change:5.2},
+  {code:'3189', name:'景碩科技', short:'景碩', industry:'PCB/載板', price:473.5, change:9.99},
+  {code:'3443', name:'創意電子', short:'創意', industry:'IC設計/ASIC', price:2515, change:10},
+  {code:'6242', name:'聯鈞光電', short:'聯鈞', industry:'光通訊元件', price:320, change:2.1},
+  {code:'3576', name:'聯合再生能源', short:'聯合再生', industry:'太陽能', price:18, change:-1.2},
+  {code:'3661', name:'世芯-KY', short:'世芯', industry:'ASIC設計', price:1850, change:3.5},
+  {code:'6514', name:'定穎投控', short:'定穎', industry:'PCB', price:180, change:1.8},
+  {code:'6239', name:'力成科技', short:'力成', industry:'記憶體封測', price:240, change:1.2},
+  {code:'6442', name:'光聖科技', short:'光聖', industry:'光通訊', price:2325, change:10.0},
+  {code:'6669', name:'緯穎科技', short:'緯穎', industry:'伺服器ODM', price:2800, change:4.2},
+  {code:'6770', name:'力積電', short:'力積電', industry:'晶圓代工/記憶體', price:55, change:2.8},
+  {code:'6635', name:'邁科國際', short:'邁科', industry:'特殊設備', price:95, change:0.8},
+  {code:'6763', name:'聯友金屬-創', short:'聯友金屬', industry:'創業板', price:188, change:3.0},
+  {code:'7769', name:'鴻勁精密', short:'鴻勁', industry:'測試設備', price:210, change:1.5},
+  {code:'3206', name:'倍利科技', short:'倍利科', industry:'電子通路', price:45, change:0.8},
+  {code:'8996', name:'高力熱處理', short:'高力', industry:'散熱轉型', price:380, change:2.2},
+  {code:'3081', name:'聯亞光電', short:'聯亞', industry:'矽光子/CPO', price:1250, change:9.9},
+  {code:'3491', name:'昇達科技', short:'昇達科', industry:'網通元件', price:320, change:9.2},
+  {code:'8038', name:'新應材', short:'新應材', industry:'半導體材料', price:240, change:1.5},
+  {code:'1234', name:'台特化', short:'台特化', industry:'特殊化工', price:95, change:0.5},
+  {code:'5289', name:'宜鼎國際', short:'宜鼎', industry:'工業Flash', price:1280, change:10},
+  {code:'5347', name:'世界先進', short:'世界先進', industry:'晶圓代工', price:185, change:2.1},
+  {code:'6548', name:'長科興業', short:'長科', industry:'導線架', price:160, change:1.2},
+  {code:'8299', name:'群聯電子', short:'群聯', industry:'Flash控制晶片', price:870, change:3.5},
+  {code:'3017', name:'奇鋐科技', short:'奇鋐', industry:'散熱', price:2490, change:3.75},
+  {code:'6196', name:'帆宣系統', short:'帆宣', industry:'廠務工程', price:520, change:2.8},
+  {code:'6703', name:'華星光通', short:'華星光', industry:'光通訊', price:480, change:4.1},
+  {code:'3711', name:'日月光投控', short:'日月光', industry:'封測/先進封裝', price:165, change:2.5},
+  {code:'5274', name:'信驊科技', short:'信驊', industry:'IC設計/BMC', price:12000, change:2.1},
+];
+
+const ratings = {
+  '1503':'buy','1513':'buy','1519':'strong-buy',
+  '2308':'strong-buy','2317':'buy','2330':'strong-buy',
+  '2383':'strong-buy','2404':'buy','2408':'buy','2454':'strong-buy',
+  '2605':'hold','3059':'na','8120':'buy','3189':'buy',
+  '3443':'strong-buy','6242':'na','3576':'reduce','3661':'buy',
+  '6514':'hold','6239':'hold','6442':'buy','6669':'buy',
+  '6770':'hold','6635':'na','6763':'na','7769':'na',
+  '3206':'na','8996':'hold','3081':'strong-buy','3491':'hold',
+  '8038':'hold','1234':'na','5289':'buy','5347':'hold',
+  '6548':'na','8299':'buy','3017':'strong-buy','6196':'buy',
+  '6703':'buy','3711':'buy','5274':'hold',
+};
+
+const ratingLabel = {'strong-buy':'強力買入','buy':'買入','hold':'持有觀察','reduce':'減碼','na':'資料不足'};
+const ratingClass = {'strong-buy':'r-strong-buy','buy':'r-buy','hold':'r-hold','reduce':'r-reduce','na':'r-na'};
+
+// Company detail data
+const details = {
+  '2330': {
+    desc: '台灣積體電路製造公司（台積電）是全球最大的<span class="j" data-term="晶圓代工" data-tip="替別的IC設計公司生產晶片，自己不設計，就像代工廠幫品牌商做產品">晶圓代工</span>廠，掌握全球最先進製程技術，包括 3nm 及 2nm，客戶涵蓋蘋果、輝達、AMD、高通等全球科技龍頭。',
+    model: ['收取晶圓製造加工費，客戶為全球 IC 設計公司','先進製程（3nm/2nm）毛利率超過 55%','CoWoS 先進封裝服務快速增長','全球 AI 算力 90% 的晶片在此生產'],
+    price: 2060, change: '+35（+1.73%）', up: true,
+    w52h: 2605, w52l: 1050, target15: 2369, target20: 2472, analystTP: 2330,
+    pe: '26x', eps: '90元(預估)', roe: '28%+',
+    emotions: ['多頭強勢','外資買超','AI核心持股','法說超預期'],
+    supplyChain: [{code:'2317',name:'鴻海',price:'211',desc:'AI伺服器系統整合'},{code:'2308',name:'台達電',price:'2,015',desc:'電源散熱供應商'},{code:'3711',name:'日月光',price:'165',desc:'封測外包合作夥伴'},{code:'3189',name:'景碩',price:'473',desc:'ABF載板供應商'}],
+    trend: '2nm 量產進入爬坡，AI ASIC 需求強勁，CoWoS 先進封裝出現外包效應，帶動整條供應鏈。全球四大雲端業者 2026 年資本支出突破 4,500 億美元。',
+    trendStocks:['台達電(2308)','日月光(3711)','創意(3443)','漢唐(2404)'],
+    focus: '⚠ 中東停火後伊朗持續威脅荷姆茲海峽，若油價再度飆升可能影響外資情緒。聯發科法說會潛在波動需追蹤。',
+    focusStocks:['聯發科(2454)','南亞科(2408)','奇鋐(3017)'],
+    news: [
+      {date:'2026-04-16',badge:'nb-positive',impact:'📈 超強',title:'台積電 2026 Q1 法說：EPS 22.08 元史上新高',desc:'管理層上調資本支出至 520-560 億美元，確認全年 AI 需求能見度極強，帶動整體供應鏈信心全面升溫。'},
+      {date:'2026-04-09',badge:'nb-positive',impact:'📈 利多',title:'3 月單月營收年增 45.2%，大幅超越市場預期',desc:'Q1 累計營收再創歷史新高，法人全面調升全年 EPS 預估至 90 元以上。'},
+    ],
+    competitors: [{name:'Samsung',code:'005930.KS',price:'KRW 70,000',desc:'全球記憶體/晶圓代工第二'},{name:'Intel',code:'INTC',price:'USD ~23',desc:'IDM 轉型，失去先進製程領先'},{name:'SMIC',code:'688981.SH',price:'CNY 80',desc:'中國最大晶圓廠，受制於出口管制'}],
+    growth: [{year:'2023',rev:'+5%',eps:'~32元'},{year:'2024',rev:'+34%',eps:'~65元'},{year:'2025',rev:'+40%+',eps:'~80元(預估)'}],
+    risks:['地緣政治風險：台海情勢影響估值溢價','關稅政策：美國對台半導體關稅不確定性','競爭：三星追趕先進製程差距','過度集中：全球 AI 算力過度依賴台積電，地緣風險折扣']
+  },
+  '2308': {
+    desc: '台達電子是全球電源管理與液冷散熱解決方案的最大供應商，深度切入 AI 資料中心的「電」與「冷」兩大最關鍵基礎設施需求。市值已超越鴻海，成為台股第二大。',
+    model: ['AI 資料中心電源模組（UPS、PSU）佔營收 53%','液冷散熱基礎設施部門佔 33%，是全球 AI 散熱領導廠','工業自動化 + 汽車電動化 + 能源管理為第三引擎','全球在台灣、泰國、印度、美國多地設廠，地域風險分散'],
+    price: 2015, change: '+115（+6.05%）', up: true,
+    w52h: 2200, w52l: 850, target15: 2317, target20: 2418, analystTP: 2100,
+    pe: '40x', eps: '50元(預估)', roe: '25%+',
+    emotions: ['強勢多頭','外資持續加碼','市值超越鴻海','月營收屢創新高'],
+    supplyChain: [{code:'3017',name:'奇鋐',price:'2,490',desc:'散熱子供應鏈'},{code:'1519',name:'華城',price:'970',desc:'重電電力基建合作'},{code:'2330',name:'台積電',price:'2,060',desc:'最大晶片客戶'},{code:'6669',name:'緯穎',price:'2,800',desc:'AI伺服器客戶'}],
+    trend: '2026 年 AI 伺服器功耗爆量，HVDC Power Rack（800V架構）有望在 Rubin 世代正式落地，台達電為主要供應商。泰國三個新廠已開出產能，美國、印度擴廠計畫同步推進。',
+    trendStocks:['奇鋐(3017)','帆宣(6196)','漢唐(2404)','鴻海(2317)'],
+    focus: '⚠ 3 月營收創歷史新高後，短線技術面偏高，留意外資是否持續加碼確認。電價與原物料成本需關注。',
+    focusStocks:['台積電(2330)','鴻海(2317)','奇鋐(3017)'],
+    news: [
+      {date:'2026-04-09',badge:'nb-positive',impact:'📈 超強',title:'3 月營收 597.8 億元再創歷史新高，年增 37.6%',desc:'Q1 累計 1,593 億元年增 34%，為歷史次高。董事長鄭平預告 Q2 將優於 Q1。'},
+      {date:'2026-04-22',badge:'nb-positive',impact:'📈 利多',title:'台達電市值超越鴻海成台股第二大',desc:'外資目標價調升至 1,638 元至 2,100 元，持續看多 AI 電源雙引擎驅動。'},
+    ],
+    competitors: [{name:'英威騰',code:'002334.SZ',price:'CNY 15',desc:'中國電源廠，中低階市場'},{name:'ABB',code:'ABB',price:'CHF 42',desc:'工業電源與自動化巨頭'},{name:'施耐德電氣',code:'SU.PA',price:'EUR 220',desc:'全球能源管理與自動化'}],
+    growth: [{year:'2023',rev:'+10%',eps:'~28元'},{year:'2024',rev:'+25%',eps:'~38元'},{year:'2025',rev:'+35%+',eps:'~50元(預估)'}],
+    risks:['估值偏高：本益比超過 40 倍，需持續業績支撐','競爭加劇：中資廠商低價侵蝕中低階市場','地緣政治：泰國廠若受政策影響','原物料成本：銅鋁等金屬原料漲價壓力']
+  },
+  '1519': {
+    desc: '華城電機是台灣重電設備龍頭，專注大型電力<span class="j" data-term="變壓器" data-tip="把高壓電轉成低壓電、或低壓電升為高壓電的設備，像電線桿上的灰色大筒">變壓器</span>、配電設備設計製造，是台電最大本土供應商，也是 AI 資料中心電力基礎設施的核心廠商。',
+    model: ['大型變壓器（輸配電核心設備）是主力產品','台電強韌電網計畫穩定長期釋單','AI 資料中心電力建設帶動新增需求','有望納入元大台灣50，獲被動基金買盤'],
+    price: 970, change: '+20（+2.1%）', up: true,
+    w52h: 1200, w52l: 350, target15: 1116, target20: 1164, analystTP: 1150,
+    pe: '25x', eps: '40元(預估)', roe: '20%+',
+    emotions: ['多頭強勢','訂單能見度極高','0050入列題材','機構青睞'],
+    supplyChain: [{code:'1503',name:'士電',price:'460',desc:'重電四雄夥伴'},{code:'1513',name:'中興電',price:'155',desc:'重電四雄夥伴'},{code:'2308',name:'台達電',price:'2,015',desc:'AI電源協同受益'},{code:'2330',name:'台積電',price:'2,060',desc:'AI擴廠電力需求大客戶'}],
+    trend: '大型電力變壓器交期已延長至約兩年半，取向矽鋼片等關鍵原料供應緊俏，供需失衡格局持續至 2027–2028 年。',
+    trendStocks:['士電(1503)','中興電(1513)','台達電(2308)'],
+    focus: '⚠ 近期高位震盪，等待 0050 換股名單正式公告，正式納入後被動買盤將帶來顯著支撐。',
+    focusStocks:['士電(1503)','中興電(1513)'],
+    news: [
+      {date:'2026-03-11',badge:'nb-positive',impact:'📈 利多',title:'2025 年 EPS 13.99 元創歷史新高',desc:'獲利年增顯著，法人積極調升目標價，訂單能見度確認延伸至 2027 年以上。'},
+      {date:'2026-02-25',badge:'nb-positive',impact:'📈 題材',title:'有望納入元大台灣 50（0050）成分股',desc:'0050 換股倒數，被動型基金強制買盤即將入場，為股價提供額外支撐。'},
+    ],
+    competitors: [{name:'ABB',code:'ABB',price:'CHF 42',desc:'全球重電巨頭'},{name:'西門子',code:'SIE.DE',price:'EUR 185',desc:'德國工業電氣龍頭'},{name:'亞力電機',code:'1514',price:'~380元',desc:'台灣重電四雄之一'}],
+    growth: [{year:'2023',rev:'+30%',eps:'~8元'},{year:'2024',rev:'+45%',eps:'~13.99元'},{year:'2025',rev:'+30%+(預估)',eps:'~18元(預估)'}],
+    risks:['原物料漲價：取向矽鋼片持續緊俏影響毛利','匯率風險：出口訂單受新台幣升值影響','0050 延遲納入：若換股時程延後，題材效應消散','估值偏高：近期漲幅較大，追高風險']
+  }
+};
+
+// Build stock list
+function buildList() {
+  const container = document.getElementById('stockList');
+  container.innerHTML = '';
+  const searchVal = document.getElementById('searchInput').value.toLowerCase();
+  const filtered = stocks.filter(s => 
+    s.name.includes(searchVal) || s.short.includes(searchVal) || s.code.includes(searchVal)
+  );
+  filtered.forEach(s => {
+    const div = document.createElement('div');
+    div.className = 'stock-item';
+    div.id = 'si-' + s.code;
+    const changeStr = (s.change >= 0 ? '+' : '') + s.change.toFixed(2) + '%';
+    const changeColor = s.change > 0 ? 'color:var(--up)' : (s.change < 0 ? 'color:var(--down)' : 'color:var(--gray)');
+    div.innerHTML = `<span><span class="name">${s.short || s.name}</span> <span class="industry">${s.industry}</span></span><span><span class="code">${s.code}</span> <span style="${changeColor};font-size:12px;font-family:monospace">${changeStr}</span></span>`;
+    div.onclick = () => showCompany(s.code);
+    container.appendChild(div);
+  });
+}
+
+function filterStocks() { buildList(); }
+
+function showCompany(code) {
+  // Update active list item
+  document.querySelectorAll('.stock-item').forEach(el => el.classList.remove('active'));
+  const si = document.getElementById('si-' + code);
+  if (si) si.classList.add('active');
+
+  const container = document.getElementById('panelsContainer');
+  const existing = document.getElementById('panel-' + code);
+  if (existing) {
+    document.querySelectorAll('.company-panel').forEach(p => p.classList.remove('active'));
+    existing.classList.add('active');
+    existing.scrollIntoView({behavior:'smooth', block:'start'});
+    return;
+  }
+
+  const stock = stocks.find(s => s.code === code);
+  if (!stock) return;
+
+  const d = details[code];
+  const r = ratings[code] || 'na';
+
+  let panel;
+  if (d) {
+    const changeUp = d.up;
+    const changeColor = changeUp ? 'price-up' : 'price-down';
+    const pct52 = ((d.price - d.w52l) / (d.w52h - d.w52l) * 100).toFixed(0);
+
+    let scHtml = d.supplyChain.map(sc => `
+      <div class="sc-card" onclick="showCompany('${sc.code}')">
+        <div class="sc-name">${sc.name}</div>
+        <div class="sc-code">${sc.code}</div>
+        <div class="sc-price ${sc.code === code ? '' : (stocks.find(s=>s.code===sc.code)?.change >= 0 ? 'price-up' : 'price-down')}">${sc.price}元</div>
+        <div class="sc-desc">${sc.desc}</div>
+      </div>`).join('');
+
+    let newsHtml = d.news.map(n => `
+      <div class="news-item highlight">
+        <div class="news-meta"><span class="news-date">${n.date}</span><span class="news-badge ${n.badge}">${n.impact}</span></div>
+        <div class="news-title">${n.title}</div>
+        <div class="news-desc">${n.desc}</div>
+      </div>`).join('');
+
+    let compHtml = d.competitors.map(c => `
+      <div class="comp-card">
+        <div class="c-name">${c.name}</div>
+        <div class="c-code">${c.code}</div>
+        <div class="c-price">${c.price}</div>
+        <div class="c-desc">${c.desc}</div>
+      </div>`).join('');
+
+    let growthHtml = d.growth.map(g => `
+      <div class="growth-row"><span>${g.year}</span><span>營收 <b>${g.rev}</b> · EPS <b class="growth-val">${g.eps}</b></span></div>`).join('');
+
+    let riskHtml = d.risks.map(r => `<div class="risk-item">${r}</div>`).join('');
+
+    let modelHtml = d.model.map(m => `<li>${m}</li>`).join('');
+
+    panel = document.createElement('div');
+    panel.className = 'company-panel';
+    panel.id = 'panel-' + code;
+    panel.innerHTML = `
+    <div class="container">
+      <!-- Hero -->
+      <div class="hero">
+        <div class="hero-top">
+          <div class="hero-title">
+            <h2>${stock.name}</h2>
+            <span class="tag tag-code">${code}</span>
+            <span class="tag tag-industry">${stock.industry}</span>
+            <span class="rating-badge ${ratingClass[r]}" style="margin-left:8px">${ratingLabel[r]}</span>
+          </div>
+        </div>
+        <div class="hero-body">
+          <div class="hero-desc">${d.desc}</div>
+          <div class="hero-model">
+            <h4>獲利模式</h4>
+            <ul>${modelHtml}</ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Price Block -->
+      <div class="price-block">
+        <h3>📈 股價走勢</h3>
+        <div class="price-main">
+          <div class="price-value mono">${d.price.toLocaleString()}</div>
+          <div class="price-change ${changeColor}">${d.change}</div>
+          <div class="price-date">2026/04/22 收盤</div>
+        </div>
+        <div class="week52">
+          <div class="label-row"><span>52週低 ${d.w52l.toLocaleString()}元</span><span>52週高 ${d.w52h.toLocaleString()}元</span></div>
+          <div class="bar-track"><div class="bar-fill" style="width:${pct52}%"></div><div class="bar-marker" style="left:${pct52}%"></div></div>
+          <div class="week52-caption">📌 目前股價位在52週區間的 <b>${pct52}%</b> 位置。${pct52 > 75 ? '高位區，追高需謹慎。' : pct52 > 45 ? '中位區，有上漲空間。' : '低位區，具有潛力。'}</div>
+        </div>
+        <div class="target-row">
+          <div class="target-card"><div class="t-label">保守目標(+15%)</div><div class="t-price mono">${d.target15.toLocaleString()}</div><div class="t-pct">+15%</div></div>
+          <div class="target-card"><div class="t-label">積極目標(+20%)</div><div class="t-price mono">${d.target20.toLocaleString()}</div><div class="t-pct">+20%</div></div>
+          <div class="target-card"><div class="t-label">法人共識目標</div><div class="t-price mono">${d.analystTP.toLocaleString()}</div><div class="t-pct">法人</div></div>
+        </div>
+        <div class="stats-row">
+          <div class="stat-box"><div class="s-label"><span class="j" data-term="本益比(P/E)" data-tip="股價÷每股盈餘，告訴你多少年可以回本。P/E=20代表用20年賺回投資金額">本益比 (P/E)</span></div><div class="s-value">${d.pe}</div></div>
+          <div class="stat-box"><div class="s-label"><span class="j" data-term="EPS" data-tip="每股盈餘，公司一年賺多少錢÷總股數。EPS越高代表公司越賺錢">EPS</span></div><div class="s-value">${d.eps}</div></div>
+          <div class="stat-box"><div class="s-label"><span class="j" data-term="ROE" data-tip="股東權益報酬率，公司用股東的錢賺了多少。超過15%通常代表公司很會賺錢">ROE</span></div><div class="s-value">${d.roe}</div></div>
+        </div>
+        <div class="emotion-row">
+          ${d.emotions.map(e => `<span class="emotion-tag e-hot">${e}</span>`).join('')}
+        </div>
+      </div>
+
+      <!-- Supply Chain -->
+      <div class="supply-chain">
+        <h3>🔗 供應鏈相關個股</h3>
+        <div class="sc-grid">${scHtml}</div>
+      </div>
+
+      <!-- Trend & Focus -->
+      <div class="trend-focus">
+        <div class="trend-box trend-box-blue">
+          <h4>📊 產業趨勢</h4>
+          <p>${d.trend}</p>
+          <div class="chips">${d.trendStocks.map(s=>`<span class="chip" onclick="showCompany('${s.match(/\d+/)?.[0]}')">${s}</span>`).join('')}</div>
+        </div>
+        <div class="trend-box trend-box-amber">
+          <h4>⚡ 本週關注</h4>
+          <p>${d.focus}</p>
+          <div class="chips">${d.focusStocks.map(s=>`<span class="chip" onclick="showCompany('${s.match(/\d+/)?.[0]}')">${s}</span>`).join('')}</div>
+        </div>
+      </div>
+
+      <!-- News -->
+      <div class="news-block">
+        <h3>📰 本週重要新聞</h3>
+        ${newsHtml}
+      </div>
+
+      <!-- Competitors -->
+      <div class="comp-block">
+        <h3>🥊 主要競爭者</h3>
+        <div class="comp-grid">${compHtml}</div>
+      </div>
+
+      <!-- Bottom -->
+      <div class="bottom-cols">
+        <div class="bottom-box">
+          <h4>📈 過去三年成長</h4>
+          ${growthHtml}
+        </div>
+        <div class="bottom-box">
+          <h4>⚠️ 最大潛在風險</h4>
+          ${riskHtml}
+        </div>
+      </div>
+
+      <div class="disclaimer">本分析僅供參考，不構成投資建議。股市有風險，投資需謹慎。</div>
+    </div>`;
+  } else {
+    // Generic panel
+    panel = document.createElement('div');
+    panel.className = 'company-panel';
+    panel.id = 'panel-' + code;
+    const pct52 = 50; // default
+    const tgt15 = Math.round(stock.price * 1.15);
+    const tgt20 = Math.round(stock.price * 1.20);
+    const changeColor = stock.change >= 0 ? 'price-up' : 'price-down';
+    panel.innerHTML = `
+    <div class="container">
+      <div class="hero">
+        <div class="hero-top">
+          <div class="hero-title">
+            <h2>${stock.name}</h2>
+            <span class="tag tag-code">${code}</span>
+            <span class="tag tag-industry">${stock.industry}</span>
+            <span class="rating-badge ${ratingClass[r]}" style="margin-left:8px">${ratingLabel[r]}</span>
+          </div>
+        </div>
+        <div class="hero-body">
+          <div class="hero-desc">${stock.name}（${code}）屬<span class="j" data-term="${stock.industry}" data-tip="此產業相關說明">${stock.industry}</span>族群，受惠於 AI 供應鏈需求擴張，近期市場關注度提升。詳細財報分析建議參考法說會資料。</div>
+          <div class="hero-model">
+            <h4>主要業務</h4>
+            <ul><li>提供${stock.industry}產品或服務</li><li>受惠 AI 資料中心需求成長</li><li>持續觀察月營收及法人動向</li></ul>
+          </div>
+        </div>
+      </div>
+      <div class="price-block">
+        <h3>📈 股價資訊</h3>
+        <div class="price-main">
+          <div class="price-value mono">~${stock.price.toLocaleString()}</div>
+          <div class="price-change ${changeColor}">${stock.change >= 0 ? '+' : ''}${stock.change.toFixed(2)}%</div>
+          <div class="price-date">2026/04/22 估算</div>
+        </div>
+        <div class="target-row">
+          <div class="target-card"><div class="t-label">保守目標(+15%)</div><div class="t-price mono">${tgt15.toLocaleString()}</div><div class="t-pct">+15%</div></div>
+          <div class="target-card"><div class="t-label">積極目標(+20%)</div><div class="t-price mono">${tgt20.toLocaleString()}</div><div class="t-pct">+20%</div></div>
+          <div class="target-card"><div class="t-label">評級</div><div class="t-price" style="font-size:14px;font-weight:700"><span class="rating-badge ${ratingClass[r]}">${ratingLabel[r]}</span></div></div>
+        </div>
+        <div class="emotion-row">
+          <span class="emotion-tag e-neutral">持續追蹤</span>
+          <span class="emotion-tag e-neutral">${stock.industry}</span>
+        </div>
+      </div>
+      <div class="news-block">
+        <h3>💡 投資觀點</h3>
+        <div class="news-item">
+          <div class="news-title">📊 ${stock.name} — 分析師觀點</div>
+          <div class="news-desc">評級：${ratingLabel[r]}。${
+            r === 'strong-buy' ? '基本面強勁，AI受惠明確，估值合理，建議積極布局。' :
+            r === 'buy' ? '基本面良好，AI受益鏈明確，短中期催化劑清晰。' :
+            r === 'hold' ? '位階偏高或需等待回調確認，建議先觀察再決定進場時機。' :
+            r === 'reduce' ? '外資持續賣超或本業承壓，建議減碼或迴避。' :
+            '公開資訊不足，無法作出完整判斷，建議等待季報或法說會後再評估。'
+          }</div>
+        </div>
+      </div>
+      <div class="disclaimer">本分析僅供參考，不構成投資建議。股市有風險，投資需謹慎。</div>
+    </div>`;
+  }
+
+  container.appendChild(panel);
+  document.querySelectorAll('.company-panel').forEach(p => p.classList.remove('active'));
+  panel.classList.add('active');
+  panel.scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+// Tabs
+function switchTab(id, btn) {
+  document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+}
+
+// Accordion
+function toggleAccordion(id) {
+  const body = document.getElementById('body-' + id);
+  const icon = document.getElementById('icon-' + id);
+  if (!body) return;
+  const isOpen = body.classList.contains('open');
+  body.classList.toggle('open', !isOpen);
+  if (icon) icon.classList.toggle('open', !isOpen);
+}
+
+// Insight rows
+function showInsight(id) {
+  const row = document.getElementById(id);
+  if (!row) return;
+  row.classList.toggle('open');
+}
+
+// Table filter
+function filterTable(type, btn) {
+  document.querySelectorAll('.filter-btn').forEach(el => el.classList.remove('active'));
+  btn.classList.add('active');
+  const rows = document.querySelectorAll('#buyTable tbody tr');
+  rows.forEach(row => {
+    const rating = row.getAttribute('data-rating');
+    const novice = row.getAttribute('data-novice');
+    let show = true;
+    if (type === 'buy') show = rating === 'strong-buy' || rating === 'buy';
+    else if (type === 'hold') show = rating === 'hold';
+    else if (type === 'reduce') show = rating === 'reduce' || rating === 'na';
+    else if (type === 'novice') show = novice === '1';
+    row.style.display = show ? '' : 'none';
+  });
+}
+
+// Navigate to stock from tab3
+function goToStock(code) {
+  switchTab('t1', document.querySelector('.tab-btn:first-child'));
+  setTimeout(() => {
+    buildList();
+    showCompany(code);
+  }, 100);
+}
+
+// Auto open first stock
+buildList();
+setTimeout(() => showCompany('2330'), 100);
 </script>
 </body>
 </html>
